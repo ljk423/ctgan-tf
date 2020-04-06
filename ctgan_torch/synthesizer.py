@@ -195,6 +195,8 @@ class CTGANSynthesizer(object):
 
                 pen = discriminator.calc_gradient_penalty(real_cat, fake_cat, self.device)
                 loss_d = -(torch.mean(y_real) - torch.mean(y_fake))
+                print("pen:", pen.detach())
+                print("loss_d", loss_d.detach())
 
                 optimizerD.zero_grad()
                 pen.backward(retain_graph=True)
@@ -226,10 +228,13 @@ class CTGANSynthesizer(object):
                     cross_entropy = self._cond_loss(fake, c1, m1)
 
                 loss_g = -torch.mean(y_fake) + cross_entropy
+                print("loss_g:", loss_g.detach())
+                print("Cond loss:", cross_entropy)
 
                 optimizerG.zero_grad()
                 loss_g.backward()
                 optimizerG.step()
+                print()
 
             print("Epoch %d, Loss G: %.4f, Loss D: %.4f, Cond Loss: %.4f, GP: %.4f" %
                   (i + 1, loss_g.detach().cpu(), loss_d.detach().cpu(), cross_entropy, pen.detach().cpu()),

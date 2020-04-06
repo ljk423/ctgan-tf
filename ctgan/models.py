@@ -35,6 +35,7 @@ from functools import partial
 import numpy as np
 
 import tensorflow as tf
+import tensorflow_addons as tfa
 from tensorflow.python.ops import summary_ops_v2
 from absl import flags
 
@@ -66,8 +67,9 @@ class CTGANSynthesizer:
         self.gen_dim = gen_dim
         self.dis_dim = dis_dim
 
-        self.g_opt = tf.keras.optimizers.Adam(
-            learning_rate=2e-4, beta_1=0.5, beta_2=0.9, epsilon=1e-08, decay=l2scale)
+        #self.g_opt = tf.keras.optimizers.Adam(
+        self.g_opt = tfa.optimizers.AdamW(
+            learning_rate=2e-4, beta_1=0.5, beta_2=0.9, epsilon=1e-08, weight_decay=l2scale)
         self.c_opt = tf.keras.optimizers.Adam(
             learning_rate=2e-4, beta_1=0.5, beta_2=0.9, epsilon=1e-08)
         self.transformer = DataTransformer()
@@ -168,17 +170,17 @@ class CTGANSynthesizer:
                 #tf.print("fake:", fake_logits.shape, tf.reduce_mean(fake_logits))
                 #tf.print("real:", real_logits.shape, tf.reduce_mean(real_logits))
 
-                cost = losses.d_loss_fn(fake_logits, real_logits)
+                loss = losses.d_loss_fn(fake_logits, real_logits)
                 gp = self.gradient_penalty(
                     partial(self.critic, training=True), x_real, x_fake)
 
-                #tf.print(cost)
-                #tf.print(gp)
-                cost += gp
-            grad = t.gradient(cost, self.critic.trainable_variables)
+                #tf.print("d_loss:", loss)
+                #tf.print("gp:", gp)
+                d_loss = loss + gp
+            grad = t.gradient(d_loss, self.critic.trainable_variables)
             self.c_opt.apply_gradients(zip(grad, self.critic.trainable_variables))
             del t
-        return cost, gp
+        return loss, gp
 
     @tf.function
     def train_g(self):
@@ -198,12 +200,14 @@ class CTGANSynthesizer:
             x_fake = _apply_activate(x_fake_nonact, self.transformer.output_info)
             x_fake_cond = tf.concat([x_fake, c1], axis=1) if c1 is not None else x_fake
             fake_logits = self.critic(x_fake_cond, training=False)
-            loss, cond_loss = losses.g_loss_fn(
-                fake_logits, x_fake_nonact, self.transformer.output_info_tensor(), c1, m1)
+            loss = losses.g_loss_fn(fake_logits)
+            cond_loss = losses.cond_loss(
+                self.transformer.output_info_tensor(), x_fake_nonact, c1, m1)
+            g_loss = loss + cond_loss
 
-        grad = t.gradient(loss, self.generator.trainable_variables)
+        grad = t.gradient(g_loss, self.generator.trainable_variables)
         self.g_opt.apply_gradients(zip(grad, self.generator.trainable_variables))
-        return loss, cond_loss
+        return g_loss, cond_loss
 
     @tf.function
     def gradient_penalty(self, f, real, fake):

@@ -25,32 +25,36 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import tensorflow as tf
+import os
+
+from absl import app
+
+import numpy as np
+import pandas as pd
+from ctgan_torch.synthesizer import CTGANSynthesizer
+
+def main2(argv):
+    del argv
+    DEMO_URL = 'http://ctgan-data.s3.amazonaws.com/census.csv.gz'
+    data = pd.read_csv(DEMO_URL, compression='gzip')
+    discrete_columns = [
+        'workclass',
+        'education',
+        'marital-status',
+        'occupation',
+        'relationship',
+        'race',
+        'sex',
+        'native-country',
+        'income'
+    ]
+
+    model = CTGANSynthesizer()
+    model.fit(data, discrete_columns, 300)
+    sampled = model.sample(data.shape[0])
+
+    sampled.to_csv('tests/torch.csv', index=False)
 
 
-@tf.function
-def d_loss_fn(fake_logit, real_logit):
-    fake_loss = tf.math.reduce_mean(fake_logit)
-    real_loss = tf.math.reduce_mean(real_logit)
-    return fake_loss - real_loss
-
-@tf.function
-def g_loss_fn(fake_logit):
-    f_loss = -tf.math.reduce_mean(fake_logit)
-    return f_loss
-
-
-@tf.function
-def cond_loss(transformer_info, data, c, m):
-    loss = []
-
-    for item in transformer_info:
-        st, ed, st_c, ed_c, is_continuous, is_softmax = item
-        if is_continuous == 0 and is_softmax == 1:
-            data_logsoftmax = data[:, st:ed]
-            c_argmax = tf.math.argmax(c[:, st_c:ed_c], axis=1)
-            loss += [tf.nn.sparse_softmax_cross_entropy_with_logits(c_argmax, data_logsoftmax)]
-
-    loss = tf.stack(loss, axis=1)
-    return tf.reduce_sum(loss * m) / data.shape[0]
-
+if __name__ == '__main__':
+    app.run(main2)
