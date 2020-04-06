@@ -1,19 +1,16 @@
 import numpy as np
 import pandas as pd
-import tensorflow as tf
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.mixture import BayesianGaussianMixture
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.utils._testing import ignore_warnings
+#from sklearn.utils._testing import ignore_warnings
 
 
 class DataTransformer(object):
     """Data Transformer.
-
     Model continuous columns with a BayesianGMM and normalized to a scalar
     [0, 1] and a vector.
     Discrete columns are encoded using a scikit-learn OneHotEncoder.
-
     Args:
         n_cluster (int):
             Number of modes.
@@ -46,7 +43,7 @@ class DataTransformer(object):
             st_c = st_c if item[2] else edc
         return output_info
 
-    @ignore_warnings(category=ConvergenceWarning)
+    #@ignore_warnings(category=ConvergenceWarning)
     def _fit_continuous(self, column, data):
         gm = BayesianGaussianMixture(
             self.n_clusters,
@@ -88,6 +85,7 @@ class DataTransformer(object):
         else:
             self.dataframe = True
 
+        self.dtypes = data.infer_objects().dtypes
         self.meta = []
         for column in data.columns:
             column_data = data[[column]].values
@@ -192,7 +190,8 @@ class DataTransformer(object):
             start += dimensions
 
         output = np.column_stack(output)
-        if self.dataframe:
-            output = pd.DataFrame(output, columns=column_names)
+        output = pd.DataFrame(output, columns=column_names).astype(self.dtypes)
+        if not self.dataframe:
+            output = output.values
 
         return output

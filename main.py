@@ -28,8 +28,10 @@ from __future__ import unicode_literals
 import os
 
 from absl import app
+import tensorflow as tf
 from tensorflow import keras
 
+import numpy as np
 import pandas as pd
 from ctgan.models import CTGANSynthesizer
 
@@ -41,8 +43,11 @@ def main(argv):
     del argv
     df = pd.read_csv('aug-training.csv')
     df.set_index('bookingid')
-    df = df[['total_cost', 'package']]
+    df = df[['total_cost', 'nights']]
     discrete_columns = ['package']
+
+    tf.random.set_seed(42)
+    np.random.seed(42)
 
     #discrete_columns = ['package', 'nights', 'booking_date_day',
     #   'booking_date_month', 'booking_date_year', 'checkin_date_day',
@@ -54,5 +59,28 @@ def main(argv):
     print(ctgan.sample(1000))
 
 
+def main2(argv):
+    del argv
+    DEMO_URL = 'http://ctgan-data.s3.amazonaws.com/census.csv.gz'
+    data = pd.read_csv(DEMO_URL, compression='gzip')
+    discrete_columns = [
+        'workclass',
+        'education',
+        'marital-status',
+        'occupation',
+        'relationship',
+        'race',
+        'sex',
+        'native-country',
+        'income'
+    ]
+
+    model = CTGANSynthesizer()
+    model.train(data, discrete_columns, 300)
+    sampled = model.sample(data.shape[0])
+
+    sampled.to_csv('tests/tensorflow.csv', index=False)
+
+
 if __name__ == '__main__':
-    app.run(main)
+    app.run(main2)

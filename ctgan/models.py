@@ -30,19 +30,18 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import tempfile
+import datetime
 from functools import partial
-from pathlib import Path
 import numpy as np
 
 import tensorflow as tf
-import tensorflow_addons as tfa
+from tensorflow.python.ops import summary_ops_v2
 from absl import flags
 
 from ctgan.transformer import DataTransformer
 from ctgan.sampler import Sampler
 from ctgan.conditional import ConditionalGenerator
-from ctgan.layers import GenActLayer
+from ctgan.layers import ResidualLayer, GenActLayer, _apply_activate, bounded_initializer
 from ctgan import losses
 from ctgan.utils import pbar
 
@@ -67,8 +66,10 @@ class CTGANSynthesizer:
         self.gen_dim = gen_dim
         self.dis_dim = dis_dim
 
-        self.g_opt = tfa.optimizers.AdamW(l2scale, learning_rate=2e-4, beta_1=0.5, beta_2=0.9)
-        self.c_opt = tf.keras.optimizers.Adam(learning_rate=2e-4, beta_1=0.5, beta_2=0.9)
+        self.g_opt = tf.keras.optimizers.Adam(
+            learning_rate=2e-4, beta_1=0.5, beta_2=0.9, epsilon=1e-08, decay=l2scale)
+        self.c_opt = tf.keras.optimizers.Adam(
+            learning_rate=2e-4, beta_1=0.5, beta_2=0.9, epsilon=1e-08)
         self.transformer = DataTransformer()
         self.data_sampler = None
         self.cond_generator = None
@@ -95,51 +96,42 @@ class CTGANSynthesizer:
 
         g_train_loss = tf.metrics.Mean()
         d_train_loss = tf.metrics.Mean()
+        current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        train_log_dir = 'logs/gradient_tape/' + current_time + '/train'
+        train_summary_writer = tf.summary.create_file_writer(train_log_dir)
+
+        with train_summary_writer.as_default():
+            # Get concrete graph for some given inputs
+            func_graph = self.train_g.get_concrete_function().graph
+            # Write the graph
+            summary_ops_v2.graph(func_graph.as_graph_def(), step=0)
 
         steps_per_epoch = max(len(train_data) // self.batch_size, 1)
         for epoch in range(epochs):
             bar = pbar(len(train_data), self.batch_size, epoch, epochs)
             for _ in range(steps_per_epoch):
                 # Train discriminator with real and fake samples
-                d_loss = self.train_d()
+                d_loss, gp = self.train_d()
                 d_train_loss(d_loss)
 
-                g_loss = self.train_g()
+                g_loss, cond_loss = self.train_g()
                 g_train_loss(g_loss)
                 self.train_g()
 
                 bar.postfix['g_loss'] = f'{g_train_loss.result():6.3f}'
                 bar.postfix['d_loss'] = f'{d_train_loss.result():6.3f}'
+                bar.postfix['cond_loss'] = f'{cond_loss:6.3f}'
+                bar.postfix['gp'] = f'{gp:6.3f}'
                 bar.update(self.batch_size)
 
+            with train_summary_writer.as_default():
+                tf.summary.scalar('g_loss', g_train_loss.result(), step=epoch)
+                tf.summary.scalar('d_loss', d_train_loss.result(), step=epoch)
             g_train_loss.reset_states()
             d_train_loss.reset_states()
 
             bar.close()
             del bar
-
-    @tf.function
-    def train_g(self):
-        fake_z = tf.random.normal([self.batch_size, self.z_dim])
-        cond_vec = self.cond_generator.sample(self.batch_size)
-
-        if cond_vec is None:
-            c1, m1, col, opt = None, None, None, None
-        else:
-            c1, m1, col, opt = cond_vec
-            c1 = tf.constant(c1)
-            m1 = tf.constant(m1)
-            fake_z = tf.concat([fake_z, c1], axis=1)
-
-        with tf.GradientTape() as t:
-            x_fake = self.generator(fake_z, training=True)
-            x_fake_cond = tf.concat([x_fake, c1], axis=1) if c1 is not None else x_fake
-            fake_logits = self.critic(x_fake_cond, training=True)
-            loss = losses.g_loss_fn(
-                fake_logits, x_fake, self.transformer.output_info_tensor(), c1, m1)
-        grad = t.gradient(loss, self.generator.trainable_variables)
-        self.g_opt.apply_gradients(zip(grad, self.generator.trainable_variables))
-        return loss
 
     @tf.function
     def train_d(self):
@@ -152,8 +144,8 @@ class CTGANSynthesizer:
             real = self.data_sampler.sample(self.batch_size, col, opt)
         else:
             c1, m1, col, opt = cond_vec
-            c1 = tf.constant(c1)
-            m1 = tf.constant(m1)
+            c1 = tf.convert_to_tensor(c1)
+            m1 = tf.convert_to_tensor(m1)
             fake_z = tf.concat([fake_z, c1], axis=1)
 
             perm = np.arange(self.batch_size)
@@ -161,24 +153,59 @@ class CTGANSynthesizer:
             real = self.data_sampler.sample(self.batch_size, col[perm], opt[perm])
             c2 = tf.gather(c1, perm)
 
-        fake_act = self.generator(fake_z)
-        real = tf.constant(real.astype('float32'))
-        x_fake = fake_act if c1 is None else tf.concat([fake_act, c1], axis=1)
+        #tf.print("c1:", tf.argmax(c1, axis=1))
+        #tf.print("c2:", tf.argmax(c2,axis=1))
+        fake = self.generator(fake_z, training=True)
+        fake_act = _apply_activate(fake, self.transformer.output_info)
+        real = tf.convert_to_tensor(real.astype('float32'))
+        x_fake = fake_act if c1 is None else tf.concat([fake, c1], axis=1)
         x_real = real if c1 is None else tf.concat([real, c2], axis=1)
 
-        print("x_fake:", x_fake)
-        print("x_real:", x_real)
         for _ in range(self.n_critic):
-            with tf.GradientTape() as t:
+            with tf.GradientTape(persistent=True) as t:
                 fake_logits = self.critic(x_fake, training=True)
                 real_logits = self.critic(x_real, training=True)
+                #tf.print("fake:", fake_logits.shape, tf.reduce_mean(fake_logits))
+                #tf.print("real:", real_logits.shape, tf.reduce_mean(real_logits))
+
                 cost = losses.d_loss_fn(fake_logits, real_logits)
-                cost += self.gradient_penalty(
+                gp = self.gradient_penalty(
                     partial(self.critic, training=True), x_real, x_fake)
+
+                #tf.print(cost)
+                #tf.print(gp)
+                cost += gp
             grad = t.gradient(cost, self.critic.trainable_variables)
             self.c_opt.apply_gradients(zip(grad, self.critic.trainable_variables))
-        return cost
+            del t
+        return cost, gp
 
+    @tf.function
+    def train_g(self):
+        fake_z = tf.random.normal([self.batch_size, self.z_dim])
+        cond_vec = self.cond_generator.sample(self.batch_size)
+
+        if cond_vec is None:
+            c1, m1, col, opt = None, None, None, None
+        else:
+            c1, m1, col, opt = cond_vec
+            c1 = tf.convert_to_tensor(c1)
+            m1 = tf.convert_to_tensor(m1)
+            fake_z = tf.concat([fake_z, c1], axis=1)
+
+        with tf.GradientTape() as t:
+            x_fake_nonact = self.generator(fake_z, training=True)
+            x_fake = _apply_activate(x_fake_nonact, self.transformer.output_info)
+            x_fake_cond = tf.concat([x_fake, c1], axis=1) if c1 is not None else x_fake
+            fake_logits = self.critic(x_fake_cond, training=False)
+            loss, cond_loss = losses.g_loss_fn(
+                fake_logits, x_fake_nonact, self.transformer.output_info_tensor(), c1, m1)
+
+        grad = t.gradient(loss, self.generator.trainable_variables)
+        self.g_opt.apply_gradients(zip(grad, self.generator.trainable_variables))
+        return loss, cond_loss
+
+    @tf.function
     def gradient_penalty(self, f, real, fake):
         """Calculates the gradient penalty loss for a batch of "averaged" samples.
         In Improved WGANs, the 1-Lipschitz constraint is enforced by adding a term to the
@@ -206,6 +233,7 @@ class CTGANSynthesizer:
 
         slopes = tf.math.reduce_euclidean_norm(grad, axis=1)
         gp = tf.reduce_mean((slopes - 1.) ** 2) * self.grad_penalty_lambda
+
         return gp
 
     #@tf.function
@@ -230,6 +258,7 @@ class CTGANSynthesizer:
                 fake_z = tf.concat([fake_z, c1], axis=1)
 
             fake = self.generator(fake_z)
+            fake = _apply_activate(fake, self.transformer.output_info)
             data.append(fake.numpy())
 
         data = np.concatenate(data, axis=0)
@@ -242,14 +271,14 @@ class CTGANSynthesizer:
         model = inputs = tf.keras.Input(shape=(dim,))
 
         for layer_dim in list(gen_dims):
-            res_layer = tf.keras.layers.Dense(layer_dim, input_shape=(dim,))(model)
-            model = tf.keras.layers.BatchNormalization()(res_layer)
-            model = tf.keras.layers.ReLU()(model)
-            model = tf.concat([model, res_layer], axis=1)
+            model = ResidualLayer(layer_dim)(model)
             dim += layer_dim
 
-        outputs = GenActLayer(
-            data_dim, self.transformer.output_info_tensor(), self.tau)(model)
+        outputs = tf.keras.layers.Dense(
+            data_dim, kernel_initializer=bounded_initializer(dim),
+            bias_initializer=bounded_initializer(dim))(model)
+        #outputs = GenActLayer(
+        #    data_dim, self.transformer.output_info_tensor(), self.tau)(model)
         return tf.keras.Model(inputs, outputs, name='Generator')
 
     def build_critic(self, dis_dims, input_dim):
@@ -259,11 +288,18 @@ class CTGANSynthesizer:
         model = inputs = tf.keras.Input(shape=(input_dim,))
         model = tf.reshape(model, [-1, self.pac_dim])
         for layer_dim in list(dis_dims):
-            model = tf.keras.layers.Dense(layer_dim, input_shape=(dim,))(model)
+            model = tf.keras.layers.Dense(
+                layer_dim, input_shape=(dim,),
+                kernel_initializer=bounded_initializer(dim),
+                bias_initializer=bounded_initializer(dim))(model)
             model = tf.keras.layers.LeakyReLU(0.2)(model)
             model = tf.keras.layers.Dropout(0.5)(model)
             dim = layer_dim
 
-        outputs = tf.keras.layers.Dense(1, input_shape=(dim,))(model)
+        outputs = tf.keras.layers.Dense(
+            1, input_shape=(dim,),
+            kernel_initializer=bounded_initializer(dim),
+            bias_initializer=bounded_initializer(dim))(model)
         return tf.keras.Model(inputs, outputs, name='Critic')
+
 

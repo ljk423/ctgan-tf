@@ -39,8 +39,18 @@ def d_loss_fn(fake_logit, real_logit):
 def g_loss_fn(fake_logit, x_fake, transformer_info, c, m):
     f_loss = -tf.math.reduce_mean(fake_logit)
     if c is not None:
-        f_loss += _cond_loss(transformer_info, x_fake, c, m)
-    return f_loss
+        cond_loss = _cond_loss(transformer_info, x_fake, c, m)
+        #cond_loss = 0
+        f_loss += cond_loss
+    return f_loss, cond_loss
+
+
+@tf.function
+def nll_loss(input, target):
+    t = tf.reshape(target, [target.shape[0], 1])
+    ranges = tf.reshape(tf.cast(tf.range(0, target.shape[0], 1), tf.int64), t.shape)
+    idxs = tf.concat([ranges, t], axis=1)
+    return -tf.gather_nd(input, idxs) + tf.math.log(tf.reduce_sum(tf.math.exp(input)))
 
 
 @tf.function
@@ -49,10 +59,27 @@ def _cond_loss(transformer_info, data, c, m):
 
     for item in transformer_info:
         st, ed, st_c, ed_c, is_continuous, is_softmax = item
+        #tf.print("item:", item)
         if is_continuous == 0 and is_softmax == 1:
-            index = tf.reduce_max(c[:, st_c:ed_c], axis=1, keepdims=True)
-            cond = tf.cast(tf.equal(c[:, st_c:ed_c], index), tf.float32)
-            loss += [tf.losses.categorical_crossentropy(data[:, st:ed], cond)]
+            #data_logsoftmax = tf.nn.log_softmax(data[:, st:ed])
+            data_logsoftmax = data[:, st:ed]
+            #tf.print("data_logsoftmax:", data_logsoftmax.shape, data_logsoftmax)
+            c_argmax = tf.math.argmax(c[:, st_c:ed_c], axis=1)
+
+            #loss += [nll_loss(data_logsoftmax, c_argmax)]
+            loss += [tf.nn.sparse_softmax_cross_entropy_with_logits(c_argmax, data_logsoftmax)]
+
+            #tf.print("c_argmax:", c_argmax.shape, c_argmax)
+            #c_onehot = tf.one_hot(c_argmax, data_logsoftmax.shape[1])
+            #tf.print("c_onehot:", c_onehot.shape, c_onehot)
+            #loss += [tf.losses.categorical_crossentropy(data_logsoftmax, c_onehot)]
+
+            #tf.print("c:", c[:, st_c:ed_c])
+            #index = tf.reduce_max(c[:, st_c:ed_c], axis=1, keepdims=True)
+            #tf.print("index:", index)
+            #cond = tf.cast(tf.equal(c[:, st_c:ed_c], index), tf.float32)
+            #tf.print("cond:", cond)
+            #loss += [tf.losses.categorical_crossentropy(data[:, st:ed], cond)]
 
     loss = tf.stack(loss, axis=1)
     return tf.reduce_sum(loss * m) / data.shape[0]

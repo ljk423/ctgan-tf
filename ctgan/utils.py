@@ -86,12 +86,14 @@ def pbar(total_images, batch_size, epoch, epochs):
                postfix={
                    'g_loss': f'{0:6.3f}',
                    'd_loss': f'{0:6.3f}',
+                   'cond_loss': f'{0:6.3f}',
+                   'gp': f'{0:6.3f}',
                    1: 1
                },
                bar_format='{n_fmt}/{total_fmt} |{bar}| {rate_fmt}  '
                'ETA: {remaining}  Elapsed Time: {elapsed}  '
                'G Loss: {postfix[g_loss]}  D Loss: {postfix['
-               'd_loss]}',
-               unit=' images',
+               'd_loss]} Cond Loss: {postfix[cond_loss]} GP: {postfix[gp]}',
+               unit='samples',
                miniters=10)
     return bar
