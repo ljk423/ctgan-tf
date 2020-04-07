@@ -154,7 +154,8 @@ class CTGANSynthesizer(object):
         std = mean + 1
 
         steps_per_epoch = max(len(train_data) // self.batch_size, 1)
-        for i in range(epochs):
+        stats = list()
+        for i in range(1):
             for id_ in range(steps_per_epoch):
                 fakez = torch.normal(mean=mean, std=std)
 
@@ -230,7 +231,7 @@ class CTGANSynthesizer(object):
                 loss_g = -torch.mean(y_fake) + cross_entropy
                 print("loss_g:", loss_g.detach())
                 print("Cond loss:", cross_entropy)
-
+                stats.append([loss_d.detach().numpy(), pen.detach().numpy(), loss_g.detach().numpy(), cross_entropy.detach().numpy()])
                 optimizerG.zero_grad()
                 loss_g.backward()
                 optimizerG.step()
@@ -239,6 +240,7 @@ class CTGANSynthesizer(object):
             print("Epoch %d, Loss G: %.4f, Loss D: %.4f, Cond Loss: %.4f, GP: %.4f" %
                   (i + 1, loss_g.detach().cpu(), loss_d.detach().cpu(), cross_entropy, pen.detach().cpu()),
                   flush=True)
+        np.savetxt('torch.stats', np.array(stats))
 
     def sample(self, n):
         """Sample data similar to the training data.

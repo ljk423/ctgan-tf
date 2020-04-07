@@ -108,8 +108,9 @@ class CTGANSynthesizer:
             # Write the graph
             summary_ops_v2.graph(func_graph.as_graph_def(), step=0)
 
+        stats = list()
         steps_per_epoch = max(len(train_data) // self.batch_size, 1)
-        for epoch in range(epochs):
+        for epoch in range(1):
             bar = pbar(len(train_data), self.batch_size, epoch, epochs)
             for _ in range(steps_per_epoch):
                 # Train discriminator with real and fake samples
@@ -125,7 +126,8 @@ class CTGANSynthesizer:
                 bar.postfix['cond_loss'] = f'{cond_loss:6.3f}'
                 bar.postfix['gp'] = f'{gp:6.3f}'
                 bar.update(self.batch_size)
-
+                #tf.print()
+                stats.append([d_loss.numpy(), gp.numpy(), g_loss.numpy(), cond_loss.numpy()])
             with train_summary_writer.as_default():
                 tf.summary.scalar('g_loss', g_train_loss.result(), step=epoch)
                 tf.summary.scalar('d_loss', d_train_loss.result(), step=epoch)
@@ -134,6 +136,10 @@ class CTGANSynthesizer:
 
             bar.close()
             del bar
+
+        #stats = np.array(stats)
+        #print(stats.shape)
+        #np.savetxt('tf.stats', stats)
 
     @tf.function
     def train_d(self):
@@ -167,15 +173,15 @@ class CTGANSynthesizer:
             with tf.GradientTape(persistent=True) as t:
                 fake_logits = self.critic(x_fake, training=True)
                 real_logits = self.critic(x_real, training=True)
-                #tf.print("fake:", fake_logits.shape, tf.reduce_mean(fake_logits))
-                #tf.print("real:", real_logits.shape, tf.reduce_mean(real_logits))
+                tf.print("fake:", fake_logits.shape, tf.reduce_mean(fake_logits))
+                tf.print("real:", real_logits.shape, tf.reduce_mean(real_logits))
 
                 loss = losses.d_loss_fn(fake_logits, real_logits)
                 gp = self.gradient_penalty(
                     partial(self.critic, training=True), x_real, x_fake)
 
-                #tf.print("d_loss:", loss)
-                #tf.print("gp:", gp)
+                tf.print("d_loss:", loss)
+                tf.print("gp:", gp)
                 d_loss = loss + gp
             grad = t.gradient(d_loss, self.critic.trainable_variables)
             self.c_opt.apply_gradients(zip(grad, self.critic.trainable_variables))
@@ -204,6 +210,8 @@ class CTGANSynthesizer:
             cond_loss = losses.cond_loss(
                 self.transformer.output_info_tensor(), x_fake_nonact, c1, m1)
             g_loss = loss + cond_loss
+            #tf.print("g_loss:", g_loss)
+            #tf.print("cond_loss:", cond_loss)
 
         grad = t.gradient(g_loss, self.generator.trainable_variables)
         self.g_opt.apply_gradients(zip(grad, self.generator.trainable_variables))
