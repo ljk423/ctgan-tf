@@ -1,34 +1,5 @@
 import tensorflow as tf
 import tensorflow_probability as tfp
-import math
-
-
-def bounded_initializer(fan_in):
-    bound = math.sqrt(1 / fan_in)
-    return tf.random_uniform_initializer(minval=-bound, maxval=bound)
-
-
-class ResidualLayer(tf.keras.layers.Layer):
-    def __init__(self, num_outputs):
-        super(ResidualLayer, self).__init__()
-        self.num_outputs = num_outputs
-        self.fc = None
-        self.bn = None
-        self.relu = None
-
-    def build(self, input_shape):
-        self.fc = tf.keras.layers.Dense(
-            self.num_outputs, input_shape=input_shape,
-            kernel_initializer=bounded_initializer(input_shape[1]),
-            bias_initializer=bounded_initializer(input_shape[1]))
-        self.bn = tf.keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
-        self.relu = tf.keras.layers.ReLU()
-
-    def call(self, inputs, **kwargs):
-        outputs = self.fc(inputs)
-        outputs = self.bn(outputs)
-        outputs = self.relu(outputs)
-        return tf.concat([outputs, inputs], axis=1)
 
 
 class GenActLayer(tf.keras.layers.Layer):
@@ -100,6 +71,7 @@ class GenActLayer(tf.keras.layers.Layer):
 
         return y
 
+@tf.function
 def _apply_activate(data, transformer_output):
     data_t = []
     st = 0

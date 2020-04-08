@@ -33,7 +33,7 @@ from tensorflow import keras
 
 import numpy as np
 import pandas as pd
-from ctgan.models import CTGANSynthesizer
+from ctgan.synthesizer import CTGANSynthesizer
 
 keras.backend.clear_session()
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
