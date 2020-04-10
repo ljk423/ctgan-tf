@@ -71,7 +71,6 @@ class GenActLayer(tf.keras.layers.Layer):
 
         return y
 
-@tf.function
 def _apply_activate(data, transformer_output):
     data_t = []
     st = 0
@@ -88,7 +87,6 @@ def _apply_activate(data, transformer_output):
             assert 0
 
     return tf.concat(data_t, axis=1)
-
 
 def gumbel_softmax(logits, tau=1.0, hard=False, dim=-1):
     gumbel_dist = tfp.distributions.Gumbel(loc=0, scale=1)

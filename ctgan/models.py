@@ -3,7 +3,7 @@ import math
 
 
 def init_bounded(shape, dtype=None):
-    bound = math.sqrt(1 / shape[0])
+    bound = 1 / math.sqrt(shape[0])
     return tf.random.uniform(shape=shape, minval=-bound, maxval=bound, dtype=dtype)
 
 
@@ -30,9 +30,10 @@ class Critic(tf.keras.Model):
         return tf.reshape(x, [-1, dims[1] * self.pac])
 
     def call(self, x, **kwargs):
+        out = x
         for layer in self.model:
-            x = layer(x, **kwargs)
-        return x
+            out = layer(out, **kwargs)
+        return out
 
 
 class ResidualLayer(tf.keras.layers.Layer):
@@ -47,9 +48,9 @@ class ResidualLayer(tf.keras.layers.Layer):
         self.relu = tf.keras.layers.ReLU()
 
     def call(self, inputs, **kwargs):
-        outputs = self.fc(inputs)
-        outputs = self.bn(outputs)
-        outputs = self.relu(outputs)
+        outputs = self.fc(inputs, **kwargs)
+        outputs = self.bn(outputs, **kwargs)
+        outputs = self.relu(outputs, **kwargs)
         return tf.concat([outputs, inputs], axis=1)
 
 
@@ -65,6 +66,7 @@ class Generator(tf.keras.Model):
             data_dim, kernel_initializer=init_bounded, bias_initializer=init_bounded)]
 
     def call(self, x, **kwargs):
+        out = x
         for layer in self.model:
-            x = layer(x, **kwargs)
-        return x
+            out = layer(out, **kwargs)
+        return out

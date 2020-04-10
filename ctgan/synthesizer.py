@@ -62,6 +62,7 @@ class CTGANSynthesizer:
         self.z_dim = z_dim
         self.pac = pac
         self.pac_dim = None
+        self.l2scale = l2scale
         self.batch_size = batch_size
         self.n_critic = n_critic
         self.grad_penalty_lambda = g_penalty_lambda
@@ -69,9 +70,8 @@ class CTGANSynthesizer:
         self.gen_dim = gen_dim
         self.dis_dim = dis_dim
 
-        #self.g_opt = tf.keras.optimizers.Adam(
-        self.g_opt = tfa.optimizers.AdamW(
-            learning_rate=2e-4, beta_1=0.5, beta_2=0.9, epsilon=1e-08, weight_decay=l2scale)
+        self.g_opt = tf.keras.optimizers.Adam(
+            learning_rate=2e-4, beta_1=0.5, beta_2=0.9, epsilon=1e-08)
         self.c_opt = tf.keras.optimizers.Adam(
             learning_rate=2e-4, beta_1=0.5, beta_2=0.9, epsilon=1e-08)
         self.transformer = DataTransformer()
@@ -114,10 +114,13 @@ class CTGANSynthesizer:
         g_grads = list()
         d_weights = list()
         g_weights = list()
+
         steps_per_epoch = max(len(train_data) // self.batch_size, 1)
         for epoch in range(5):
             bar = pbar(len(train_data), self.batch_size, epoch, epochs)
             for _ in range(steps_per_epoch):
+                d_weights.append([np.mean(g.numpy()) for g in self.critic.trainable_weights])
+                g_weights.append([np.mean(g.numpy()) for g in self.generator.trainable_weights])
                 # Train discriminator with real and fake samples
                 d_loss, gp, d_g = self.train_d()
                 d_train_loss(d_loss)
@@ -130,12 +133,11 @@ class CTGANSynthesizer:
                 bar.postfix['cond_loss'] = f'{cond_loss:6.3f}'
                 bar.postfix['gp'] = f'{gp:6.3f}'
                 bar.update(self.batch_size)
-                #tf.print()
+
                 stats.append([d_loss.numpy(), gp.numpy(), g_loss.numpy(), cond_loss.numpy()])
                 d_grads.append([np.mean(g.numpy()) for g in d_g])
                 g_grads.append([np.mean(g.numpy()) for g in g_g])
-                d_weights.append([np.mean(g) for g in self.critic.get_weights()[:2]])
-                g_weights.append([np.mean(g) for g in self.generator.get_weights()[:2]])
+
             with train_summary_writer.as_default():
                 tf.summary.scalar('g_loss', g_train_loss.result(), step=epoch)
                 tf.summary.scalar('d_loss', d_train_loss.result(), step=epoch)
@@ -198,7 +200,7 @@ class CTGANSynthesizer:
             d_loss = loss + gp
         grad = t.gradient(d_loss, self.critic.trainable_variables)
         self.c_opt.apply_gradients(zip(grad, self.critic.trainable_variables))
-        return loss, gp, grad[:2]
+        return loss, gp, grad
 
     @tf.function
     def train_g(self):
@@ -218,23 +220,27 @@ class CTGANSynthesizer:
             fake_act = _apply_activate(fake, self.transformer.output_info)
 
             if c1 is not None:
-                y_fake = self.critic(tf.concat([fake_act, c1], axis=1), training=False)
+                y_fake = self.critic(tf.concat([fake_act, c1], axis=1), training=True)
             else:
-                y_fake = self.critic(fake_act, training=False)
+                y_fake = self.critic(fake_act, training=True)
 
             if cond_vec is None:
                 cond_loss = 0
             else:
-                cond_loss = losses.cond_loss(
-                    self.transformer.output_info_tensor(), fake, c1, m1)
+                cond_loss = losses._cond_loss(
+                    self.transformer.output_info, fake, c1, m1)
+                #cond_loss = losses.cond_loss(
+                #    self.transformer.output_info_tensor(), fake, c1, m1)
             #loss = losses.g_loss_fn(y_fake)
             g_loss = -tf.reduce_mean(y_fake) + cond_loss
             #tf.print("g_loss:", g_loss)
             #tf.print("cond_loss:", cond_loss)
 
-        grad = t.gradient(g_loss, self.generator.trainable_variables)
+        weights = self.generator.trainable_variables
+        grad = t.gradient(g_loss, weights)
+        grad = [grad[i] + self.l2scale * weights[i] for i in range(len(grad))]
         self.g_opt.apply_gradients(zip(grad, self.generator.trainable_variables))
-        return g_loss, cond_loss, grad[:2]
+        return g_loss, cond_loss, grad
 
     @tf.function
     def gradient_penalty(self, f, real, fake):

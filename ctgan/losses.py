@@ -54,3 +54,41 @@ def cond_loss(transformer_info, data, c, m):
     loss = tf.stack(loss, axis=1)
     return tf.reduce_sum(loss * m) / data.shape[0]
 
+def _cond_loss(transformer_info, data, c, m):
+    loss = []
+    st = 0
+    st_c = 0
+    skip = False
+    for item in transformer_info:
+        if item[1] == 'tanh':
+            st += item[0]
+            skip = True
+
+        elif item[1] == 'softmax':
+            if skip:
+                skip = False
+                st += item[0]
+                continue
+
+            ed = st + item[0]
+            ed_c = st_c + item[0]
+            #print("item:", item, "|st:", st, "|ed:", ed, "|st_c:", st_c, "|ed_c:", ed_c)
+            #print("c:", c[:, st_c:ed_c].shape, c[:, st_c:ed_c])
+            #print("argmax:", torch.argmax(c[:, st_c:ed_c], dim=1).shape, torch.argmax(c[:, st_c:ed_c], dim=1))
+            #print("data:", data[:, st:ed].shape, data[:, st:ed])
+            #print()
+
+            tmp = tf.nn.sparse_softmax_cross_entropy_with_logits(
+                tf.math.argmax(c[:, st_c:ed_c], axis=1),
+                data[:, st:ed],
+            )
+            loss.append(tmp)
+            st = ed
+            st_c = ed_c
+
+        else:
+            assert 0
+
+    loss = tf.stack(loss, axis=1)
+
+    return tf.reduce_sum(loss * m) / data.shape[0]
