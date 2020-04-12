@@ -1,5 +1,6 @@
 import torch
 from torch.nn import BatchNorm1d, Dropout, LeakyReLU, Linear, Module, ReLU, Sequential
+import numpy as np
 
 
 class Discriminator(Module):
@@ -7,6 +8,7 @@ class Discriminator(Module):
     def calc_gradient_penalty(self, real_data, fake_data, device='cpu', pac=10, lambda_=10):
 
         alpha = torch.rand(real_data.size(0) // pac, 1, 1, device=device)
+        #alpha = torch.from_numpy(np.random.rand(real_data.size(0) // pac).astype(np.float32))
         alpha = alpha.repeat(1, pac, real_data.size(1))
         alpha = alpha.view(-1, real_data.size(1))
 
@@ -33,6 +35,7 @@ class Discriminator(Module):
         self.packdim = dim
         seq = []
         for item in list(dis_dims):
+            #seq += [Linear(dim, item), LeakyReLU(0.2)]
             seq += [Linear(dim, item), LeakyReLU(0.2), Dropout(0.5)]
             dim = item
 

@@ -1,5 +1,6 @@
 import tensorflow as tf
 import tensorflow_probability as tfp
+import torch
 
 
 class GenActLayer(tf.keras.layers.Layer):

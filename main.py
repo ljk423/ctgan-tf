@@ -75,6 +75,9 @@ def main2(argv):
         'income'
     ]
 
+    np.random.seed(0)
+    tf.random.set_seed(0)
+
     model = CTGANSynthesizer()
     model.train(data, discrete_columns, 300)
     sampled = model.sample(data.shape[0])

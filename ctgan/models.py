@@ -1,29 +1,40 @@
 import tensorflow as tf
 import math
+import numpy as np
+from functools import partial
 
 
-def init_bounded(shape, dtype=None):
-    bound = 1 / math.sqrt(shape[0])
+def init_bounded(shape, **kwargs):
+    dim = kwargs['dim']
+    dtype = kwargs['dtype']
+    bound = 1 / math.sqrt(dim)
+    #return tf.cast(tf.convert_to_tensor(np.random.uniform(-bound, bound, shape)), dtype)
     return tf.random.uniform(shape=shape, minval=-bound, maxval=bound, dtype=dtype)
 
 
 class Critic(tf.keras.Model):
-    def __init__(self, dis_dims, pac):
+    def __init__(self, input_dim, dis_dims, pac):
         super(Critic, self).__init__()
         self.pac = pac
+        self.input_dim = input_dim
 
         self.model = [self._reshape_func]
+        dim = input_dim * self.pac
         for layer_dim in list(dis_dims):
             self.model += [
                 tf.keras.layers.Dense(
-                    layer_dim,
-                    kernel_initializer=init_bounded,
-                    bias_initializer=init_bounded),
+                    layer_dim, input_dim=(dim,),
+                    kernel_initializer=partial(init_bounded, dim=dim),
+                    bias_initializer=partial(init_bounded, dim=dim)),
                 tf.keras.layers.LeakyReLU(0.2),
                 tf.keras.layers.Dropout(0.5)]
+            dim = layer_dim
 
+        layer_dim = 1
         self.model += [tf.keras.layers.Dense(
-            1, kernel_initializer=init_bounded, bias_initializer=init_bounded)]
+            layer_dim, input_dim=(dim,),
+            kernel_initializer=partial(init_bounded, dim=dim),
+            bias_initializer=partial(init_bounded, dim=dim))]
 
     def _reshape_func(self, x, **kwargs):
         dims = x.get_shape().as_list()
@@ -37,13 +48,13 @@ class Critic(tf.keras.Model):
 
 
 class ResidualLayer(tf.keras.layers.Layer):
-    def __init__(self, num_outputs):
+    def __init__(self, input_dim, num_outputs):
         super(ResidualLayer, self).__init__()
         self.num_outputs = num_outputs
         self.fc = tf.keras.layers.Dense(
-            self.num_outputs,
-            kernel_initializer=init_bounded,
-            bias_initializer=init_bounded)
+            self.num_outputs, input_dim=(input_dim,),
+            kernel_initializer=partial(init_bounded, dim=input_dim),
+            bias_initializer=partial(init_bounded, dim=input_dim))
         self.bn = tf.keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
         self.relu = tf.keras.layers.ReLU()
 
@@ -55,15 +66,20 @@ class ResidualLayer(tf.keras.layers.Layer):
 
 
 class Generator(tf.keras.Model):
-    def __init__(self, gen_dims, data_dim):
+    def __init__(self, input_dim, gen_dims, data_dim):
         super(Generator, self).__init__()
 
+        self.input_dim = input_dim
         self.model = list()
+        dim = input_dim
         for layer_dim in list(gen_dims):
-            self.model += [ResidualLayer(layer_dim)]
+            self.model += [ResidualLayer(dim, layer_dim)]
+            dim += layer_dim
 
         self.model += [tf.keras.layers.Dense(
-            data_dim, kernel_initializer=init_bounded, bias_initializer=init_bounded)]
+            data_dim, input_dim=(dim,),
+            kernel_initializer=partial(init_bounded, dim=dim),
+            bias_initializer=partial(init_bounded, dim=dim))]
 
     def call(self, x, **kwargs):
         out = x

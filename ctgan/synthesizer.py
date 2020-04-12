@@ -90,8 +90,10 @@ class CTGANSynthesizer:
         data_dim = self.transformer.output_dimensions
         self.cond_generator = ConditionalGenerator(
             train_data, self.transformer.output_info, log_frequency)
-        self.generator = Generator(self.gen_dim, data_dim)
-        self.critic = Critic(self.dis_dim, self.pac)
+        self.generator = Generator(
+            self.z_dim + self.cond_generator.n_opt, self.gen_dim, data_dim)
+        self.critic = Critic(
+            data_dim + self.cond_generator.n_opt, self.dis_dim, self.pac)
 
         #if verbose:
         #    self.generator.summary()
@@ -103,11 +105,11 @@ class CTGANSynthesizer:
         train_log_dir = 'logs/gradient_tape/' + current_time + '/train'
         train_summary_writer = tf.summary.create_file_writer(train_log_dir)
 
-        with train_summary_writer.as_default():
+        #with train_summary_writer.as_default():
             # Get concrete graph for some given inputs
-            func_graph = self.train_g.get_concrete_function().graph
+            #func_graph = self.train_g.get_concrete_function().graph
             # Write the graph
-            summary_ops_v2.graph(func_graph.as_graph_def(), step=0)
+            #summary_ops_v2.graph(func_graph.as_graph_def(), step=0)
 
         stats = list()
         d_grads = list()
@@ -115,8 +117,17 @@ class CTGANSynthesizer:
         d_weights = list()
         g_weights = list()
 
+        self.generator.build((self.batch_size, self.generator.input_dim))
+        self.critic.build((self.batch_size, self.critic.input_dim))
+
+        print([np.mean(g) for g in self.critic.get_weights()])
+        print([np.mean(g) for g in self.generator.get_weights()])
+        print([g.shape for g in self.generator.get_weights()])
+        print("gen fc 0:", self.generator.get_weights()[0])
+
+        print(np.random.rand())
         steps_per_epoch = max(len(train_data) // self.batch_size, 1)
-        for epoch in range(5):
+        for epoch in range(epochs):
             bar = pbar(len(train_data), self.batch_size, epoch, epochs)
             for _ in range(steps_per_epoch):
                 d_weights.append([np.mean(g.numpy()) for g in self.critic.trainable_weights])
@@ -134,7 +145,7 @@ class CTGANSynthesizer:
                 bar.postfix['gp'] = f'{gp:6.3f}'
                 bar.update(self.batch_size)
 
-                stats.append([d_loss.numpy(), gp.numpy(), g_loss.numpy(), cond_loss.numpy()])
+                stats.append([d_loss.numpy(), gp.numpy(), g_loss.numpy(), cond_loss])
                 d_grads.append([np.mean(g.numpy()) for g in d_g])
                 g_grads.append([np.mean(g.numpy()) for g in g_g])
 
@@ -150,13 +161,16 @@ class CTGANSynthesizer:
         stats = [stats, d_grads, g_grads, d_weights, g_weights]
         joblib.dump(stats, 'tf.stats')
 
-    @tf.function
+    #@tf.function
     def train_d(self):
         with tf.GradientTape() as t:
             fake_z = tf.random.normal([self.batch_size, self.z_dim])
+            #fake_z = tf.convert_to_tensor(np.random.normal(size=(self.batch_size, self.z_dim)).astype(np.float32))
 
+            #tf.print("fake_z_orig:", tf.reduce_mean(fake_z))
             # Generate conditional vector
             cond_vec = self.cond_generator.sample(self.batch_size)
+            #tf.print("Cond vec:", cond_vec)
             if cond_vec is None:
                 c1, m1, col, opt = None, None, None, None
                 real = self.data_sampler.sample(self.batch_size, col, opt)
@@ -172,8 +186,13 @@ class CTGANSynthesizer:
                 c2 = tf.gather(c1, perm)
 
             fake = self.generator(fake_z, training=True)
+            #fake_act = fake
             fake_act = _apply_activate(fake, self.transformer.output_info)
             real = tf.convert_to_tensor(real.astype('float32'))
+            #tf.print("fake_z:", tf.reduce_mean(fake_z))
+            #tf.print("fake_z:", fake_z)
+            #tf.print("fake:", tf.reduce_mean(fake))
+            #tf.print("real:", tf.reduce_mean(real))
 
             if c1 is not None:
                 fake_cat = tf.concat([fake_act, c1], axis=1)
@@ -191,6 +210,7 @@ class CTGANSynthesizer:
 
             gp = self.gradient_penalty(
                 partial(self.critic, training=True), real_cat, fake_cat)
+            #gp = 0
             loss = -(tf.reduce_mean(y_real) - tf.reduce_mean(y_fake))
             #losses.d_loss_fn(fake_logits, real_logits)
 
@@ -202,10 +222,11 @@ class CTGANSynthesizer:
         self.c_opt.apply_gradients(zip(grad, self.critic.trainable_variables))
         return loss, gp, grad
 
-    @tf.function
+    #@tf.function
     def train_g(self):
         with tf.GradientTape() as t:
             fake_z = tf.random.normal([self.batch_size, self.z_dim])
+            #fake_z = tf.convert_to_tensor(np.random.normal(size=(self.batch_size, self.z_dim)).astype(np.float32))
             cond_vec = self.cond_generator.sample(self.batch_size)
 
             if cond_vec is None:
@@ -218,6 +239,7 @@ class CTGANSynthesizer:
 
             fake = self.generator(fake_z, training=True)
             fake_act = _apply_activate(fake, self.transformer.output_info)
+            #fake_act = fake
 
             if c1 is not None:
                 y_fake = self.critic(tf.concat([fake_act, c1], axis=1), training=True)
@@ -242,7 +264,7 @@ class CTGANSynthesizer:
         self.g_opt.apply_gradients(zip(grad, self.generator.trainable_variables))
         return g_loss, cond_loss, grad
 
-    @tf.function
+    #@tf.function
     def gradient_penalty(self, f, real, fake):
         """Calculates the gradient penalty loss for a batch of "averaged" samples.
         In Improved WGANs, the 1-Lipschitz constraint is enforced by adding a term to the
@@ -258,6 +280,7 @@ class CTGANSynthesizer:
         gradient.
         """
         alpha = tf.random.uniform([real.shape[0] // self.pac, 1, 1], 0., 1.)
+        #alpha = tf.convert_to_tensor(np.random.rand(real.shape[0] // self.pac, 1, 1).astype(np.float32))
         alpha = tf.tile(alpha, tf.constant([1, self.pac, real.shape[1]], tf.int32))
         alpha = tf.reshape(alpha, [-1, real.shape[1]])
 

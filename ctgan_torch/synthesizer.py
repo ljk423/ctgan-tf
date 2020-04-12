@@ -9,6 +9,7 @@ from ctgan_torch.sampler import Sampler
 from ctgan_torch.transformer import DataTransformer
 
 import joblib
+import math
 
 class CTGANSynthesizer(object):
     """Conditional Table GAN Synthesizer.
@@ -154,7 +155,24 @@ class CTGANSynthesizer(object):
         mean = torch.zeros(self.batch_size, self.embedding_dim, device=self.device)
         std = mean + 1
 
+
+        # Init layers
+        def init_weights(m):
+            if type(m) == torch.nn.Linear:
+                print(m.weight.shape)
+                dim = m.weight.shape[1]
+                bound = 1/math.sqrt(dim)
+                s = m.weight.data.T.shape
+                m.weight.data = torch.from_numpy(np.random.uniform(-bound, bound, s).T.astype(np.float32))
+                s = m.bias.data.T.shape
+                m.bias.data = torch.from_numpy(np.random.uniform(-bound, bound, s).T.astype(np.float32))
+        #self.generator.seq.apply(init_weights)
+        #discriminator.seq.apply(init_weights)
+
+
         print([np.mean(g.data.numpy()) for g in optimizerD.param_groups[0]['params']])
+        print([np.mean(g.data.numpy()) for g in optimizerG.param_groups[0]['params']])
+        print("gen fc 0:", optimizerG.param_groups[0]['params'][0].data.numpy())
         steps_per_epoch = max(len(train_data) // self.batch_size, 1)
         stats = list()
         d_grads = list()
@@ -162,11 +180,16 @@ class CTGANSynthesizer(object):
         d_weigths = list()
         g_weights = list()
 
-        for i in range(5):
+        print(np.random.rand())
+
+        for i in range(epochs):
             for id_ in range(steps_per_epoch):
                 fakez = torch.normal(mean=mean, std=std)
+                #fakez = torch.from_numpy(np.random.normal(size=(self.batch_size, self.embedding_dim)).astype(np.float32))
 
                 condvec = self.cond_generator.sample(self.batch_size)
+                #print("fake_z_orig:", torch.mean(fakez))
+                #print("cond_vec:", condvec)
                 if condvec is None:
                     c1, m1, col, opt = None, None, None, None
                     real = data_sampler.sample(self.batch_size, col, opt)
@@ -183,8 +206,13 @@ class CTGANSynthesizer(object):
 
                 fake = self.generator(fakez)
                 fakeact = self._apply_activate(fake)
+                #fakeact = fake
 
                 real = torch.from_numpy(real.astype('float32')).to(self.device)
+                #print("fakez:", torch.mean(fakez))
+                #print("fakez:", fakez)
+                #print("fake:", torch.mean(fake))
+                #print("real:", torch.mean(real))
 
                 if c1 is not None:
                     fake_cat = torch.cat([fakeact, c1], dim=1)
@@ -208,20 +236,15 @@ class CTGANSynthesizer(object):
 
                 optimizerD.zero_grad()
                 pen.backward(retain_graph=True)
+                #pen = 0
                 loss_d.backward()
 
-                d_grad_w = torch.mean(discriminator.seq[0].weight.grad.detach()).numpy()
-                d_grad_b = torch.mean(discriminator.seq[0].bias.grad.detach()).numpy()
-                #d_grads.append([d_grad_w, d_grad_b])
                 d_grads.append([np.mean(g.grad.data.numpy()) for g in optimizerD.param_groups[0]['params']])
-
-                d_w = torch.mean(discriminator.seq[0].weight.detach()).numpy()
-                d_b = torch.mean(discriminator.seq[0].bias.detach()).numpy()
-                #d_weigths.append([d_w, d_b])
                 d_weigths.append([np.mean(g.data.numpy()) for g in optimizerD.param_groups[0]['params']])
                 optimizerD.step()
 
                 fakez = torch.normal(mean=mean, std=std)
+                #fakez = torch.from_numpy(np.random.normal(size=(self.batch_size, self.embedding_dim)).astype(np.float32))
                 condvec = self.cond_generator.sample(self.batch_size)
 
                 if condvec is None:
@@ -233,6 +256,7 @@ class CTGANSynthesizer(object):
                     fakez = torch.cat([fakez, c1], dim=1)
 
                 fake = self.generator(fakez)
+                #fakeact = fake
                 fakeact = self._apply_activate(fake)
 
                 if c1 is not None:
@@ -251,20 +275,14 @@ class CTGANSynthesizer(object):
 
                 optimizerG.zero_grad()
                 loss_g.backward()
-                g_grad_w = torch.mean(self.generator.seq[0].fc.weight.grad.detach()).numpy()
-                g_grad_b = torch.mean(self.generator.seq[0].fc.bias.grad.detach()).numpy()
-                #g_grads.append([g_grad_w, g_grad_b])
                 g_grads.append([np.mean(g.grad.data.numpy()) for g in optimizerG.param_groups[0]['params']])
-                g_w = torch.mean(self.generator.seq[0].fc.weight.detach()).numpy()
-                g_b = torch.mean(self.generator.seq[0].fc.bias.detach()).numpy()
                 g_weights.append([np.mean(g.data.numpy()) for g in optimizerG.param_groups[0]['params']])
-                #g_weights.append([g_w, g_b])
                 optimizerG.step()
-                stats.append([loss_d.detach().numpy(), pen.detach().numpy(), loss_g.detach().numpy(), cross_entropy.detach().numpy()])
+                stats.append([loss_d.detach().numpy(), pen.detach().cpu(), loss_g.detach().numpy(), cross_entropy.detach().numpy()])
                 #print()
 
             print("Epoch %d, Loss G: %.4f, Loss D: %.4f, Cond Loss: %.4f, GP: %.4f" %
-                  (i + 1, loss_g.detach().cpu(), loss_d.detach().cpu(), cross_entropy, pen.detach().cpu()),
+                  (i + 1, loss_g.detach().cpu(), loss_d.detach().cpu(), cross_entropy.detach().cpu(), pen.detach().cpu()),
                   flush=True)
         stats = [stats, d_grads, g_grads, d_weigths, g_weights]
         joblib.dump(stats, 'torch.stats')

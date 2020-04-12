@@ -28,6 +28,7 @@ from __future__ import unicode_literals
 import os
 
 from absl import app
+import torch
 
 import numpy as np
 import pandas as pd
@@ -48,6 +49,9 @@ def main2(argv):
         'native-country',
         'income'
     ]
+
+    np.random.seed(0)
+    torch.manual_seed(0)
 
     model = CTGANSynthesizer()
     model.fit(data, discrete_columns, 300)
