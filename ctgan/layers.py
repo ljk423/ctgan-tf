@@ -1,21 +1,47 @@
 import tensorflow as tf
 import tensorflow_probability as tfp
+import math
+from functools import partial
+
+
+def init_bounded(shape, **kwargs):
+    dim = kwargs['dim']
+    dtype = kwargs['dtype']
+    bound = 1 / math.sqrt(dim)
+    return tf.random.uniform(shape=shape, minval=-bound, maxval=bound, dtype=dtype)
+
+
+class ResidualLayer(tf.keras.layers.Layer):
+    def __init__(self, input_dim, num_outputs):
+        super(ResidualLayer, self).__init__()
+        self.num_outputs = num_outputs
+        self.fc = tf.keras.layers.Dense(
+            self.num_outputs, input_dim=(input_dim,),
+            kernel_initializer=partial(init_bounded, dim=input_dim),
+            bias_initializer=partial(init_bounded, dim=input_dim))
+        self.bn = tf.keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
+        self.relu = tf.keras.layers.ReLU()
+
+    def call(self, inputs, **kwargs):
+        outputs = self.fc(inputs, **kwargs)
+        outputs = self.bn(outputs, **kwargs)
+        outputs = self.relu(outputs, **kwargs)
+        return tf.concat([outputs, inputs], axis=1)
 
 
 class GenActLayer(tf.keras.layers.Layer):
-    def __init__(self, num_outputs, transformer_info, tau):
+    def __init__(self, input_dim, num_outputs, transformer_info, tau):
         super(GenActLayer, self).__init__()
         self.num_outputs = num_outputs
         self.transformer_info = transformer_info
         self.tau = tau
-        self.kernel = None
-
-    def build(self, input_shape):
-        self.kernel = self.add_weight(
-            'kernel', shape=[input_shape[1], self.num_outputs])
+        self.fc = tf.keras.layers.Dense(
+            num_outputs, input_dim=(input_dim,),
+            kernel_initializer=partial(init_bounded, dim=input_dim),
+            bias_initializer=partial(init_bounded, dim=input_dim))
 
     def call(self, inputs, **kwargs):
-        data = tf.matmul(inputs, self.kernel)
+        outputs = self.fc(inputs, **kwargs)
         data_t = []
         for idx in self.transformer_info:
             data_t += [tf.where(idx[5] == 0,
