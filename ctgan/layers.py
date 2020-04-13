@@ -1,6 +1,5 @@
 import tensorflow as tf
 import tensorflow_probability as tfp
-import torch
 
 
 class GenActLayer(tf.keras.layers.Layer):
@@ -56,9 +55,6 @@ class GenActLayer(tf.keras.layers.Layer):
             https://arxiv.org/abs/1611.01144
         """
 
-        #exp_dist = tfp.distributions.Exponential(tf.constant([1], dtype=tf.float32))
-        #gumbels = -tf.math.log(exp_dist.sample(tf.shape(logits)))
-        #gumbels = tf.reshape(gumbels, tf.shape(logits))
         gumbel_dist = tfp.distributions.Gumbel(loc=0, scale=1)
         gumbels = gumbel_dist.sample(tf.shape(logits))
         gumbels = (logits + gumbels) / tau
@@ -69,7 +65,6 @@ class GenActLayer(tf.keras.layers.Layer):
             index = tf.math.reduce_max(y, 1, keep_dims=True)
             y_hard = tf.cast(tf.equal(y, index), y.dtype)
             y = tf.stop_gradient(y_hard - y) + y
-
         return y
 
 def _apply_activate(data, transformer_output):

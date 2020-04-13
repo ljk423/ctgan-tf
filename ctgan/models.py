@@ -8,7 +8,6 @@ def init_bounded(shape, **kwargs):
     dim = kwargs['dim']
     dtype = kwargs['dtype']
     bound = 1 / math.sqrt(dim)
-    #return tf.cast(tf.convert_to_tensor(np.random.uniform(-bound, bound, shape)), dtype)
     return tf.random.uniform(shape=shape, minval=-bound, maxval=bound, dtype=dtype)
 
 

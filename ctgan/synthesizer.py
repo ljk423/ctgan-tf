@@ -36,9 +36,7 @@ import numpy as np
 
 import joblib
 import tensorflow as tf
-import tensorflow_addons as tfa
 from tensorflow.python.ops import summary_ops_v2
-from absl import flags
 
 from ctgan.transformer import DataTransformer
 from ctgan.sampler import Sampler
@@ -49,7 +47,6 @@ from ctgan import losses
 from ctgan.utils import pbar
 
 AUTOTUNE = tf.data.experimental.AUTOTUNE
-FLAGS = flags.FLAGS
 
 
 class CTGANSynthesizer:
@@ -95,10 +92,6 @@ class CTGANSynthesizer:
         self.critic = Critic(
             data_dim + self.cond_generator.n_opt, self.dis_dim, self.pac)
 
-        #if verbose:
-        #    self.generator.summary()
-        #    self.critic.summary()
-
         g_train_loss = tf.metrics.Mean()
         d_train_loss = tf.metrics.Mean()
         current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -120,12 +113,6 @@ class CTGANSynthesizer:
         self.generator.build((self.batch_size, self.generator.input_dim))
         self.critic.build((self.batch_size, self.critic.input_dim))
 
-        print([np.mean(g) for g in self.critic.get_weights()])
-        print([np.mean(g) for g in self.generator.get_weights()])
-        print([g.shape for g in self.generator.get_weights()])
-        print("gen fc 0:", self.generator.get_weights()[0])
-
-        print(np.random.rand())
         steps_per_epoch = max(len(train_data) // self.batch_size, 1)
         for epoch in range(epochs):
             bar = pbar(len(train_data), self.batch_size, epoch, epochs)
@@ -165,12 +152,9 @@ class CTGANSynthesizer:
     def train_d(self):
         with tf.GradientTape() as t:
             fake_z = tf.random.normal([self.batch_size, self.z_dim])
-            #fake_z = tf.convert_to_tensor(np.random.normal(size=(self.batch_size, self.z_dim)).astype(np.float32))
 
-            #tf.print("fake_z_orig:", tf.reduce_mean(fake_z))
             # Generate conditional vector
             cond_vec = self.cond_generator.sample(self.batch_size)
-            #tf.print("Cond vec:", cond_vec)
             if cond_vec is None:
                 c1, m1, col, opt = None, None, None, None
                 real = self.data_sampler.sample(self.batch_size, col, opt)
@@ -186,13 +170,8 @@ class CTGANSynthesizer:
                 c2 = tf.gather(c1, perm)
 
             fake = self.generator(fake_z, training=True)
-            #fake_act = fake
             fake_act = _apply_activate(fake, self.transformer.output_info)
             real = tf.convert_to_tensor(real.astype('float32'))
-            #tf.print("fake_z:", tf.reduce_mean(fake_z))
-            #tf.print("fake_z:", fake_z)
-            #tf.print("fake:", tf.reduce_mean(fake))
-            #tf.print("real:", tf.reduce_mean(real))
 
             if c1 is not None:
                 fake_cat = tf.concat([fake_act, c1], axis=1)
@@ -203,19 +182,10 @@ class CTGANSynthesizer:
 
             y_fake = self.critic(fake_cat, training=True)
             y_real = self.critic(real_cat, training=True)
-            #tf.print("fake:", tf.reduce_mean(y_fake))
-            #tf.print("real:", tf.reduce_mean(y_real))
-            #tf.print("loss:", tf.reduce_mean(y_fake) - tf.reduce_mean(y_real))
-            #tf.print()
 
             gp = self.gradient_penalty(
                 partial(self.critic, training=True), real_cat, fake_cat)
-            #gp = 0
             loss = -(tf.reduce_mean(y_real) - tf.reduce_mean(y_fake))
-            #losses.d_loss_fn(fake_logits, real_logits)
-
-            #tf.print("d_loss:", loss)
-            #tf.print("gp:", gp)
 
             d_loss = loss + gp
         grad = t.gradient(d_loss, self.critic.trainable_variables)
@@ -226,7 +196,6 @@ class CTGANSynthesizer:
     def train_g(self):
         with tf.GradientTape() as t:
             fake_z = tf.random.normal([self.batch_size, self.z_dim])
-            #fake_z = tf.convert_to_tensor(np.random.normal(size=(self.batch_size, self.z_dim)).astype(np.float32))
             cond_vec = self.cond_generator.sample(self.batch_size)
 
             if cond_vec is None:
@@ -239,24 +208,16 @@ class CTGANSynthesizer:
 
             fake = self.generator(fake_z, training=True)
             fake_act = _apply_activate(fake, self.transformer.output_info)
-            #fake_act = fake
-
-            if c1 is not None:
-                y_fake = self.critic(tf.concat([fake_act, c1], axis=1), training=True)
-            else:
-                y_fake = self.critic(fake_act, training=True)
 
             if cond_vec is None:
+                y_fake = self.critic(fake_act, training=True)
                 cond_loss = 0
             else:
+                y_fake = self.critic(tf.concat([fake_act, c1], axis=1), training=True)
                 cond_loss = losses._cond_loss(
                     self.transformer.output_info, fake, c1, m1)
-                #cond_loss = losses.cond_loss(
-                #    self.transformer.output_info_tensor(), fake, c1, m1)
-            #loss = losses.g_loss_fn(y_fake)
+
             g_loss = -tf.reduce_mean(y_fake) + cond_loss
-            #tf.print("g_loss:", g_loss)
-            #tf.print("cond_loss:", cond_loss)
 
         weights = self.generator.trainable_variables
         grad = t.gradient(g_loss, weights)
@@ -280,7 +241,6 @@ class CTGANSynthesizer:
         gradient.
         """
         alpha = tf.random.uniform([real.shape[0] // self.pac, 1, 1], 0., 1.)
-        #alpha = tf.convert_to_tensor(np.random.rand(real.shape[0] // self.pac, 1, 1).astype(np.float32))
         alpha = tf.tile(alpha, tf.constant([1, self.pac, real.shape[1]], tf.int32))
         alpha = tf.reshape(alpha, [-1, real.shape[1]])
 
@@ -293,7 +253,6 @@ class CTGANSynthesizer:
 
         slopes = tf.math.reduce_euclidean_norm(grad, axis=1)
         gp = tf.reduce_mean((slopes - 1.) ** 2) * self.grad_penalty_lambda
-
         return gp
 
     #@tf.function
