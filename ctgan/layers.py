@@ -42,12 +42,17 @@ class GenActLayer(tf.keras.layers.Layer):
 
     def call(self, inputs, **kwargs):
         outputs = self.fc(inputs, **kwargs)
-        data_t = []
+        data_t = tf.zeros(tf.shape(outputs))
         for idx in self.transformer_info:
-            data_t += [tf.where(idx[5] == 0,
-                                tf.math.tanh(data[:, idx[0]:idx[1]]),
-                                self._gumbel_softmax(data[:, idx[0]:idx[1]], tau=self.tau))]
-        return tf.concat(data_t, axis=1)
+            tf.print(idx)
+            data_t[:, idx[0]:idx[1]] = self._activation(idx, outputs)
+        return outputs, data_t
+
+    @tf.function
+    def _activation(self, data_info, data):
+        return tf.where(data_info[5] == 0,
+                  tf.math.tanh(data[:, data_info[0]:data_info[1]]),
+                  self._gumbel_softmax(data[:, data_info[0]:data_info[1]], tau=self.tau))
 
     @tf.function
     def _gumbel_softmax(self, logits, tau=1.0, hard=False, dim=-1):

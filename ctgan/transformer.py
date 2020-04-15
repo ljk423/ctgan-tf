@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.mixture import BayesianGaussianMixture
 from sklearn.preprocessing import OneHotEncoder
@@ -27,7 +28,6 @@ class DataTransformer(object):
         Each item will be (column_start, column_end, cond_column_start, cond_column_end, is_continuous, is_softmax
         :return:
         """
-
         if self.output_info is None:
             return None
 
@@ -36,12 +36,12 @@ class DataTransformer(object):
         st_c = 0
         for item in self.output_info:
             ed = st + item[0]
-            stc = None if item[2] else st_c
-            edc = None if item[2] else st_c + item[0]
+            stc = -1 if item[2] else st_c
+            edc = -1 if item[2] else st_c + item[0]
             output_info.append([st, ed, stc, edc, item[2], int(item[1] == 'softmax')])
             st = ed
             st_c = st_c if item[2] else edc
-        return output_info
+        return tf.constant(output_info, dtype=tf.int32)
 
     #@ignore_warnings(category=ConvergenceWarning)
     def _fit_continuous(self, column, data):

@@ -88,7 +88,8 @@ class CTGANSynthesizer:
         self.cond_generator = ConditionalGenerator(
             train_data, self.transformer.output_info, log_frequency)
         self.generator = Generator(
-            self.z_dim + self.cond_generator.n_opt, self.gen_dim, data_dim)
+            self.z_dim + self.cond_generator.n_opt, self.gen_dim, data_dim,
+            self.transformer.output_info_tensor(), self.tau)
         self.critic = Critic(
             data_dim + self.cond_generator.n_opt, self.dis_dim, self.pac)
 
@@ -169,8 +170,8 @@ class CTGANSynthesizer:
                 real = self.data_sampler.sample(self.batch_size, col[perm], opt[perm])
                 c2 = tf.gather(c1, perm)
 
-            fake = self.generator(fake_z, training=True)
-            fake_act = _apply_activate(fake, self.transformer.output_info)
+            fake, fake_act = self.generator(fake_z, training=True)
+            #fake_act = _apply_activate(fake, self.transformer.output_info)
             real = tf.convert_to_tensor(real.astype('float32'))
 
             if c1 is not None:
@@ -206,8 +207,8 @@ class CTGANSynthesizer:
                 m1 = tf.convert_to_tensor(m1)
                 fake_z = tf.concat([fake_z, c1], axis=1)
 
-            fake = self.generator(fake_z, training=True)
-            fake_act = _apply_activate(fake, self.transformer.output_info)
+            fake, fake_act = self.generator(fake_z, training=True)
+            #fake_act = _apply_activate(fake, self.transformer.output_info)
 
             if cond_vec is None:
                 y_fake = self.critic(fake_act, training=True)

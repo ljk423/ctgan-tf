@@ -39,7 +39,7 @@ class Critic(tf.keras.Model):
 
 
 class Generator(tf.keras.Model):
-    def __init__(self, input_dim, gen_dims, data_dim):
+    def __init__(self, input_dim, gen_dims, data_dim, transformer_info, tau):
         super(Generator, self).__init__()
 
         self.input_dim = input_dim
@@ -49,10 +49,11 @@ class Generator(tf.keras.Model):
             self.model += [ResidualLayer(dim, layer_dim)]
             dim += layer_dim
 
-        self.model += [tf.keras.layers.Dense(
-            data_dim, input_dim=(dim,),
-            kernel_initializer=partial(init_bounded, dim=dim),
-            bias_initializer=partial(init_bounded, dim=dim))]
+        #self.model += [tf.keras.layers.Dense(
+        #    data_dim, input_dim=(dim,),
+        #    kernel_initializer=partial(init_bounded, dim=dim),
+        #    bias_initializer=partial(init_bounded, dim=dim))]
+        self.model += [GenActLayer(dim, data_dim, transformer_info, tau)]
 
     def call(self, x, **kwargs):
         out = x
