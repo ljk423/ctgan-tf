@@ -171,7 +171,6 @@ class CTGANSynthesizer:
                 c2 = tf.gather(c1, perm)
 
             fake, fake_act = self.generator(fake_z, training=True)
-            #fake_act = _apply_activate(fake, self.transformer.output_info)
             real = tf.convert_to_tensor(real.astype('float32'))
 
             if c1 is not None:
@@ -208,7 +207,6 @@ class CTGANSynthesizer:
                 fake_z = tf.concat([fake_z, c1], axis=1)
 
             fake, fake_act = self.generator(fake_z, training=True)
-            #fake_act = _apply_activate(fake, self.transformer.output_info)
 
             if cond_vec is None:
                 y_fake = self.critic(fake_act, training=True)
@@ -277,8 +275,7 @@ class CTGANSynthesizer:
                 c1 = tf.constant(cond_vec)
                 fake_z = tf.concat([fake_z, c1], axis=1)
 
-            fake = self.generator(fake_z)
-            fake = _apply_activate(fake, self.transformer.output_info)
+            fake = self.generator(fake_z)[1]
             data.append(fake.numpy())
 
         data = np.concatenate(data, axis=0)

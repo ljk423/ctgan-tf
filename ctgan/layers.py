@@ -44,15 +44,11 @@ class GenActLayer(tf.keras.layers.Layer):
         outputs = self.fc(inputs, **kwargs)
         data_t = tf.zeros(tf.shape(outputs))
         for idx in self.transformer_info:
-            tf.print(idx)
-            data_t[:, idx[0]:idx[1]] = self._activation(idx, outputs)
+            act = tf.where(idx[5] == 0,
+                           tf.math.tanh(outputs[:, idx[0]:idx[1]]),
+                           self._gumbel_softmax(outputs[:, idx[0]:idx[1]], tau=self.tau))
+            data_t = tf.concat([data_t[:, :idx[0]], act, data_t[:, idx[1]:]], axis=1)
         return outputs, data_t
-
-    @tf.function
-    def _activation(self, data_info, data):
-        return tf.where(data_info[5] == 0,
-                  tf.math.tanh(data[:, data_info[0]:data_info[1]]),
-                  self._gumbel_softmax(data[:, data_info[0]:data_info[1]], tau=self.tau))
 
     @tf.function
     def _gumbel_softmax(self, logits, tau=1.0, hard=False, dim=-1):
@@ -98,33 +94,3 @@ class GenActLayer(tf.keras.layers.Layer):
             y = tf.stop_gradient(y_hard - y) + y
         return y
 
-def _apply_activate(data, transformer_output):
-    data_t = []
-    st = 0
-    for item in transformer_output:
-        if item[1] == 'tanh':
-            ed = st + item[0]
-            data_t.append(tf.math.tanh(data[:, st:ed]))
-            st = ed
-        elif item[1] == 'softmax':
-            ed = st + item[0]
-            data_t.append(gumbel_softmax(data[:, st:ed], tau=0.2))
-            st = ed
-        else:
-            assert 0
-
-    return tf.concat(data_t, axis=1)
-
-def gumbel_softmax(logits, tau=1.0, hard=False, dim=-1):
-    gumbel_dist = tfp.distributions.Gumbel(loc=0, scale=1)
-    gumbels = gumbel_dist.sample(tf.shape(logits))
-    gumbels = (logits + gumbels) / tau
-    y = tf.nn.softmax(gumbels, dim)
-
-    if hard:
-        # Straight through.
-        index = tf.math.reduce_max(y, 1, keep_dims=True)
-        y_hard = tf.cast(tf.equal(y, index), y.dtype)
-        y = tf.stop_gradient(y_hard - y) + y
-
-    return y

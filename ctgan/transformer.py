@@ -38,10 +38,12 @@ class DataTransformer(object):
             ed = st + item[0]
             stc = -1 if item[2] else st_c
             edc = -1 if item[2] else st_c + item[0]
-            output_info.append([st, ed, stc, edc, item[2], int(item[1] == 'softmax')])
+            output_info.append(tf.constant(
+                [st, ed, stc, edc, item[2], int(item[1] == 'softmax')], dtype=tf.int32))
             st = ed
             st_c = st_c if item[2] else edc
-        return tf.constant(output_info, dtype=tf.int32)
+
+        return output_info
 
     #@ignore_warnings(category=ConvergenceWarning)
     def _fit_continuous(self, column, data):

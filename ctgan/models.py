@@ -1,5 +1,3 @@
-import tensorflow as tf
-from functools import partial
 from ctgan.layers import *
 
 
@@ -49,10 +47,6 @@ class Generator(tf.keras.Model):
             self.model += [ResidualLayer(dim, layer_dim)]
             dim += layer_dim
 
-        #self.model += [tf.keras.layers.Dense(
-        #    data_dim, input_dim=(dim,),
-        #    kernel_initializer=partial(init_bounded, dim=dim),
-        #    bias_initializer=partial(init_bounded, dim=dim))]
         self.model += [GenActLayer(dim, data_dim, transformer_info, tau)]
 
     def call(self, x, **kwargs):
