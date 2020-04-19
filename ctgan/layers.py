@@ -50,7 +50,7 @@ class GenActLayer(tf.keras.layers.Layer):
             data_t = tf.concat([data_t[:, :idx[0]], act, data_t[:, idx[1]:]], axis=1)
         return outputs, data_t
 
-    @tf.function
+    @tf.function(experimental_relax_shapes=True)
     def _gumbel_softmax(self, logits, tau=1.0, hard=False, dim=-1):
         r"""
         Samples from the Gumbel-Softmax distribution (`Link 1`_  `Link 2`_) and optionally discretizes.

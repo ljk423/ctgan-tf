@@ -182,8 +182,9 @@ class CTGANSynthesizer:
             y_fake = self.critic(fake_cat, training=True)
             y_real = self.critic(real_cat, training=True)
 
-            gp = self.gradient_penalty(
-                partial(self.critic, training=True), real_cat, fake_cat)
+            gp = losses.gradient_penalty(
+                partial(self.critic, training=True), real_cat, fake_cat,
+                self.pac, self.grad_penalty_lambda)
             loss = -(tf.reduce_mean(y_real) - tf.reduce_mean(y_fake))
 
             d_loss = loss + gp
@@ -222,36 +223,6 @@ class CTGANSynthesizer:
         grad = [grad[i] + self.l2scale * weights[i] for i in range(len(grad))]
         self.g_opt.apply_gradients(zip(grad, self.generator.trainable_variables))
         return g_loss, cond_loss, grad
-
-    #@tf.function
-    def gradient_penalty(self, f, real, fake):
-        """Calculates the gradient penalty loss for a batch of "averaged" samples.
-        In Improved WGANs, the 1-Lipschitz constraint is enforced by adding a term to the
-        loss function that penalizes the network if the gradient norm moves away from 1.
-        However, it is impossible to evaluate this function at all points in the input
-        space. The compromise used in the paper is to choose random points on the lines
-        between real and generated samples, and check the gradients at these points. Note
-        that it is the gradient w.r.t. the input averaged samples, not the weights of the
-        discriminator, that we're penalizing!
-        In order to evaluate the gradients, we must first run samples through the generator
-        and evaluate the loss. Then we get the gradients of the discriminator w.r.t. the
-        input averaged samples. The l2 norm and penalty can then be calculated for this
-        gradient.
-        """
-        alpha = tf.random.uniform([real.shape[0] // self.pac, 1, 1], 0., 1.)
-        alpha = tf.tile(alpha, tf.constant([1, self.pac, real.shape[1]], tf.int32))
-        alpha = tf.reshape(alpha, [-1, real.shape[1]])
-
-        interpolates = alpha * real + ((1 - alpha) * fake)
-        with tf.GradientTape() as t:
-            t.watch(interpolates)
-            pred = f(interpolates)
-        grad = t.gradient(pred, [interpolates])[0]
-        grad = tf.reshape(grad, tf.constant([-1, self.pac * real.shape[1]], tf.int32))
-
-        slopes = tf.math.reduce_euclidean_norm(grad, axis=1)
-        gp = tf.reduce_mean((slopes - 1.) ** 2) * self.grad_penalty_lambda
-        return gp
 
     #@tf.function
     def sample(self, n):
