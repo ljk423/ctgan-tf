@@ -22,12 +22,17 @@ class DataTransformer(object):
     def __init__(self, n_clusters=10, epsilon=0.005):
         self.n_clusters = n_clusters
         self.epsilon = epsilon
+        self.output_tensor = None
+        self.cond_tensor = None
 
     def output_info_tensor(self):
         """
         Each item will be (column_start, column_end, cond_column_start, cond_column_end, is_continuous, is_softmax
         :return:
         """
+        if self.output_tensor is not None:
+            return self.output_tensor
+
         if self.output_info is None:
             return None
 
@@ -43,7 +48,33 @@ class DataTransformer(object):
             st = ed
             st_c = st_c if item[2] else edc
 
+        self.output_tensor = output_info
         return output_info
+
+    def cond_info_tensor(self):
+        if self.cond_tensor is not None:
+            return self.cond_tensor
+
+        if self.output_info is None:
+            return None
+
+        cond_info = []
+        i = 0
+        st = 0
+        st_c = 0
+        for item in self.output_info:
+            if item[2] == 0:
+                ed = st + item[0]
+                stc = st_c
+                edc = st_c + item[0]
+                cond_info.append(tf.constant(
+                    [st, ed, stc, edc, i], dtype=tf.int32))
+                st = ed
+                st_c = edc
+                i += 1
+
+        self.cond_tensor = cond_info
+        return cond_info
 
     #@ignore_warnings(category=ConvergenceWarning)
     def _fit_continuous(self, column, data):

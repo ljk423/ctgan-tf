@@ -42,7 +42,6 @@ from ctgan.transformer import DataTransformer
 from ctgan.sampler import Sampler
 from ctgan.conditional import ConditionalGenerator
 from ctgan.models import Generator, Critic
-from ctgan.layers import _apply_activate
 from ctgan import losses
 from ctgan.utils import pbar
 
@@ -147,7 +146,7 @@ class CTGANSynthesizer:
             del bar
 
         stats = [stats, d_grads, g_grads, d_weights, g_weights]
-        joblib.dump(stats, 'tf.stats')
+        joblib.dump(stats, 'notebooks/tf.stats')
 
     #@tf.function
     def train_d(self):
@@ -213,8 +212,8 @@ class CTGANSynthesizer:
                 cond_loss = 0
             else:
                 y_fake = self.critic(tf.concat([fake_act, c1], axis=1), training=True)
-                cond_loss = losses._cond_loss(
-                    self.transformer.output_info, fake, c1, m1)
+                cond_loss = losses.cond_loss(
+                    self.transformer.cond_info_tensor(), fake, c1, m1)
 
             g_loss = -tf.reduce_mean(y_fake) + cond_loss
 
