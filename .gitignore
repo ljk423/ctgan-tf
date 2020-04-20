@@ -3,7 +3,10 @@
 # Edit at https://www.gitignore.io/?templates=python,pycharm
 
 aug-training.csv
-./logs
+logs/
+tests/.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+.ipynb_checkpoints/
 
 ### PyCharm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm

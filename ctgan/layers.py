@@ -1,29 +1,56 @@
 import tensorflow as tf
 import tensorflow_probability as tfp
+import math
+from functools import partial
+
+
+def init_bounded(shape, **kwargs):
+    dim = kwargs['dim']
+    dtype = kwargs['dtype']
+    bound = 1 / math.sqrt(dim)
+    return tf.random.uniform(shape=shape, minval=-bound, maxval=bound, dtype=dtype)
+
+
+class ResidualLayer(tf.keras.layers.Layer):
+    def __init__(self, input_dim, num_outputs):
+        super(ResidualLayer, self).__init__()
+        self.num_outputs = num_outputs
+        self.fc = tf.keras.layers.Dense(
+            self.num_outputs, input_dim=(input_dim,),
+            kernel_initializer=partial(init_bounded, dim=input_dim),
+            bias_initializer=partial(init_bounded, dim=input_dim))
+        self.bn = tf.keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
+        self.relu = tf.keras.layers.ReLU()
+
+    def call(self, inputs, **kwargs):
+        outputs = self.fc(inputs, **kwargs)
+        outputs = self.bn(outputs, **kwargs)
+        outputs = self.relu(outputs, **kwargs)
+        return tf.concat([outputs, inputs], axis=1)
 
 
 class GenActLayer(tf.keras.layers.Layer):
-    def __init__(self, num_outputs, transformer_info, tau):
+    def __init__(self, input_dim, num_outputs, transformer_info, tau):
         super(GenActLayer, self).__init__()
         self.num_outputs = num_outputs
         self.transformer_info = transformer_info
         self.tau = tau
-        self.kernel = None
-
-    def build(self, input_shape):
-        self.kernel = self.add_weight(
-            'kernel', shape=[input_shape[1], self.num_outputs])
+        self.fc = tf.keras.layers.Dense(
+            num_outputs, input_dim=(input_dim,),
+            kernel_initializer=partial(init_bounded, dim=input_dim),
+            bias_initializer=partial(init_bounded, dim=input_dim))
 
     def call(self, inputs, **kwargs):
-        data = tf.matmul(inputs, self.kernel)
-        data_t = []
+        outputs = self.fc(inputs, **kwargs)
+        data_t = tf.zeros(tf.shape(outputs))
         for idx in self.transformer_info:
-            data_t += [tf.where(idx[5] == 0,
-                                tf.math.tanh(data[:, idx[0]:idx[1]]),
-                                self._gumbel_softmax(data[:, idx[0]:idx[1]], tau=self.tau))]
-        return tf.concat(data_t, axis=1)
+            act = tf.where(idx[2] == 0,
+                           tf.math.tanh(outputs[:, idx[0]:idx[1]]),
+                           self._gumbel_softmax(outputs[:, idx[0]:idx[1]], tau=self.tau))
+            data_t = tf.concat([data_t[:, :idx[0]], act, data_t[:, idx[1]:]], axis=1)
+        return outputs, data_t
 
-    @tf.function
+    @tf.function(experimental_relax_shapes=True)
     def _gumbel_softmax(self, logits, tau=1.0, hard=False, dim=-1):
         r"""
         Samples from the Gumbel-Softmax distribution (`Link 1`_  `Link 2`_) and optionally discretizes.
@@ -67,33 +94,3 @@ class GenActLayer(tf.keras.layers.Layer):
             y = tf.stop_gradient(y_hard - y) + y
         return y
 
-def _apply_activate(data, transformer_output):
-    data_t = []
-    st = 0
-    for item in transformer_output:
-        if item[1] == 'tanh':
-            ed = st + item[0]
-            data_t.append(tf.math.tanh(data[:, st:ed]))
-            st = ed
-        elif item[1] == 'softmax':
-            ed = st + item[0]
-            data_t.append(gumbel_softmax(data[:, st:ed], tau=0.2))
-            st = ed
-        else:
-            assert 0
-
-    return tf.concat(data_t, axis=1)
-
-def gumbel_softmax(logits, tau=1.0, hard=False, dim=-1):
-    gumbel_dist = tfp.distributions.Gumbel(loc=0, scale=1)
-    gumbels = gumbel_dist.sample(tf.shape(logits))
-    gumbels = (logits + gumbels) / tau
-    y = tf.nn.softmax(gumbels, dim)
-
-    if hard:
-        # Straight through.
-        index = tf.math.reduce_max(y, 1, keep_dims=True)
-        y_hard = tf.cast(tf.equal(y, index), y.dtype)
-        y = tf.stop_gradient(y_hard - y) + y
-
-    return y
