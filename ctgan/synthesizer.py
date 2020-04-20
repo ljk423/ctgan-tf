@@ -81,6 +81,7 @@ class CTGANSynthesizer:
         # and discrete columns info
         self.transformer.fit(train_data, discrete_columns)
         train_data = self.transformer.transform(train_data)
+        self.transformer.generate_tensors()
 
         self.data_sampler = Sampler(train_data, self.transformer.output_info)
         data_dim = self.transformer.output_dimensions
@@ -88,10 +89,9 @@ class CTGANSynthesizer:
             train_data, self.transformer.output_info, log_frequency)
         self.generator = Generator(
             self.z_dim + self.cond_generator.n_opt, self.gen_dim, data_dim,
-            self.transformer.output_info_tensor(), self.tau)
+            self.transformer.output_tensor, self.tau)
         self.critic = Critic(
             data_dim + self.cond_generator.n_opt, self.dis_dim, self.pac)
-
         g_train_loss = tf.metrics.Mean()
         d_train_loss = tf.metrics.Mean()
         current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -148,37 +148,9 @@ class CTGANSynthesizer:
         stats = [stats, d_grads, g_grads, d_weights, g_weights]
         joblib.dump(stats, 'notebooks/tf.stats')
 
-    #@tf.function
-    def train_d(self):
+    @tf.function
+    def train_d_step(self, fake_cat, real_cat):
         with tf.GradientTape() as t:
-            fake_z = tf.random.normal([self.batch_size, self.z_dim])
-
-            # Generate conditional vector
-            cond_vec = self.cond_generator.sample(self.batch_size)
-            if cond_vec is None:
-                c1, m1, col, opt = None, None, None, None
-                real = self.data_sampler.sample(self.batch_size, col, opt)
-            else:
-                c1, m1, col, opt = cond_vec
-                c1 = tf.convert_to_tensor(c1)
-                m1 = tf.convert_to_tensor(m1)
-                fake_z = tf.concat([fake_z, c1], axis=1)
-
-                perm = np.arange(self.batch_size)
-                np.random.shuffle(perm)
-                real = self.data_sampler.sample(self.batch_size, col[perm], opt[perm])
-                c2 = tf.gather(c1, perm)
-
-            fake, fake_act = self.generator(fake_z, training=True)
-            real = tf.convert_to_tensor(real.astype('float32'))
-
-            if c1 is not None:
-                fake_cat = tf.concat([fake_act, c1], axis=1)
-                real_cat = tf.concat([real, c2], axis=1)
-            else:
-                fake_cat = fake
-                real_cat = real
-
             y_fake = self.critic(fake_cat, training=True)
             y_real = self.critic(real_cat, training=True)
 
@@ -186,36 +158,62 @@ class CTGANSynthesizer:
                 partial(self.critic, training=True), real_cat, fake_cat,
                 self.pac, self.grad_penalty_lambda)
             loss = -(tf.reduce_mean(y_real) - tf.reduce_mean(y_fake))
-
             d_loss = loss + gp
+
         grad = t.gradient(d_loss, self.critic.trainable_variables)
         self.c_opt.apply_gradients(zip(grad, self.critic.trainable_variables))
         return loss, gp, grad
 
-    #@tf.function
-    def train_g(self):
+    def train_d(self):
+        fake_z = tf.random.normal([self.batch_size, self.z_dim])
+
+        # Generate conditional vector
+        cond_vec = self.cond_generator.sample(self.batch_size)
+        if cond_vec is None:
+            c1, m1, col, opt = None, None, None, None
+            c1 = tf.constant(-1)
+            real = self.data_sampler.sample(self.batch_size, col, opt)
+        else:
+            c1, m1, col, opt = cond_vec
+            c1 = tf.convert_to_tensor(c1)
+            fake_z = tf.concat([fake_z, c1], axis=1)
+
+            perm = np.arange(self.batch_size)
+            np.random.shuffle(perm)
+            real = self.data_sampler.sample(self.batch_size, col[perm], opt[perm])
+            c2 = tf.gather(c1, perm)
+
+        fake, fake_act = self.generator(fake_z, training=True)
+        real = tf.convert_to_tensor(real.astype('float32'))
+
+        if c1 is not None:
+            fake_cat = tf.concat([fake_act, c1], axis=1)
+            real_cat = tf.concat([real, c2], axis=1)
+        else:
+            fake_cat = fake
+            real_cat = real
+
+        return self.train_d_step(fake_cat, real_cat)
+
+    @tf.function
+    def train_g_step(self, fake_z):
         with tf.GradientTape() as t:
-            fake_z = tf.random.normal([self.batch_size, self.z_dim])
-            cond_vec = self.cond_generator.sample(self.batch_size)
-
-            if cond_vec is None:
-                c1, m1, col, opt = None, None, None, None
-            else:
-                c1, m1, col, opt = cond_vec
-                c1 = tf.convert_to_tensor(c1)
-                m1 = tf.convert_to_tensor(m1)
-                fake_z = tf.concat([fake_z, c1], axis=1)
-
             fake, fake_act = self.generator(fake_z, training=True)
+            y_fake = self.critic(fake_act, training=True)
+            g_loss = -tf.reduce_mean(y_fake)
 
-            if cond_vec is None:
-                y_fake = self.critic(fake_act, training=True)
-                cond_loss = 0
-            else:
-                y_fake = self.critic(tf.concat([fake_act, c1], axis=1), training=True)
-                cond_loss = losses.cond_loss(
-                    self.transformer.cond_info_tensor(), fake, c1, m1)
+        weights = self.generator.trainable_variables
+        grad = t.gradient(g_loss, weights)
+        grad = [grad[i] + self.l2scale * weights[i] for i in range(len(grad))]
+        self.g_opt.apply_gradients(zip(grad, self.generator.trainable_variables))
+        return g_loss, 0, grad
 
+    @tf.function
+    def train_g_cond_step(self, fake_z, c1, m1, cond_info):
+        with tf.GradientTape() as t:
+            fake, fake_act = self.generator(fake_z, training=True)
+            y_fake = self.critic(tf.concat([fake_act, c1], axis=1), training=True)
+            cond_loss = losses.cond_loss(cond_info, fake, c1, m1)
             g_loss = -tf.reduce_mean(y_fake) + cond_loss
 
         weights = self.generator.trainable_variables
@@ -223,6 +221,19 @@ class CTGANSynthesizer:
         grad = [grad[i] + self.l2scale * weights[i] for i in range(len(grad))]
         self.g_opt.apply_gradients(zip(grad, self.generator.trainable_variables))
         return g_loss, cond_loss, grad
+
+    def train_g(self):
+        fake_z = tf.random.normal([self.batch_size, self.z_dim])
+        cond_vec = self.cond_generator.sample(self.batch_size)
+
+        if cond_vec is None:
+            return self.train_g_step(fake_z)
+
+        c1, m1, col, opt = cond_vec
+        c1 = tf.convert_to_tensor(c1, name="c1")
+        m1 = tf.convert_to_tensor(m1, name="m1")
+        fake_z = tf.concat([fake_z, c1], axis=1, name="fake_z")
+        return self.train_g_cond_step(fake_z, c1, m1, self.transformer.cond_tensor)
 
     #@tf.function
     def sample(self, n):

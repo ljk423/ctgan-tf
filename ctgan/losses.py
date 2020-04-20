@@ -8,20 +8,19 @@ import tensorflow as tf
 
 @tf.function
 def cond_loss(transformer_info, data, c, m):
-    s = tf.shape(m)
-    loss = tf.zeros(s)
+    shape = tf.shape(m)
+    c_loss = tf.zeros(shape)
 
     for item in transformer_info:
         data_logsoftmax = data[:, item[0]:item[1]]
-        c_argmax = tf.math.argmax(c[:, item[2]:item[3]], axis=1)
-        l = tf.reshape(tf.nn.sparse_softmax_cross_entropy_with_logits(
-            c_argmax, data_logsoftmax), [-1, 1])
-        loss = tf.concat([loss[:, :item[-1]], l, loss[:, item[-1]+1:]], axis=1)
+        cond_vec = tf.math.argmax(c[:, item[2]:item[3]], axis=1)
+        loss = tf.reshape(tf.nn.sparse_softmax_cross_entropy_with_logits(
+            cond_vec, data_logsoftmax), [-1, 1])
+        c_loss = tf.concat([c_loss[:, :item[-1]], loss, c_loss[:, item[-1]+1:]], axis=1)
 
-    return tf.reduce_sum(loss * m) / tf.cast(s[0], dtype=tf.float32)
+    return tf.reduce_sum(c_loss * m) / tf.cast(shape[0], dtype=tf.float32)
 
 
-#@tf.function(experimental_relax_shapes=True)
 def gradient_penalty(f, real, fake, pac=10, gp_lambda=10.0):
     """Calculates the gradient penalty loss for a batch of "averaged" samples.
     In Improved WGANs, the 1-Lipschitz constraint is enforced by adding a term to the

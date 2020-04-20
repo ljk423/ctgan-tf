@@ -44,7 +44,7 @@ class GenActLayer(tf.keras.layers.Layer):
         outputs = self.fc(inputs, **kwargs)
         data_t = tf.zeros(tf.shape(outputs))
         for idx in self.transformer_info:
-            act = tf.where(idx[5] == 0,
+            act = tf.where(idx[2] == 0,
                            tf.math.tanh(outputs[:, idx[0]:idx[1]]),
                            self._gumbel_softmax(outputs[:, idx[0]:idx[1]], tau=self.tau))
             data_t = tf.concat([data_t[:, :idx[0]], act, data_t[:, idx[1]:]], axis=1)
