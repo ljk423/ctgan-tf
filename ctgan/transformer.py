@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.mixture import BayesianGaussianMixture
 from sklearn.preprocessing import OneHotEncoder
@@ -21,27 +22,33 @@ class DataTransformer(object):
     def __init__(self, n_clusters=10, epsilon=0.005):
         self.n_clusters = n_clusters
         self.epsilon = epsilon
+        self.output_tensor = None
+        self.cond_tensor = None
 
-    def output_info_tensor(self):
-        """
-        Each item will be (column_start, column_end, cond_column_start, cond_column_end, is_continuous, is_softmax
-        :return:
-        """
-
+    def generate_tensors(self):
         if self.output_info is None:
-            return None
+            raise AttributeError("Output info still not available")
 
         output_info = []
+        cond_info = []
+        i = 0
         st = 0
         st_c = 0
         for item in self.output_info:
             ed = st + item[0]
-            stc = None if item[2] else st_c
-            edc = None if item[2] else st_c + item[0]
-            output_info.append([st, ed, stc, edc, item[2], int(item[1] == 'softmax')])
+            if not item[2]:
+                ed_c = st_c + item[0]
+                cond_info.append(tf.constant(
+                    [st, ed, st_c, ed_c, i], dtype=tf.int32))
+                st_c = ed_c
+                i += 1
+
+            output_info.append(tf.constant(
+                [st, ed, int(item[1] == 'softmax')], dtype=tf.int32))
             st = ed
-            st_c = st_c if item[2] else edc
-        return output_info
+
+        self.output_tensor = output_info
+        self.cond_tensor = cond_info
 
     #@ignore_warnings(category=ConvergenceWarning)
     def _fit_continuous(self, column, data):

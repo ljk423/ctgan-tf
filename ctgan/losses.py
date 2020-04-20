@@ -7,62 +7,46 @@ import tensorflow as tf
 
 
 @tf.function
-def d_loss_fn(fake_logit, real_logit):
-    fake_loss = tf.math.reduce_mean(fake_logit)
-    real_loss = tf.math.reduce_mean(real_logit)
-    return fake_loss - real_loss
-
-@tf.function
-def g_loss_fn(fake_logit):
-    f_loss = -tf.math.reduce_mean(fake_logit)
-    return f_loss
-
-
-@tf.function
 def cond_loss(transformer_info, data, c, m):
-    loss = []
+    shape = tf.shape(m)
+    c_loss = tf.zeros(shape)
 
     for item in transformer_info:
-        st, ed, st_c, ed_c, is_continuous, is_softmax = item
-        if is_continuous == 0 and is_softmax == 1:
-            data_logsoftmax = data[:, st:ed]
-            c_argmax = tf.math.argmax(c[:, st_c:ed_c], axis=1)
-            loss += [tf.nn.sparse_softmax_cross_entropy_with_logits(c_argmax, data_logsoftmax)]
+        data_logsoftmax = data[:, item[0]:item[1]]
+        cond_vec = tf.math.argmax(c[:, item[2]:item[3]], axis=1)
+        loss = tf.reshape(tf.nn.sparse_softmax_cross_entropy_with_logits(
+            cond_vec, data_logsoftmax), [-1, 1])
+        c_loss = tf.concat([c_loss[:, :item[-1]], loss, c_loss[:, item[-1]+1:]], axis=1)
 
-    loss = tf.stack(loss, axis=1)
-    return tf.reduce_sum(loss * m) / data.shape[0]
+    return tf.reduce_sum(c_loss * m) / tf.cast(shape[0], dtype=tf.float32)
 
 
-def _cond_loss(transformer_info, data, c, m):
-    loss = []
-    st = 0
-    st_c = 0
-    skip = False
-    for item in transformer_info:
-        if item[1] == 'tanh':
-            st += item[0]
-            skip = True
+def gradient_penalty(f, real, fake, pac=10, gp_lambda=10.0):
+    """Calculates the gradient penalty loss for a batch of "averaged" samples.
+    In Improved WGANs, the 1-Lipschitz constraint is enforced by adding a term to the
+    loss function that penalizes the network if the gradient norm moves away from 1.
+    However, it is impossible to evaluate this function at all points in the input
+    space. The compromise used in the paper is to choose random points on the lines
+    between real and generated samples, and check the gradients at these points. Note
+    that it is the gradient w.r.t. the input averaged samples, not the weights of the
+    discriminator, that we're penalizing!
+    In order to evaluate the gradients, we must first run samples through the generator
+    and evaluate the loss. Then we get the gradients of the discriminator w.r.t. the
+    input averaged samples. The l2 norm and penalty can then be calculated for this
+    gradient.
+    """
+    alpha = tf.random.uniform([real.shape[0] // pac, 1, 1], 0., 1.)
+    alpha = tf.tile(alpha, tf.constant([1, pac, real.shape[1]], tf.int32))
+    alpha = tf.reshape(alpha, [-1, real.shape[1]])
 
-        elif item[1] == 'softmax':
-            if skip:
-                skip = False
-                st += item[0]
-                continue
+    interpolates = alpha * real + ((1 - alpha) * fake)
+    with tf.GradientTape() as t:
+        t.watch(interpolates)
+        pred = f(interpolates)
+    grad = t.gradient(pred, [interpolates])[0]
+    grad = tf.reshape(grad, tf.constant([-1, pac * real.shape[1]], tf.int32))
 
-            ed = st + item[0]
-            ed_c = st_c + item[0]
+    slopes = tf.math.reduce_euclidean_norm(grad, axis=1)
+    gp = tf.reduce_mean((slopes - 1.) ** 2) * gp_lambda
+    return gp
 
-            tmp = tf.nn.sparse_softmax_cross_entropy_with_logits(
-                tf.math.argmax(c[:, st_c:ed_c], axis=1),
-                data[:, st:ed],
-            )
-            loss.append(tmp)
-            st = ed
-            st_c = ed_c
-
-        else:
-            assert 0
-
-    loss = tf.stack(loss, axis=1)
-
-    return tf.reduce_sum(loss * m) / data.shape[0]
