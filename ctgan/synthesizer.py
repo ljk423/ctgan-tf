@@ -151,7 +151,6 @@ class CTGANSynthesizer:
     @tf.function
     def train_d_step(self, fake_cat, real_cat):
         with tf.GradientTape() as t:
-(??)
             y_fake = self.critic(fake_cat, training=True)
             y_real = self.critic(real_cat, training=True)
 
