@@ -2,7 +2,16 @@ import numpy as np
 
 
 class ConditionalGenerator(object):
-    def __init__(self, data, output_info, log_frequency):
+    @classmethod
+    def from_dict(cls, in_dict):
+        dt = ConditionalGenerator()
+        dt.__dict__ = in_dict
+        return dt
+
+    def __init__(self, data=None, output_info=None, log_frequency=None):
+        if data is None:
+            return
+
         self.model = []
 
         start = 0

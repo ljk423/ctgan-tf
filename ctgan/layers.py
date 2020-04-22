@@ -14,39 +14,39 @@ def init_bounded(shape, **kwargs):
 class ResidualLayer(tf.keras.layers.Layer):
     def __init__(self, input_dim, num_outputs):
         super(ResidualLayer, self).__init__()
-        self.num_outputs = num_outputs
-        self.fc = tf.keras.layers.Dense(
-            self.num_outputs, input_dim=(input_dim,),
+        self._num_outputs = num_outputs
+        self._fc = tf.keras.layers.Dense(
+            self._num_outputs, input_dim=(input_dim,),
             kernel_initializer=partial(init_bounded, dim=input_dim),
             bias_initializer=partial(init_bounded, dim=input_dim))
-        self.bn = tf.keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
-        self.relu = tf.keras.layers.ReLU()
+        self._bn = tf.keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
+        self._relu = tf.keras.layers.ReLU()
 
     def call(self, inputs, **kwargs):
-        outputs = self.fc(inputs, **kwargs)
-        outputs = self.bn(outputs, **kwargs)
-        outputs = self.relu(outputs, **kwargs)
+        outputs = self._fc(inputs, **kwargs)
+        outputs = self._bn(outputs, **kwargs)
+        outputs = self._relu(outputs, **kwargs)
         return tf.concat([outputs, inputs], axis=1)
 
 
-class GenActLayer(tf.keras.layers.Layer):
+class GenActivation(tf.keras.layers.Layer):
     def __init__(self, input_dim, num_outputs, transformer_info, tau):
-        super(GenActLayer, self).__init__()
-        self.num_outputs = num_outputs
-        self.transformer_info = transformer_info
-        self.tau = tau
-        self.fc = tf.keras.layers.Dense(
+        super(GenActivation, self).__init__()
+        self._num_outputs = num_outputs
+        self._transformer_info = transformer_info
+        self._tau = tau
+        self._fc = tf.keras.layers.Dense(
             num_outputs, input_dim=(input_dim,),
             kernel_initializer=partial(init_bounded, dim=input_dim),
             bias_initializer=partial(init_bounded, dim=input_dim))
 
     def call(self, inputs, **kwargs):
-        outputs = self.fc(inputs, **kwargs)
+        outputs = self._fc(inputs, **kwargs)
         data_t = tf.zeros(tf.shape(outputs))
-        for idx in self.transformer_info:
+        for idx in self._transformer_info:
             act = tf.where(idx[2] == 0,
                            tf.math.tanh(outputs[:, idx[0]:idx[1]]),
-                           self._gumbel_softmax(outputs[:, idx[0]:idx[1]], tau=self.tau))
+                           self._gumbel_softmax(outputs[:, idx[0]:idx[1]], tau=self._tau))
             data_t = tf.concat([data_t[:, :idx[0]], act, data_t[:, idx[1]:]], axis=1)
         return outputs, data_t
 

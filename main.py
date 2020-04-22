@@ -34,6 +34,8 @@ def main(argv):
 
     model = CTGANSynthesizer()
     model.train(data, discrete_columns, 300)
+    model.dump('model.joblib', overwrite=True)
+    model = CTGANSynthesizer('model.joblib')
     sampled = model.sample(data.shape[0])
 
     sampled.to_csv('tests/tensorflow.csv', index=False)

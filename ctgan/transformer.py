@@ -4,7 +4,7 @@ import tensorflow as tf
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.mixture import BayesianGaussianMixture
 from sklearn.preprocessing import OneHotEncoder
-#from sklearn.utils._testing import ignore_warnings
+from sklearn.utils._testing import ignore_warnings
 
 
 class DataTransformer(object):
@@ -19,9 +19,20 @@ class DataTransformer(object):
             Epsilon value.
     """
 
+    @classmethod
+    def from_dict(cls, in_dict):
+        dt = DataTransformer()
+        dt.__dict__ = in_dict
+        return dt
+
     def __init__(self, n_clusters=10, epsilon=0.005):
         self.n_clusters = n_clusters
         self.epsilon = epsilon
+        self.output_info = None
+        self.output_dimensions = None
+        self.dataframe = None
+        self.meta = None
+        self.dtypes = None
         self.output_tensor = None
         self.cond_tensor = None
 
@@ -50,7 +61,7 @@ class DataTransformer(object):
         self.output_tensor = output_info
         self.cond_tensor = cond_info
 
-    #@ignore_warnings(category=ConvergenceWarning)
+    @ignore_warnings(category=ConvergenceWarning)
     def _fit_continuous(self, column, data):
         gm = BayesianGaussianMixture(
             self.n_clusters,

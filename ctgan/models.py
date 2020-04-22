@@ -4,13 +4,13 @@ from ctgan.layers import *
 class Critic(tf.keras.Model):
     def __init__(self, input_dim, dis_dims, pac):
         super(Critic, self).__init__()
-        self.pac = pac
-        self.input_dim = input_dim
+        self._pac = pac
+        self._input_dim = input_dim
 
-        self.model = [self._reshape_func]
-        dim = input_dim * self.pac
+        self._model = [self.__reshape_func]
+        dim = input_dim * self._pac
         for layer_dim in list(dis_dims):
-            self.model += [
+            self._model += [
                 tf.keras.layers.Dense(
                     layer_dim, input_dim=(dim,),
                     kernel_initializer=partial(init_bounded, dim=dim),
@@ -20,18 +20,18 @@ class Critic(tf.keras.Model):
             dim = layer_dim
 
         layer_dim = 1
-        self.model += [tf.keras.layers.Dense(
+        self._model += [tf.keras.layers.Dense(
             layer_dim, input_dim=(dim,),
             kernel_initializer=partial(init_bounded, dim=dim),
             bias_initializer=partial(init_bounded, dim=dim))]
 
-    def _reshape_func(self, x, **kwargs):
+    def __reshape_func(self, x, **kwargs):
         dims = x.get_shape().as_list()
-        return tf.reshape(x, [-1, dims[1] * self.pac])
+        return tf.reshape(x, [-1, dims[1] * self._pac])
 
     def call(self, x, **kwargs):
         out = x
-        for layer in self.model:
+        for layer in self._model:
             out = layer(out, **kwargs)
         return out
 
@@ -40,17 +40,17 @@ class Generator(tf.keras.Model):
     def __init__(self, input_dim, gen_dims, data_dim, transformer_info, tau):
         super(Generator, self).__init__()
 
-        self.input_dim = input_dim
-        self.model = list()
+        self._input_dim = input_dim
+        self._model = list()
         dim = input_dim
         for layer_dim in list(gen_dims):
-            self.model += [ResidualLayer(dim, layer_dim)]
+            self._model += [ResidualLayer(dim, layer_dim)]
             dim += layer_dim
 
-        self.model += [GenActLayer(dim, data_dim, transformer_info, tau)]
+        self._model += [GenActivation(dim, data_dim, transformer_info, tau)]
 
     def call(self, x, **kwargs):
         out = x
-        for layer in self.model:
+        for layer in self._model:
             out = layer(out, **kwargs)
         return out
