@@ -37,7 +37,6 @@ def main(argv):
     model.dump('model.joblib', overwrite=True)
     model = CTGANSynthesizer('model.joblib')
     sampled = model.sample(data.shape[0])
-
     sampled.to_csv('tests/tensorflow.csv', index=False)
 
 
