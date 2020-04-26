@@ -4,7 +4,9 @@ toolbox.
 """
 
 from ._load_demo import load_demo
+from ._cli import cli
 
 __all__ = [
-    'load_demo'
+    'load_demo',
+    'cli'
 ]

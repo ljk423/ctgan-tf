@@ -128,4 +128,5 @@ Utilities
    :template: function.rst
 
     cli.load_demo
+    cli.cli
 

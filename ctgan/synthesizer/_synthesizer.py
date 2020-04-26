@@ -53,12 +53,12 @@ class CTGANSynthesizer:
         Size of the output samples for each one of the Residuals.
         A Residual Layer will be created for each one of the values provided.
 
-    dis_dim: tuple[int], or list[int], default=(256, 256)
-        Size of the output samples for each one of the Discriminator
-        layers. A Fully Connected layer will be created for each one of the
-        values provided.
+    crt_dim: tuple[int], or list[int], default=(256, 256)
+        Size of the output samples for each one of the Critic layers.
+        A Fully Connected layer will be created for each one of the
+        provided values.
 
-    l2scale: float, default=1e-6
+    l2_scale: float, default=1e-6
         L2 regularization (:math:`\\lambda`) added to the Generator optimizer.
         This is computed by adding the weights scaled by :math:`\\lambda` to
         the computed gradients :cite:`2018fastadam`:
@@ -103,10 +103,44 @@ class CTGANSynthesizer:
     References
     ----------
     .. bibliography:: ../bibtex/refs.bib
+
+    Examples
+    --------
+    >>> from ctgan.cli import load_demo
+    >>> data, discrete = load_demo()
+    >>> data.head(5)
+       age          workclass  fnlwgt   education  education-num       marital-status          occupation    relationship    race      sex  capital-gain  capital-loss  hours-per-week  native-country  income
+    0   39          State-gov   77516   Bachelors             13        Never-married        Adm-clerical   Not-in-family   White     Male          2174             0              40   United-States   <=50K
+    1   50   Self-emp-not-inc   83311   Bachelors             13   Married-civ-spouse     Exec-managerial         Husband   White     Male             0             0              13   United-States   <=50K
+    2   38            Private  215646     HS-grad              9             Divorced   Handlers-cleaners   Not-in-family   White     Male             0             0              40   United-States   <=50K
+    3   53            Private  234721        11th              7   Married-civ-spouse   Handlers-cleaners         Husband   Black     Male             0             0              40   United-States   <=50K
+    4   28            Private  338409   Bachelors             13   Married-civ-spouse      Prof-specialty            Wife   Black   Female             0             0              40            Cuba   <=50K
+    >>> from ctgan.synthesizer import CTGANSynthesizer
+    >>> model = CTGANSynthesizer()
+    >>> model.train(data, discrete, epochs=1)
+    Epoch 1/1
+    32500/32500 |██████████████████████████████████████████████████████████████████████████████████| 3354.54samples/s  ETA: 00:00  Elapsed Time: 00:09  g_loss: 2.065  cond_loss: 2.122  c_loss:-0.526  gp: 1.089
+    >>> s = model.sample(5)
+    >>> s.head(5)
+       age workclass  fnlwgt      education  education-num       marital-status        occupation relationship                 race      sex  capital-gain  capital-loss  hours-per-week  native-country  income
+    0   74   Private  168809   Some-college             10   Married-civ-spouse     Other-service         Wife                White   Female          -125             4              23         England    >50K
+    1   51   Private  157349        HS-grad             13        Never-married     Other-service    Own-child                White     Male          -147            -1              39   United-States    >50K
+    2   20   Private  101469           11th             10             Divorced   Exec-managerial      Husband   Amer-Indian-Eskimo   Female            -1             3              39          Canada    >50K
+    3   42   Private  225237           11th             12   Married-civ-spouse      Adm-clerical    Own-child                White   Female           -47             4              39        Columbia    >50K
+    4   67   Private  117769           11th             13        Never-married     Other-service    Unmarried                Black     Male           -32             0              39   United-States   <=50K
+
     """
-    def __init__(self, file_path=None, log_dir=None, z_dim=128, pac=10,
-                 gen_dim=(256, 256), dis_dim=(256, 256), l2scale=1e-6,
-                 batch_size=500, gp_lambda=10.0, tau=0.2):
+    def __init__(self,
+                 file_path=None,
+                 log_dir=None,
+                 z_dim=128,
+                 pac=10,
+                 gen_dim=(256, 256),
+                 crt_dim=(256, 256),
+                 l2_scale=1e-6,
+                 batch_size=500,
+                 gp_lambda=10.0,
+                 tau=0.2):
         if file_path is not None:
             self._load(file_path)
             return
@@ -119,12 +153,12 @@ class CTGANSynthesizer:
         self._z_dim = z_dim
         self._pac = pac
         self._pac_dim = None
-        self._l2scale = l2scale
+        self._l2_scale = l2_scale
         self._batch_size = batch_size
         self._gp_lambda = gp_lambda
         self._tau = tau
-        self._gen_dim = gen_dim
-        self._dis_dim = dis_dim
+        self._gen_dim = tuple(gen_dim)
+        self._crt_dim = tuple(crt_dim)
         self._g_opt = tf.keras.optimizers.Adam(
             learning_rate=2e-4, beta_1=0.5, beta_2=0.9, epsilon=1e-08)
         self._c_opt = tf.keras.optimizers.Adam(
@@ -135,7 +169,11 @@ class CTGANSynthesizer:
         self._generator = None
         self._critic = None
 
-    def train(self, train_data, discrete_columns=tuple(), epochs=300, log_frequency=True):
+    def train(self,
+              train_data,
+              discrete_columns=tuple(),
+              epochs=300,
+              log_frequency=True):
         """Fit the CTGAN according to the provided train_data.
 
         Parameters
@@ -178,7 +216,7 @@ class CTGANSynthesizer:
             self._tau)
         self._critic = Critic(
             data_dim + self._cond_generator.n_opt,
-            self._dis_dim,
+            self._crt_dim,
             self._pac)
 
         # Create TF metrics
@@ -324,7 +362,7 @@ class CTGANSynthesizer:
 
         weights = self._generator.trainable_variables
         grad = t.gradient(g_loss, weights)
-        grad = [grad[i] + self._l2scale * weights[i] for i in range(len(grad))]
+        grad = [grad[i] + self._l2_scale * weights[i] for i in range(len(grad))]
         self._g_opt.apply_gradients(zip(grad, self._generator.trainable_variables))
         return g_loss, tf.constant(0, dtype=tf.float32)
 
@@ -364,7 +402,7 @@ class CTGANSynthesizer:
 
         weights = self._generator.trainable_variables
         grad = t.gradient(g_loss, weights)
-        grad = [grad[i] + self._l2scale * weights[i] for i in range(len(grad))]
+        grad = [grad[i] + self._l2_scale * weights[i] for i in range(len(grad))]
         self._g_opt.apply_gradients(zip(grad, self._generator.trainable_variables))
         return g_loss, cond_loss
 
@@ -467,7 +505,8 @@ class CTGANSynthesizer:
                 "File already exists. If you wish to replace it use overwrite=True")
 
         # Create a copy of class dict as we are about to change the dictionary
-        class_dict = {k: v for k, v in self.__dict__.items() if type(v) in [int, float, tuple]}
+        class_dict = {k: v for k, v in self.__dict__.items()
+                      if type(v) in [int, float, tuple]}
         class_dict['_cond_generator'] = self._cond_generator.__dict__
         class_dict['_transformer'] = self._transformer.__dict__
         class_dict['_gen_weights'] = self._generator.get_weights()
@@ -508,8 +547,10 @@ class CTGANSynthesizer:
                 setattr(self, key, value)
 
         # Load binary models/encoders to class dict
-        self._transformer = DataTransformer.from_dict(class_dict['_transformer'])
-        self._cond_generator = ConditionalGenerator.from_dict(class_dict['_cond_generator'])
+        self._transformer = DataTransformer.from_dict(
+            class_dict['_transformer'])
+        self._cond_generator = ConditionalGenerator.from_dict(
+            class_dict['_cond_generator'])
 
         # Load Generator instance
         self._generator = Generator(
