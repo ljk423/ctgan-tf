@@ -1,11 +1,10 @@
 """
 Residual Layer definition.
 """
+from functools import partial
+import tensorflow as tf
 
 from ._layer_utils import init_bounded
-
-import tensorflow as tf
-from functools import partial
 
 
 class ResidualLayer(tf.keras.layers.Layer):
@@ -25,6 +24,8 @@ class ResidualLayer(tf.keras.layers.Layer):
     output_dim: int
         Fully Connected layer output dimension.
     """
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, input_dim, output_dim):
         super(ResidualLayer, self).__init__()
         self._output_dim = output_dim

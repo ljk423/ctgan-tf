@@ -51,12 +51,13 @@ class TestGenerator(TestCase):
         outputs, outputs_act = generator(inputs)
         print(outputs)
         expected_outputs = tf.constant(
-            [[-0.07589048, -0.20733598,  0.01827493, -0.12580258,  0.09565035]],
+            [[-0.07589048, -0.20733598, 0.01827493, -0.12580258, 0.09565035]],
             dtype=tf.float32)
         expected_outputs_act = tf.constant(
-            [[-0.07574511, -0.20441517,  0.01827289, -0.12514308,  0.0953597]],
+            [[-0.07574511, -0.20441517, 0.01827289, -0.12514308, 0.0953597]],
             dtype=tf.float32)
 
-        np.testing.assert_almost_equal(outputs.numpy(), expected_outputs.numpy())
+        np.testing.assert_almost_equal(
+            outputs.numpy(), expected_outputs.numpy())
         np.testing.assert_almost_equal(
             outputs_act.numpy(), expected_outputs_act.numpy())

@@ -1,3 +1,6 @@
+"""
+
+"""
 from unittest import TestCase
 
 from ctgan.cli import load_demo

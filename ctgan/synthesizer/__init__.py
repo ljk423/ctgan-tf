@@ -16,6 +16,5 @@ __email__ = 'pbmartins@ua.pt'
 __version__ = '1.0.0'
 
 __all__ = [
-    'CTGANSynthesizer',
-    'ProgressBar'
+    'CTGANSynthesizer'
 ]

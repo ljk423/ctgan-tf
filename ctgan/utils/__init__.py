@@ -4,10 +4,9 @@ to other modules.
 """
 
 from ._bar_utils import ProgressBar
-from ._testing import generate_data, compare_objects
+from ._testing import generate_data
 
 __all__ = [
     'ProgressBar',
     'generate_data',
-    'compare_objects'
 ]

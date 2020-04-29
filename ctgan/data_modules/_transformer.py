@@ -11,7 +11,7 @@ from sklearn.utils._testing import ignore_warnings
 from ..models import BGM, OHE
 
 
-class DataTransformer(object):
+class DataTransformer:
     """Data Transformer.
 
     It models continuous columns with a :class:`ctgan.models.BGM` and
@@ -45,6 +45,7 @@ class DataTransformer(object):
         List of `tf.Tensor` describing the metadata needed for correctly
         compute the conditional loss in :func:`ctgan.losses.conditional_loss`.
     """
+    # pylint: disable=too-many-instance-attributes
 
     @classmethod
     def from_dict(cls, in_dict):
@@ -62,9 +63,9 @@ class DataTransformer(object):
             A new instance with the same internal data as the one
             provided by `in_dict`.
         """
-        dt = DataTransformer()
-        dt.__dict__ = in_dict
-        return dt
+        new_instance = DataTransformer()
+        new_instance.__dict__ = in_dict
+        return new_instance
 
     def __init__(self, n_clusters=10, epsilon=0.005):
         self._n_clusters = n_clusters
@@ -99,20 +100,20 @@ class DataTransformer(object):
         output_info = []
         cond_info = []
         i = 0
-        st = 0
+        st_idx = 0
         st_c = 0
         for item in self.output_info:
-            ed = st + item[0]
+            ed_idx = st_idx + item[0]
             if not item[2]:
                 ed_c = st_c + item[0]
                 cond_info.append(tf.constant(
-                    [st, ed, st_c, ed_c, i], dtype=tf.int32))
+                    [st_idx, ed_idx, st_c, ed_c, i], dtype=tf.int32))
                 st_c = ed_c
                 i += 1
 
             output_info.append(tf.constant(
-                [st, ed, int(item[1] == 'softmax')], dtype=tf.int32))
-            st = ed
+                [st_idx, ed_idx, int(item[1] == 'softmax')], dtype=tf.int32))
+            st_idx = ed_idx
 
         self.output_tensor = output_info
         self.cond_tensor = cond_info
@@ -147,19 +148,19 @@ class DataTransformer(object):
               (1 + number of components).
 
         """
-        gm = BGM(
+        vgm = BGM(
             self._n_clusters,
             weight_concentration_prior_type='dirichlet_process',
             weight_concentration_prior=0.001,
             n_init=1
         )
-        gm.fit(data)
-        components = gm.weights_ > self._epsilon
+        vgm.fit(data)
+        components = vgm.weights_ > self._epsilon
         num_components = components.sum()
 
         return {
             'name': column,
-            'model': gm,
+            'model': vgm,
             'components': components,
             'output_info': [(1, 'tanh', 1), (num_components, 'softmax', 1)],
             'output_dimensions': 1 + num_components,
@@ -285,9 +286,9 @@ class DataTransformer(object):
 
         opt_sel = np.zeros(len(data), dtype='int')
         for i in range(len(data)):
-            pp = probs[i] + 1e-6
-            pp = pp / pp.sum()
-            opt_sel[i] = np.random.choice(np.arange(n_opts), p=pp)
+            norm_probs = probs[i] + 1e-6
+            norm_probs = norm_probs / norm_probs.sum()
+            opt_sel[i] = np.random.choice(np.arange(n_opts), p=norm_probs)
 
         idx = np.arange((len(features)))
         features = features[idx, opt_sel].reshape([-1, 1])
@@ -369,22 +370,22 @@ class DataTransformer(object):
         model = meta['model']
         components = meta['components']
 
-        u = data[:, 0]
-        v = data[:, 1:]
+        mean = data[:, 0]
+        variance = data[:, 1:]
 
         if sigma is not None:
-            u = np.random.normal(u, sigma)
+            mean = np.random.normal(mean, sigma)
 
-        u = np.clip(u, -1, 1)
+        mean = np.clip(mean, -1, 1)
         v_t = np.ones((len(data), self._n_clusters)) * -100
-        v_t[:, components] = v
-        v = v_t
+        v_t[:, components] = variance
+        variance = v_t
         means = model.means_.reshape([-1])
         stds = np.sqrt(model.covariances_).reshape([-1])
-        p_argmax = np.argmax(v, axis=1)
+        p_argmax = np.argmax(variance, axis=1)
         std_t = stds[p_argmax]
         mean_t = means[p_argmax]
-        column = u * 4 * std_t + mean_t
+        column = mean * 4 * std_t + mean_t
 
         return column
 

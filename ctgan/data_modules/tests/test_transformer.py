@@ -27,7 +27,8 @@ class TestDataTransformer(TestCase):
         expected_info = [(1, 'tanh', 1), (1, 'softmax', 1), (4, 'softmax', 0)]
         expected_dimensions = 6
         np.testing.assert_equal(transformer.output_info, expected_info)
-        np.testing.assert_equal(transformer.output_dimensions, expected_dimensions)
+        np.testing.assert_equal(
+            transformer.output_dimensions, expected_dimensions)
 
     def test_tensors(self):
         np.random.seed(0)
@@ -52,15 +53,15 @@ class TestDataTransformer(TestCase):
         transformer.fit(data, discrete)
         transformed_data = transformer.transform(data)
         expected_data = np.array([[-0.09027826, 1., 1., 0., 0., 0.],
-                         [0.1340608, 1., 0., 1., 0., 0.],
-                         [-0.01753295, 1., 0., 1., 0., 0.],
-                         [-0.09557786, 1., 1., 0., 0., 0.],
-                         [-0.25904065, 1., 0., 1., 0., 0.],
-                         [0.04062398, 1., 0., 0., 0., 1.],
-                         [-0.24025436, 1., 0., 0., 1., 0.],
-                         [0.3721639, 1., 1., 0., 0., 0.],
-                         [0.46909913, 1., 0., 0., 1., 0.],
-                         [-0.31326372, 1., 1., 0., 0., 0.]])
+                                  [0.1340608, 1., 0., 1., 0., 0.],
+                                  [-0.01753295, 1., 0., 1., 0., 0.],
+                                  [-0.09557786, 1., 1., 0., 0., 0.],
+                                  [-0.25904065, 1., 0., 1., 0., 0.],
+                                  [0.04062398, 1., 0., 0., 0., 1.],
+                                  [-0.24025436, 1., 0., 0., 1., 0.],
+                                  [0.3721639, 1., 1., 0., 0., 0.],
+                                  [0.46909913, 1., 0., 0., 1., 0.],
+                                  [-0.31326372, 1., 1., 0., 0., 0.]])
         np.testing.assert_almost_equal(transformed_data, expected_data)
 
     def test_inverse_transform(self):

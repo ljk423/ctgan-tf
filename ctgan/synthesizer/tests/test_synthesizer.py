@@ -5,8 +5,7 @@ import joblib
 import os
 from unittest import TestCase
 
-from ctgan.utils import generate_data, compare_objects
-from ctgan.data_modules import DataTransformer, ConditionalGenerator
+from ctgan.utils import generate_data
 from ctgan.synthesizer import CTGANSynthesizer
 
 
@@ -32,24 +31,30 @@ class TestSynthesizer(TestCase):
         del self._current_dir
         del self._expected_values
 
-    def test_train(self):
-        np.random.seed(0)
-        tf.random.set_seed(0)
-        data, discrete = generate_data(self._batch_size)
-
+    def _assert_train_equal(self, data, discrete):
         model = CTGANSynthesizer(batch_size=self._batch_size, pac=self._pac)
         self.assertIsNotNone(model)
         model.train(data, discrete, epochs=1)
         outputs = {
-            'output_tensor': [x.numpy() for x in model._transformer.output_tensor],
+            'output_tensor': [x.numpy()
+                              for x in model._transformer.output_tensor],
             'cond_tensor': [x.numpy() for x in model._transformer.cond_tensor],
             'gen_weights':  model._generator.get_weights(),
             'crt_weights': model._critic.get_weights(),
         }
 
+        idx = int(len(discrete) > 0)
         for o in outputs:
             for i in range(len(outputs[o])):
-                self.assertTrue(np.all(outputs[o][i] == self._expected_values[o][i]))
+                self.assertTrue(
+                    np.all(outputs[o][i] == self._expected_values[idx][o][i]))
+
+    def test_train(self):
+        np.random.seed(0)
+        tf.random.set_seed(0)
+        data, discrete = generate_data(self._batch_size)
+        self._assert_train_equal(data, [])
+        self._assert_train_equal(data, discrete)
 
     def test_sample(self):
         np.random.seed(0)

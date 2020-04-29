@@ -2,7 +2,7 @@ import numpy as np
 from unittest import TestCase
 
 from ctgan.utils import generate_data
-from ctgan.data_modules import Sampler, DataTransformer
+from ctgan.data_modules import DataSampler, DataTransformer
 
 
 class TestSampler(TestCase):
@@ -24,7 +24,7 @@ class TestSampler(TestCase):
         transformer.fit(data, discrete)
         train_data = transformer.transform(data)
 
-        sampler = Sampler(train_data, transformer.output_info)
+        sampler = DataSampler(train_data, transformer.output_info)
         output = sampler.sample(1, [0, 0], [0, 0])
         expected_output = np.array(
             [[0.3721639, 1., 1., 0., 0., 0.],
@@ -39,7 +39,7 @@ class TestSampler(TestCase):
         transformer.fit(data, [])
         train_data = transformer.transform(data)
 
-        sampler = Sampler(train_data, transformer.output_info)
+        sampler = DataSampler(train_data, transformer.output_info)
         output = sampler.sample(1, None, None)
         expected_output = np.array(
             [[0.46909913, 1., 0.08564136, 0., 1.]])

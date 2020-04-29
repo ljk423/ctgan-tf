@@ -54,6 +54,8 @@ class Generator(tf.keras.Model):
     ----------
     .. bibliography:: ../bibtex/refs.bib
     """
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, input_dim, gen_dims, data_dim, transformer_info, tau):
         super(Generator, self).__init__()
 

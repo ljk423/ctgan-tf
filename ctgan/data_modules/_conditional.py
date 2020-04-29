@@ -4,7 +4,7 @@ This module contains the definition of the ConditionalGenerator.
 import numpy as np
 
 
-class ConditionalGenerator(object):
+class ConditionalGenerator:
     """Conditional Generator.
 
     This generator is used along with the model defined in
@@ -51,11 +51,12 @@ class ConditionalGenerator(object):
             A new instance with the same internal data as the one
             provided by `in_dict`.
         """
-        dt = ConditionalGenerator()
-        dt.__dict__ = in_dict
-        return dt
+        new_instance = ConditionalGenerator()
+        new_instance.__dict__ = in_dict
+        return new_instance
 
     def __init__(self, data=None, output_info=None, log_frequency=None):
+        # pylint: disable=too-many-statements
         if data is None or output_info is None or log_frequency is None:
             return
 
@@ -71,7 +72,7 @@ class ConditionalGenerator(object):
                 skip = True
                 continue
 
-            elif item[1] == 'softmax':
+            if item[1] == 'softmax':
                 if skip:
                     skip = False
                     start += item[0]
@@ -99,7 +100,7 @@ class ConditionalGenerator(object):
                 skip = True
                 start += item[0]
                 continue
-            elif item[1] == 'softmax':
+            if item[1] == 'softmax':
                 if skip:
                     start += item[0]
                     skip = False
@@ -120,9 +121,9 @@ class ConditionalGenerator(object):
         self._interval = np.asarray(self._interval)
 
     def _random_choice_prob_index(self, idx):
-        a = self._p[idx]
-        r = np.expand_dims(np.random.rand(a.shape[0]), axis=1)
-        return (a.cumsum(axis=1) > r).argmax(axis=1)
+        prob = self._p[idx]
+        rand = np.expand_dims(np.random.rand(prob.shape[0]), axis=1)
+        return (prob.cumsum(axis=1) > rand).argmax(axis=1)
 
     def sample(self, batch_size):
         """Sample a conditional vector for the given batch of data.
@@ -141,25 +142,25 @@ class ConditionalGenerator(object):
             None, if the training data did not contain any discrete columns.
             A tuple containing:
 
-            - `vec`: conditional vector
-            - `mask`: mask vector
-            - `idx`: index of the mask vector which is set to 1
-            - `opt_prime`: index of the column vector which is set to 1
+            - `cond`: conditional vector
+            - `mask`: mask vector (the selected column will be 1, the other 0)
+            - `col_idx`: index of the mask vector which is set to 1
+            - `opt_idx`: index of the column vector which is set to 1
 
         """
         if self._n_col == 0:
             return None
 
-        idx = np.random.choice(np.arange(self._n_col), batch_size)
+        col_idx = np.random.choice(np.arange(self._n_col), batch_size)
 
-        vec = np.zeros((batch_size, self.n_opt), dtype='float32')
+        cond = np.zeros((batch_size, self.n_opt), dtype='float32')
         mask = np.zeros((batch_size, self._n_col), dtype='float32')
 
-        mask[np.arange(batch_size), idx] = 1
-        opt_prime = self._random_choice_prob_index(idx)
-        opt = self._interval[idx, 0] + opt_prime
-        vec[np.arange(batch_size), opt] = 1
-        return vec, mask, idx, opt_prime
+        mask[np.arange(batch_size), col_idx] = 1
+        opt_idx = self._random_choice_prob_index(col_idx)
+        opt = self._interval[col_idx, 0] + opt_idx
+        cond[np.arange(batch_size), opt] = 1
+        return cond, mask, col_idx, opt_idx
 
     def sample_zero(self, batch_size):
         """Sample a conditional vector for the given batch of data.

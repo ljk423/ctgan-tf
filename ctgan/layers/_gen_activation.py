@@ -1,12 +1,11 @@
 """
 Conditional Generator activation layer definition.
 """
-
-from ._layer_utils import init_bounded
-
+from functools import partial
 import tensorflow as tf
 import tensorflow_probability as tfp
-from functools import partial
+
+from ._layer_utils import init_bounded
 
 
 class GenActivation(tf.keras.layers.Layer):
@@ -36,6 +35,7 @@ class GenActivation(tf.keras.layers.Layer):
     tau: float
         Gumbel-Softmax non-negative scalar temperature.
     """
+    # pylint: disable=too-few-public-methods
 
     def __init__(self, input_dim, output_dim, transformer_info, tau):
         super(GenActivation, self).__init__()
@@ -110,10 +110,10 @@ class GenActivation(tf.keras.layers.Layer):
         gumbel_dist = tfp.distributions.Gumbel(loc=0, scale=1)
         gumbels = gumbel_dist.sample(tf.shape(logits))
         gumbels = (logits + gumbels) / tau
-        y = tf.nn.softmax(gumbels, dim)
+        output = tf.nn.softmax(gumbels, dim)
 
         if hard:
-            index = tf.math.reduce_max(y, 1, keepdims=True)
-            y_hard = tf.cast(tf.equal(y, index), y.dtype)
-            y = tf.stop_gradient(y_hard - y) + y
-        return y
+            index = tf.math.reduce_max(output, 1, keepdims=True)
+            output_hard = tf.cast(tf.equal(output, index), output.dtype)
+            output = tf.stop_gradient(output_hard - output) + output
+        return output

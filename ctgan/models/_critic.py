@@ -1,9 +1,8 @@
 """
 Critic model definition.
 """
-
-import tensorflow as tf
 from functools import partial
+import tensorflow as tf
 
 from ..layers import init_bounded
 
@@ -43,6 +42,8 @@ class Critic(tf.keras.Model):
     ----------
     .. bibliography:: ../bibtex/refs.bib
     """
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, input_dim, dis_dims, pac):
         super(Critic, self).__init__()
         self._pac = pac
@@ -67,6 +68,7 @@ class Critic(tf.keras.Model):
             bias_initializer=partial(init_bounded, dim=dim))]
 
     def _reshape_func(self, inputs, **kwargs):
+        # pylint: disable=unused-argument
         """
         Method that reshapes the input tensor according the Pac size.
         For more details consult the original CTGAN paper

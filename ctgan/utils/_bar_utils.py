@@ -4,8 +4,8 @@ They were implemented by
 `Drew Szurko <https://github.com/drewszurko/tensorflow-WGAN-GP>`.
 """
 import shutil
-from tqdm.autonotebook import tqdm
 from functools import reduce
+from tqdm.autonotebook import tqdm
 
 
 class ProgressBar(tqdm):
@@ -73,12 +73,6 @@ class ProgressBar(tqdm):
             Dictionary mapping the metrics to their current values.
 
         """
-        for m in metrics:
-            self.postfix[m] = f'{metrics[m].result():6.3f}'
+        for met in metrics:
+            self.postfix[met] = f'{metrics[met].result():6.3f}'
         super(ProgressBar, self).update(self._batch_size)
-
-    def close(self):
-        """
-        Closes the current progress bar.
-        """
-        super(ProgressBar, self).close()

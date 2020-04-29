@@ -15,6 +15,17 @@ class TestLayerUtils(TestCase):
         del self._input_dim
         del self._output_dim
 
+    def test_no_args(self):
+        self.assertRaises(
+            AttributeError,
+            init_bounded,
+            (self._input_dim, self._output_dim))
+        self.assertRaises(
+            AttributeError,
+            init_bounded,
+            (self._input_dim, self._output_dim),
+            dim=self._input_dim)
+
     def test_init_layer(self):
         fc = tf.keras.layers.Dense(
             self._output_dim, input_dim=(self._input_dim,),

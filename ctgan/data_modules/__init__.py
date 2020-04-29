@@ -7,11 +7,11 @@ details, please consult sections 4.2-4.3 of :cite:`xu2019modeling`.
 """
 
 from ._conditional import ConditionalGenerator
-from ._sampler import Sampler
+from ._sampler import DataSampler
 from ._transformer import DataTransformer
 
 __all__ = [
     'ConditionalGenerator',
-    'Sampler',
+    'DataSampler',
     'DataTransformer'
 ]

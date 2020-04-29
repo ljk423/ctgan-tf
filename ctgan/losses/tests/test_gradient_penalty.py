@@ -23,6 +23,7 @@ class TestGradientPenalty(TestCase):
         fake = tf.random.uniform([self._batch_size, self._input_dim])
 
         gp = gradient_penalty(
-            lambda x: x**2, real, fake, pac=self._pac, gp_lambda=self._gp_lambda)
+            lambda x: x**2, real, fake,
+            pac=self._pac, gp_lambda=self._gp_lambda)
         expected_output = tf.constant(1002.7697, dtype=tf.float32)
         tf.assert_equal(gp, expected_output)

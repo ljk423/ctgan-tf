@@ -10,12 +10,12 @@ implementation can be found in the authors' `GitHub repository
 
 import datetime
 import os
+from functools import partial
 import joblib
 import numpy as np
 import tensorflow as tf
-from functools import partial
 
-from ..data_modules import ConditionalGenerator, Sampler, DataTransformer
+from ..data_modules import ConditionalGenerator, DataSampler, DataTransformer
 from ..models import Generator, Critic
 from ..losses import conditional_loss, gradient_penalty
 from ..utils import ProgressBar
@@ -133,6 +133,7 @@ class CTGANSynthesizer:
     4   67   Private  117769           11th  ...   <=50K
 
     """
+    # pylint: disable=too-many-instance-attributes
 
     def __init__(self,
                  file_path=None,
@@ -145,6 +146,7 @@ class CTGANSynthesizer:
                  batch_size=500,
                  gp_lambda=10.0,
                  tau=0.2):
+        # pylint: disable=too-many-arguments, too-many-locals
         if file_path is not None:
             self._load(file_path)
             return
@@ -179,6 +181,7 @@ class CTGANSynthesizer:
               discrete_columns=tuple(),
               epochs=300,
               log_frequency=True):
+        # pylint: disable=too-many-locals
         """Fit the CTGAN according to the provided train_data.
 
         Parameters
@@ -207,7 +210,9 @@ class CTGANSynthesizer:
         train_data = self._transformer.transform(train_data)
         self._transformer.generate_tensors()
 
-        self._data_sampler = Sampler(train_data, self._transformer.output_info)
+        self._data_sampler = DataSampler(
+            train_data,
+            self._transformer.output_info)
         data_dim = self._transformer.output_dimensions
         self._cond_generator = ConditionalGenerator(
             train_data,
@@ -244,24 +249,25 @@ class CTGANSynthesizer:
         # Train models
         steps_per_epoch = max(len(train_data) // self._batch_size, 1)
         for epoch in range(epochs):
-            bar = ProgressBar(
+            p_bar = ProgressBar(
                 len(train_data), self._batch_size, epoch, epochs, metrics)
             for _ in range(steps_per_epoch):
-                c_loss, gp = self._train_c()
+                c_loss, g_p = self._train_c()
                 metrics['c_loss'](c_loss)
-                metrics['gp'](gp)
+                metrics['gp'](g_p)
                 g_loss, cond_loss = self._train_g()
                 metrics['g_loss'](g_loss)
                 metrics['cond_loss'](cond_loss)
-                bar.update(metrics)
+                p_bar.update(metrics)
 
             if self._log_dir is not None:
                 with train_summary_writer.as_default():
-                    for m in metrics:
-                        tf.summary.scalar(m, metrics[m].result(), step=epoch)
-                        metrics[m].reset_states()
-            bar.close()
-            del bar
+                    for met in metrics:
+                        tf.summary.scalar(
+                            met, metrics[met].result(), step=epoch)
+                        metrics[met].reset_states()
+            p_bar.close()
+            del p_bar
 
     @tf.function
     def train_c_step(self, fake_cat, real_cat):
@@ -284,20 +290,20 @@ class CTGANSynthesizer:
             Tuple containing (critic_loss, gradient_penalty).
 
         """
-        with tf.GradientTape() as t:
+        with tf.GradientTape() as tape:
             y_fake = self._critic(fake_cat, training=True)
             y_real = self._critic(real_cat, training=True)
 
-            gp = gradient_penalty(
+            g_p = gradient_penalty(
                 partial(self._critic, training=True), real_cat, fake_cat,
                 self._pac, self._gp_lambda)
             loss = -(tf.reduce_mean(y_real) - tf.reduce_mean(y_fake))
-            c_loss = loss + gp
+            c_loss = loss + g_p
 
-        grad = t.gradient(c_loss, self._critic.trainable_variables)
+        grad = tape.gradient(c_loss, self._critic.trainable_variables)
         self._c_opt.apply_gradients(
             zip(grad, self._critic.trainable_variables))
-        return loss, gp
+        return loss, g_p
 
     def _train_c(self):
         """Critic training method.
@@ -318,26 +324,26 @@ class CTGANSynthesizer:
         # Generate data_modules vector
         cond_vec = self._cond_generator.sample(self._batch_size)
         if cond_vec is None:
-            c1, m1, col, opt = None, None, None, None
-            c1 = tf.constant(-1)
-            real = self._data_sampler.sample(self._batch_size, col, opt)
+            _, _, col_idx, opt_idx = None, None, None, None
+            real = self._data_sampler.sample(
+                self._batch_size, col_idx, opt_idx)
         else:
-            c1, m1, col, opt = cond_vec
-            c1 = tf.convert_to_tensor(c1)
-            fake_z = tf.concat([fake_z, c1], axis=1)
+            cond, _, col_idx, opt_idx = cond_vec
+            cond = tf.convert_to_tensor(cond)
+            fake_z = tf.concat([fake_z, cond], axis=1)
 
             perm = np.arange(self._batch_size)
             np.random.shuffle(perm)
             real = self._data_sampler.sample(
-                self._batch_size, col[perm], opt[perm])
-            c2 = tf.gather(c1, perm)
+                self._batch_size, col_idx[perm], opt_idx[perm])
+            cond_perm = tf.gather(cond, perm)
 
         fake, fake_act = self._generator(fake_z, training=True)
         real = tf.convert_to_tensor(real.astype('float32'))
 
-        if c1 is not None:
-            fake_cat = tf.concat([fake_act, c1], axis=1)
-            real_cat = tf.concat([real, c2], axis=1)
+        if cond_vec is not None:
+            fake_cat = tf.concat([fake_act, cond], axis=1)
+            real_cat = tf.concat([real, cond_perm], axis=1)
         else:
             fake_cat = fake
             real_cat = real
@@ -363,13 +369,13 @@ class CTGANSynthesizer:
             Tuple containing (generator_loss, conditional_loss = 0).
 
         """
-        with tf.GradientTape() as t:
-            fake, fake_act = self._generator(fake_z, training=True)
+        with tf.GradientTape() as tape:
+            _, fake_act = self._generator(fake_z, training=True)
             y_fake = self._critic(fake_act, training=True)
             g_loss = -tf.reduce_mean(y_fake)
 
         weights = self._generator.trainable_variables
-        grad = t.gradient(g_loss, weights)
+        grad = tape.gradient(g_loss, weights)
         grad = [grad[i] + self._l2_scale * weights[i]
                 for i in range(len(grad))]
         self._g_opt.apply_gradients(
@@ -377,7 +383,7 @@ class CTGANSynthesizer:
         return g_loss, tf.constant(0, dtype=tf.float32)
 
     @tf.function
-    def train_g_cond_step(self, fake_z, c1, m1, cond_info):
+    def train_g_cond_step(self, fake_z, cond, mask, cond_info):
         """Generator training step for datasets that contain discrete
         variables, therefore, we need to compute the conditional loss.
 
@@ -389,10 +395,10 @@ class CTGANSynthesizer:
         fake_z: tf.Tensor
             Randomly sample noise, concatenated with a cond vector.
 
-        c1: tf.Tensor
+        cond: tf.Tensor
             Conditional vector.
 
-        m1: tf.Tensor
+        mask: tf.Tensor
             Mask vector.
 
         cond_info: tf.Tensor
@@ -404,15 +410,15 @@ class CTGANSynthesizer:
             Tuple containing (generator_loss, conditional_loss).
 
         """
-        with tf.GradientTape() as t:
+        with tf.GradientTape() as tape:
             fake, fake_act = self._generator(fake_z, training=True)
             y_fake = self._critic(
-                tf.concat([fake_act, c1], axis=1), training=True)
-            cond_loss = conditional_loss(cond_info, fake, c1, m1)
+                tf.concat([fake_act, cond], axis=1), training=True)
+            cond_loss = conditional_loss(cond_info, fake, cond, mask)
             g_loss = -tf.reduce_mean(y_fake) + cond_loss
 
         weights = self._generator.trainable_variables
-        grad = t.gradient(g_loss, weights)
+        grad = tape.gradient(g_loss, weights)
         grad = [grad[i] + self._l2_scale * weights[i]
                 for i in range(len(grad))]
         self._g_opt.apply_gradients(
@@ -439,19 +445,19 @@ class CTGANSynthesizer:
         if cond_vec is None:
             return self.train_g_step(fake_z)
 
-        c1, m1, col, opt = cond_vec
-        c1 = tf.convert_to_tensor(c1, name="c1")
-        m1 = tf.convert_to_tensor(m1, name="m1")
-        fake_z = tf.concat([fake_z, c1], axis=1, name="fake_z")
+        cond, mask, _, _ = cond_vec
+        cond = tf.convert_to_tensor(cond, name="c1")
+        mask = tf.convert_to_tensor(mask, name="m1")
+        fake_z = tf.concat([fake_z, cond], axis=1, name="fake_z")
         return self.train_g_cond_step(
-            fake_z, c1, m1, self._transformer.cond_tensor)
+            fake_z, cond, mask, self._transformer.cond_tensor)
 
-    def sample(self, n):
+    def sample(self, n_samples):
         """Sample data similar to the training data.
 
         Parameters
         ----------
-        n: int
+        n_samples: int
             Number of rows of the output sample.
 
         Returns
@@ -464,23 +470,23 @@ class CTGANSynthesizer:
         ValueError
             If ``n`` is equal or less than 0.
         """
-        if n <= 0:
+        if n_samples <= 0:
             raise ValueError("Invalid number of samples.")
 
-        steps = n // self._batch_size + 1
+        steps = n_samples // self._batch_size + 1
         data = []
         for _ in tf.range(steps):
             fake_z = tf.random.normal([self._batch_size, self._z_dim])
             cond_vec = self._cond_generator.sample_zero(self._batch_size)
             if cond_vec is not None:
-                c1 = tf.constant(cond_vec)
-                fake_z = tf.concat([fake_z, c1], axis=1)
+                cond = tf.constant(cond_vec)
+                fake_z = tf.concat([fake_z, cond], axis=1)
 
             fake = self._generator(fake_z)[1]
             data.append(fake.numpy())
 
         data = np.concatenate(data, axis=0)
-        data = data[:n]
+        data = data[:n_samples]
         return self._transformer.inverse_transform(data, None)
 
     def dump(self, file_path, overwrite=False):

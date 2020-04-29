@@ -28,4 +28,5 @@ class TestResidualLayer(TestCase):
             [[0.3448831, 0.1013758, 0., 0.4421106, 0., 0.2919751,
               0.2065665, 0.5353907, 0.5612575, 0.4166745]],
             dtype=tf.float32)
-        np.testing.assert_almost_equal(outputs.numpy(), expected_outputs.numpy())
+        np.testing.assert_almost_equal(
+            outputs.numpy(), expected_outputs.numpy())

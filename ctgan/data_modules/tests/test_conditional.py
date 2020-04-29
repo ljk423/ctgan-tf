@@ -24,7 +24,8 @@ class TestConditionalGenerator(TestCase):
         transformer.fit(data, discrete)
         train_data = transformer.transform(data)
 
-        cond_gen = ConditionalGenerator(train_data, transformer.output_info, True)
+        cond_gen = ConditionalGenerator(
+            train_data, transformer.output_info, True)
         output = cond_gen.sample(self._batch_size)
         self.assertIsNotNone(output)
         c, m, col, opt = output
@@ -80,10 +81,10 @@ class TestConditionalGenerator(TestCase):
         transformer.fit(data, [])
         train_data = transformer.transform(data)
 
-        cond_gen = ConditionalGenerator(train_data, transformer.output_info, True)
+        cond_gen = ConditionalGenerator(
+            train_data, transformer.output_info, True)
         output = cond_gen.sample(self._batch_size)
         self.assertIsNone(output)
 
         output = cond_gen.sample_zero(self._batch_size)
         self.assertIsNone(output)
-

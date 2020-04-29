@@ -1,3 +1,6 @@
+"""
+Module containing the definition of the CLI methods.
+"""
 import argparse
 import pandas as pd
 

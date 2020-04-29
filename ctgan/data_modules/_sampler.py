@@ -4,7 +4,7 @@ This module contains the definition of the Sampler.
 import numpy as np
 
 
-class Sampler(object):
+class DataSampler:
     """Data Sampler.
 
     It samples real data from the original dataset.
@@ -25,52 +25,53 @@ class Sampler(object):
         normalization and OneHot encoding.
 
     """
+    # pylint: disable=too-few-public-methods
 
     def __init__(self, data, output_info):
-        super(Sampler, self).__init__()
+        super(DataSampler, self).__init__()
         self._data = data
         self._model = []
         self._n = len(data)
 
-        st = 0
+        st_idx = 0
         skip = False
         for item in output_info:
             if item[1] == 'tanh':
-                st += item[0]
+                st_idx += item[0]
                 skip = True
             elif item[1] == 'softmax':
                 if skip:
                     skip = False
-                    st += item[0]
+                    st_idx += item[0]
                     continue
 
-                ed = st + item[0]
+                ed_idx = st_idx + item[0]
                 tmp = []
                 for j in range(item[0]):
-                    tmp.append(np.nonzero(data[:, st + j])[0])
+                    tmp.append(np.nonzero(data[:, st_idx + j])[0])
 
                 self._model.append(tmp)
-                st = ed
+                st_idx = ed_idx
             else:
                 assert 0
 
-        assert st == data.shape[1]
+        assert st_idx == data.shape[1]
 
-    def sample(self, n, col, opt):
+    def sample(self, n_samples, col_idx, opt_idx):
         """Sample a batch of training data.
 
         Parameters
         ----------
-        n: int
+        n_samples: int
             Size of the batch.
 
-        col: np.ndarray
+        col_idx: np.ndarray
             If `col` is None, then there won't be any restrictions to which
             data can be sampled. Otherwise, assuming that discrete variables
             are OneHot encoded, it samples data that has the value of the
             index `opt` on column `col` set to 1.
 
-        opt: np.ndarray
+        opt_idx: np.ndarray
             If `col` is None, then there won't be any restrictions to which
             data can be sampled. Otherwise, assuming that discrete variables
             are OneHot encoded, it samples data that has the value of the
@@ -80,12 +81,12 @@ class Sampler(object):
         -------
             Real training data.
         """
-        if col is None:
-            idx = np.random.choice(np.arange(self._n), n)
+        if col_idx is None:
+            idx = np.random.choice(np.arange(self._n), n_samples)
             return self._data[idx]
 
         idx = []
-        for c, o in zip(col, opt):
-            idx.append(np.random.choice(self._model[c][o]))
+        for col, opt in zip(col_idx, opt_idx):
+            idx.append(np.random.choice(self._model[col][opt]))
 
         return self._data[idx]

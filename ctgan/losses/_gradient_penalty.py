@@ -4,7 +4,7 @@ Methods to compute gradient penalty.
 import tensorflow as tf
 
 
-def gradient_penalty(f, real, fake, pac=10, gp_lambda=10.0):
+def gradient_penalty(func, real, fake, pac=10, gp_lambda=10.0):
     """Calculates the gradient penalty loss for a batch of "averaged" samples.
 
     In Improved WGANs, the 1-Lipschitz constraint is enforced by adding a term
@@ -25,7 +25,7 @@ def gradient_penalty(f, real, fake, pac=10, gp_lambda=10.0):
 
     Parameters
     ----------
-    f: function
+    func: function
         The gradient penalty will be computed over the output of this
         method.
 
@@ -52,12 +52,11 @@ def gradient_penalty(f, real, fake, pac=10, gp_lambda=10.0):
     alpha = tf.reshape(alpha, [-1, real.shape[1]])
 
     interpolates = alpha * real + ((1 - alpha) * fake)
-    with tf.GradientTape() as t:
-        t.watch(interpolates)
-        pred = f(interpolates)
-    grad = t.gradient(pred, [interpolates])[0]
+    with tf.GradientTape() as tape:
+        tape.watch(interpolates)
+        pred = func(interpolates)
+    grad = tape.gradient(pred, [interpolates])[0]
     grad = tf.reshape(grad, tf.constant([-1, pac * real.shape[1]], tf.int32))
 
     slopes = tf.math.reduce_euclidean_norm(grad, axis=1)
-    gp = tf.reduce_mean((slopes - 1.) ** 2) * gp_lambda
-    return gp
+    return tf.reduce_mean((slopes - 1.) ** 2) * gp_lambda
