@@ -29,8 +29,8 @@ class GenActivation(tf.keras.layers.Layer):
     output_dim: int
         Fully Connected layer output dimension.
 
-    transformer_info: tf.Tensor
-        Tensor containing information regarding the
+    transformer_info: list[tf.Tensor]
+        List of tensors containing information regarding the
         activation functions of each data columns.
 
     tau: float
@@ -112,7 +112,7 @@ class GenActivation(tf.keras.layers.Layer):
         y = tf.nn.softmax(gumbels, dim)
 
         if hard:
-            index = tf.math.reduce_max(y, 1, keep_dims=True)
+            index = tf.math.reduce_max(y, 1, keepdims=True)
             y_hard = tf.cast(tf.equal(y, index), y.dtype)
             y = tf.stop_gradient(y_hard - y) + y
         return y

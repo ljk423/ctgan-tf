@@ -19,6 +19,7 @@ class ResidualLayer(tf.keras.layers.Layer):
     ----------
     input_dim: int
         Fully Connected layer input dimension.
+
     output_dim: int
         Fully Connected layer output dimension.
     """
@@ -41,6 +42,7 @@ class ResidualLayer(tf.keras.layers.Layer):
         ----------
         inputs: tf.Tensor
             Batch of data.
+
         kwargs: dict
             (training=bool).
 

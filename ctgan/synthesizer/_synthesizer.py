@@ -17,7 +17,7 @@ from functools import partial
 from ..data_modules import ConditionalGenerator, Sampler, DataTransformer
 from ..models import Generator, Critic
 from ..losses import conditional_loss, gradient_penalty
-from ._bar_utils import ProgressBar
+from ..utils import ProgressBar
 
 
 class CTGANSynthesizer:
@@ -109,25 +109,25 @@ class CTGANSynthesizer:
     >>> from ctgan.cli import load_demo
     >>> data, discrete = load_demo()
     >>> data.head(5)
-       age          workclass  fnlwgt   education  education-num       marital-status          occupation    relationship    race      sex  capital-gain  capital-loss  hours-per-week  native-country  income
-    0   39          State-gov   77516   Bachelors             13        Never-married        Adm-clerical   Not-in-family   White     Male          2174             0              40   United-States   <=50K
-    1   50   Self-emp-not-inc   83311   Bachelors             13   Married-civ-spouse     Exec-managerial         Husband   White     Male             0             0              13   United-States   <=50K
-    2   38            Private  215646     HS-grad              9             Divorced   Handlers-cleaners   Not-in-family   White     Male             0             0              40   United-States   <=50K
-    3   53            Private  234721        11th              7   Married-civ-spouse   Handlers-cleaners         Husband   Black     Male             0             0              40   United-States   <=50K
-    4   28            Private  338409   Bachelors             13   Married-civ-spouse      Prof-specialty            Wife   Black   Female             0             0              40            Cuba   <=50K
+       age          workclass  fnlwgt   education  education-num
+    0   39          State-gov   77516   Bachelors             13
+    1   50   Self-emp-not-inc   83311   Bachelors             13
+    2   38            Private  215646     HS-grad              9
+    3   53            Private  234721        11th              7
+    4   28            Private  338409   Bachelors             13
     >>> from ctgan.synthesizer import CTGANSynthesizer
     >>> model = CTGANSynthesizer()
     >>> model.train(data, discrete, epochs=1)
     Epoch 1/1
-    32500/32500 |██████████████████████████████████████████████████████████████████████████████████| 3354.54samples/s  ETA: 00:00  Elapsed Time: 00:09  g_loss: 2.065  cond_loss: 2.122  c_loss:-0.526  gp: 1.089
+    32500/32500 |██████| 3354.54samples/s  ETA: 00:00  Elapsed Time: 00:09  g_loss: 2.065  cond_loss: 2.122  c_loss:-0.526  gp: 1.089
     >>> s = model.sample(5)
     >>> s.head(5)
-       age workclass  fnlwgt      education  education-num       marital-status        occupation relationship                 race      sex  capital-gain  capital-loss  hours-per-week  native-country  income
-    0   74   Private  168809   Some-college             10   Married-civ-spouse     Other-service         Wife                White   Female          -125             4              23         England    >50K
-    1   51   Private  157349        HS-grad             13        Never-married     Other-service    Own-child                White     Male          -147            -1              39   United-States    >50K
-    2   20   Private  101469           11th             10             Divorced   Exec-managerial      Husband   Amer-Indian-Eskimo   Female            -1             3              39          Canada    >50K
-    3   42   Private  225237           11th             12   Married-civ-spouse      Adm-clerical    Own-child                White   Female           -47             4              39        Columbia    >50K
-    4   67   Private  117769           11th             13        Never-married     Other-service    Unmarried                Black     Male           -32             0              39   United-States   <=50K
+       age workclass  fnlwgt      education  education-num
+    0   74   Private  168809   Some-college             10
+    1   51   Private  157349        HS-grad             13
+    2   20   Private  101469           11th             10
+    3   42   Private  225237           11th             12
+    4   67   Private  117769           11th             13
 
     """
     def __init__(self,
