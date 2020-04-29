@@ -16,8 +16,9 @@ class ConditionalGenerator(object):
         Transformed input data by :class:`ctgan.data_modules.DataTransformer`.
 
     output_info: list[tuple], default=None
-        List containing metadata about the data columns of the original dataset,
-        namely the number of columns where to apply a given activation function.
+        List containing metadata about the data columns of the original
+        dataset, namely the number of columns where to apply a given
+        activation function.
 
     log_frequency: bool, default=None
         Whether to use log frequency of categorical levels in conditional

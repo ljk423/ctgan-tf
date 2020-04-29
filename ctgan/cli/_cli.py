@@ -11,12 +11,15 @@ def _parse_args():
     Returns
     -------
     argparse.Namespace
-        The namespace containing the CLI arguments and their respective values.
+        The namespace containing the CLI arguments
+        and their respective values.
     """
-    parser = argparse.ArgumentParser(description='CTGAN Command Line Interface')
+    parser = argparse.ArgumentParser(
+        description='CTGAN Command Line Interface')
     parser.add_argument('-f', '--file_path', default=None, type=str,
-                        help='File path to where a CTGAN Synthesizer model is stored.'
-                             ' If this value is None, a new instance will be created.')
+                        help='File path to where a CTGAN Synthesizer model is '
+                             'stored. If this value is None, a new instance '
+                             'will be created.')
     parser.add_argument('-l', '--log_dir', default=None, type=str,
                         help='Directory to where log files will be stored.')
     parser.add_argument('-z', '--z_dim', default=128, type=int,
@@ -46,7 +49,8 @@ def _parse_args():
                         help='Path of the model output file')
     parser.add_argument('num_samples', type=int,
                         help='Number of rows to sample.')
-    parser.add_argument('output_data', help='Path of the synthetic output file')
+    parser.add_argument('output_data',
+                        help='Path of the synthetic output file')
     return parser.parse_args()
 
 
@@ -151,17 +155,18 @@ def cli():
     --------
     >>> from ctgan.cli import cli()
     >>> cli()
-    usage:  [-h] [-f FILE_PATH] [-l LOG_DIR] [-z Z_DIM] [-p PAC] [-g GEN_DIMS]
-            [-c CRT_DIMS] [-s L2_SCALE] [-b BATCH_SIZE] [-w GP_LAMBDA] [-t TAU]
-            [-e EPOCHS] [-d DISCRETE_COLUMNS] [-i TRAINING_DATA] [-o OUTPUT_MODEL]
-            num_samples output_data
+    usage: [-h] [-f FILE_PATH] [-l LOG_DIR] [-z Z_DIM] [-p PAC] [-g GEN_DIMS]
+           [-c CRT_DIMS] [-s L2_SCALE] [-b BATCH_SIZE] [-w GP_LAMBDA] [-t TAU]
+           [-e EPOCHS] [-d DISCRETE_COLUMNS] [-i TRAINING_DATA]
+           [-o OUTPUT_MODEL] num_samples output_data
 
     """
     args = _parse_args()
     args.gen_dims = _parse_dims(args.gen_dims)
     args.crt_dims = _parse_dims(args.crt_dims)
 
-    data, discrete_columns = _read_csv(args.training_data, args.discrete_columns)
+    data, discrete_columns = _read_csv(
+        args.training_data, args.discrete_columns)
 
     model = CTGANSynthesizer(
         file_path=args.file_path,
@@ -187,4 +192,3 @@ def cli():
 
     if args.output_model:
         model.dump(args.output_model, overwrite=True)
-

@@ -11,9 +11,10 @@ def gradient_penalty(f, real, fake, pac=10, gp_lambda=10.0):
     to the loss function that penalizes the network if the gradient norm moves
     away from 1. However, it is impossible to evaluate this function at all
     points in the input space. The compromise used in the paper is to choose
-    random points on the lines between real and generated samples, and check the
-    gradients at these points. Note that it is the gradient w.r.t. the input
-    averaged samples, not the weights of the discriminator, that we're penalizing!
+    random points on the lines between real and generated samples, and check
+    the gradients at these points. Note that it is the gradient w.r.t. the
+    input averaged samples, not the weights of the discriminator,
+    that we're penalizing!
 
     In order to evaluate the gradients, we must first run samples through the
     generator and evaluate the loss. Then we get the gradients of the
@@ -60,4 +61,3 @@ def gradient_penalty(f, real, fake, pac=10, gp_lambda=10.0):
     slopes = tf.math.reduce_euclidean_norm(grad, axis=1)
     gp = tf.reduce_mean((slopes - 1.) ** 2) * gp_lambda
     return gp
-

@@ -1,3 +1,6 @@
+"""
+Top-level module for CTGAN.
+"""
 from . import data_modules
 from . import layers
 from . import losses

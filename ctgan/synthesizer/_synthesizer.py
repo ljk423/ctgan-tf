@@ -1,10 +1,11 @@
 """
 Conditional Tabular Generative Adversarial Network Synthesizer module.
 
-It contains ``CTGANSynthesizer``, a class containing a Tensorflow implementation
-of the work published in `Modeling Tabular data using Conditional
-GAN <https://arxiv.org/abs/1907.00503>`_. The original PyTorch implementation
-can be found in the authors' `GitHub repository <https://github.com/sdv-dev/CTGAN>`_.
+It contains ``CTGANSynthesizer``, a class containing a Tensorflow
+implementation of the work published in `Modeling Tabular data using
+Conditional GAN <https://arxiv.org/abs/1907.00503>`_. The original PyTorch
+implementation can be found in the authors' `GitHub repository
+<https://github.com/sdv-dev/CTGAN>`_.
 """
 
 import datetime
@@ -23,8 +24,8 @@ from ._bar_utils import ProgressBar
 class CTGANSynthesizer:
     """Conditional Table GAN Synthesizer.
 
-    This is the core class of the CTGAN project, where the different components
-    are orchestrated together.
+    This is the core class of the CTGAN project, where the different
+    components are orchestrated together.
     For more details about the process, please check the original PyTorch
     solution (designed by the authors) which is available on their
     `GitHub <https://github.com/sdv-dev/CTGAN>`_, and their Modeling Tabular
@@ -62,7 +63,8 @@ class CTGANSynthesizer:
         L2 regularization (:math:`\\lambda`) added to the Generator optimizer.
         This is computed by adding the weights scaled by :math:`\\lambda` to
         the computed gradients :cite:`2018fastadam`:
-        :math:`\\Delta_{\\mathcal{w}}' = \\Delta_{\\mathcal{W}} + \\lambda * \\mathcal{W}`
+        :math:`\\Delta_{\\mathcal{w}}' = \\Delta_{\\mathcal{W}} +
+                \\lambda * \\mathcal{W}`
 
     batch_size: int, default=500
         Number of samples to process at each training step.
@@ -109,27 +111,29 @@ class CTGANSynthesizer:
     >>> from ctgan.cli import load_demo
     >>> data, discrete = load_demo()
     >>> data.head(5)
-       age          workclass  fnlwgt   education  education-num       marital-status          occupation    relationship    race      sex  capital-gain  capital-loss  hours-per-week  native-country  income
-    0   39          State-gov   77516   Bachelors             13        Never-married        Adm-clerical   Not-in-family   White     Male          2174             0              40   United-States   <=50K
-    1   50   Self-emp-not-inc   83311   Bachelors             13   Married-civ-spouse     Exec-managerial         Husband   White     Male             0             0              13   United-States   <=50K
-    2   38            Private  215646     HS-grad              9             Divorced   Handlers-cleaners   Not-in-family   White     Male             0             0              40   United-States   <=50K
-    3   53            Private  234721        11th              7   Married-civ-spouse   Handlers-cleaners         Husband   Black     Male             0             0              40   United-States   <=50K
-    4   28            Private  338409   Bachelors             13   Married-civ-spouse      Prof-specialty            Wife   Black   Female             0             0              40            Cuba   <=50K
+       age          workclass  fnlwgt   education  ...  income
+    0   39          State-gov   77516   Bachelors  ...   <=50K
+    1   50   Self-emp-not-inc   83311   Bachelors  ...   <=50K
+    2   38            Private  215646     HS-grad  ...   <=50K
+    3   53            Private  234721        11th  ...   <=50K
+    4   28            Private  338409   Bachelors  ...   <=50K
     >>> from ctgan.synthesizer import CTGANSynthesizer
     >>> model = CTGANSynthesizer()
     >>> model.train(data, discrete, epochs=1)
     Epoch 1/1
-    32500/32500 |██████████████████████████████████████████████████████████████████████████████████| 3354.54samples/s  ETA: 00:00  Elapsed Time: 00:09  g_loss: 2.065  cond_loss: 2.122  c_loss:-0.526  gp: 1.089
+    32500/32500 |██| 3354.54samples/s  ETA: 00:00  Elapsed Time: 00:09
+            g_loss: 2.065  cond_loss: 2.122  c_loss:-0.526  gp: 1.089
     >>> s = model.sample(5)
     >>> s.head(5)
-       age workclass  fnlwgt      education  education-num       marital-status        occupation relationship                 race      sex  capital-gain  capital-loss  hours-per-week  native-country  income
-    0   74   Private  168809   Some-college             10   Married-civ-spouse     Other-service         Wife                White   Female          -125             4              23         England    >50K
-    1   51   Private  157349        HS-grad             13        Never-married     Other-service    Own-child                White     Male          -147            -1              39   United-States    >50K
-    2   20   Private  101469           11th             10             Divorced   Exec-managerial      Husband   Amer-Indian-Eskimo   Female            -1             3              39          Canada    >50K
-    3   42   Private  225237           11th             12   Married-civ-spouse      Adm-clerical    Own-child                White   Female           -47             4              39        Columbia    >50K
-    4   67   Private  117769           11th             13        Never-married     Other-service    Unmarried                Black     Male           -32             0              39   United-States   <=50K
+       age workclass  fnlwgt      education  ...  income
+    0   74   Private  168809   Some-college  ...    >50K
+    1   51   Private  157349        HS-grad  ...    >50K
+    2   20   Private  101469           11th  ...    >50K
+    3   42   Private  225237           11th  ...    >50K
+    4   67   Private  117769           11th  ...   <=50K
 
     """
+
     def __init__(self,
                  file_path=None,
                  log_dir=None,
@@ -147,7 +151,8 @@ class CTGANSynthesizer:
         if log_dir is not None and os.path.exists(log_dir):
             raise IsADirectoryError("Log directory does not exist.")
         if batch_size % 2 != 0 or batch_size % pac != 0:
-            raise ValueError("batch_size needs to be an even value divisible by pac.")
+            raise ValueError(
+                "batch_size needs to be an even value divisible by pac.")
 
         self._log_dir = log_dir
         self._z_dim = z_dim
@@ -196,8 +201,8 @@ class CTGANSynthesizer:
             sampling.
 
         """
-        # Initialize DataTransformer and ConditionalGenerator based on input data
-        # and discrete columns info
+        # Initialize DataTransformer and ConditionalGenerator based on the
+        # input data and discrete columns info
         self._transformer.fit(train_data, discrete_columns)
         train_data = self._transformer.transform(train_data)
         self._transformer.generate_tensors()
@@ -228,7 +233,8 @@ class CTGANSynthesizer:
         }
         if self._log_dir is not None:
             current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-            train_log_dir = self._log_dir + '/gradient_tape/' + current_time + '/train'
+            train_log_dir = \
+                self._log_dir + '/gradient_tape/' + current_time + '/train'
             train_summary_writer = tf.summary.create_file_writer(train_log_dir)
 
         # Build model graphs
@@ -289,15 +295,16 @@ class CTGANSynthesizer:
             c_loss = loss + gp
 
         grad = t.gradient(c_loss, self._critic.trainable_variables)
-        self._c_opt.apply_gradients(zip(grad, self._critic.trainable_variables))
+        self._c_opt.apply_gradients(
+            zip(grad, self._critic.trainable_variables))
         return loss, gp
 
     def _train_c(self):
         """Critic training method.
 
         It samples uniformly random data, generates a conditional vector, and
-        samples real data from the dataset. It then passes the fake data to the
-        generator and invokes ``_train_c_step`` to compute and
+        samples real data from the dataset. It then passes the fake data to
+        the generator and invokes ``_train_c_step`` to compute and
         update the gradients of the Critic network.
 
         Returns
@@ -321,7 +328,8 @@ class CTGANSynthesizer:
 
             perm = np.arange(self._batch_size)
             np.random.shuffle(perm)
-            real = self._data_sampler.sample(self._batch_size, col[perm], opt[perm])
+            real = self._data_sampler.sample(
+                self._batch_size, col[perm], opt[perm])
             c2 = tf.gather(c1, perm)
 
         fake, fake_act = self._generator(fake_z, training=True)
@@ -362,17 +370,19 @@ class CTGANSynthesizer:
 
         weights = self._generator.trainable_variables
         grad = t.gradient(g_loss, weights)
-        grad = [grad[i] + self._l2_scale * weights[i] for i in range(len(grad))]
-        self._g_opt.apply_gradients(zip(grad, self._generator.trainable_variables))
+        grad = [grad[i] + self._l2_scale * weights[i]
+                for i in range(len(grad))]
+        self._g_opt.apply_gradients(
+            zip(grad, self._generator.trainable_variables))
         return g_loss, tf.constant(0, dtype=tf.float32)
 
     @tf.function
     def train_g_cond_step(self, fake_z, c1, m1, cond_info):
-        """Generator training step for datasets that contain discrete variables,
-        therefore, we need to compute the conditional loss.
+        """Generator training step for datasets that contain discrete
+        variables, therefore, we need to compute the conditional loss.
 
-        Additionally, it computes the loss, gradients and it uses the optimizer
-        to update the Generator weights.
+        Additionally, it computes the loss, gradients and it uses the
+        optimizer to update the Generator weights.
 
         Parameters
         ----------
@@ -396,14 +406,17 @@ class CTGANSynthesizer:
         """
         with tf.GradientTape() as t:
             fake, fake_act = self._generator(fake_z, training=True)
-            y_fake = self._critic(tf.concat([fake_act, c1], axis=1), training=True)
+            y_fake = self._critic(
+                tf.concat([fake_act, c1], axis=1), training=True)
             cond_loss = conditional_loss(cond_info, fake, c1, m1)
             g_loss = -tf.reduce_mean(y_fake) + cond_loss
 
         weights = self._generator.trainable_variables
         grad = t.gradient(g_loss, weights)
-        grad = [grad[i] + self._l2_scale * weights[i] for i in range(len(grad))]
-        self._g_opt.apply_gradients(zip(grad, self._generator.trainable_variables))
+        grad = [grad[i] + self._l2_scale * weights[i]
+                for i in range(len(grad))]
+        self._g_opt.apply_gradients(
+            zip(grad, self._generator.trainable_variables))
         return g_loss, cond_loss
 
     def _train_g(self):
@@ -430,7 +443,8 @@ class CTGANSynthesizer:
         c1 = tf.convert_to_tensor(c1, name="c1")
         m1 = tf.convert_to_tensor(m1, name="m1")
         fake_z = tf.concat([fake_z, c1], axis=1, name="fake_z")
-        return self.train_g_cond_step(fake_z, c1, m1, self._transformer.cond_tensor)
+        return self.train_g_cond_step(
+            fake_z, c1, m1, self._transformer.cond_tensor)
 
     def sample(self, n):
         """Sample data similar to the training data.
@@ -493,7 +507,8 @@ class CTGANSynthesizer:
             If the ``file_path`` directory does not exist.
 
         FileExistsError
-            If ``overwrite=False`` and the provided ``file_path`` already exists.
+            If ``overwrite=False`` and the provided ``file_path``
+            already exists.
         """
         if file_path is None or len(file_path) == 0:
             raise NameError("Invalid file_path.")
@@ -502,7 +517,8 @@ class CTGANSynthesizer:
             raise NotADirectoryError("The file directory does not exist.")
         if not overwrite and os.path.exists(file_path):
             raise FileExistsError(
-                "File already exists. If you wish to replace it use overwrite=True")
+                "File already exists. If you wish to replace it,"
+                " use overwrite=True")
 
         # Create a copy of class dict as we are about to change the dictionary
         class_dict = {k: v for k, v in self.__dict__.items()
@@ -561,4 +577,3 @@ class CTGANSynthesizer:
             self._tau)
         self._generator.build((self._batch_size, self._generator._input_dim))
         self._generator.set_weights(class_dict['_gen_weights'])
-

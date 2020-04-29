@@ -5,7 +5,7 @@ Critic model definition.
 import tensorflow as tf
 from functools import partial
 
-from ..layers import *
+from ..layers import init_bounded
 
 
 class Critic(tf.keras.Model):
@@ -15,9 +15,11 @@ class Critic(tf.keras.Model):
     It uses a PacGAN framework :cite:`lin2018pacgan` with ``pac`` pacs, thus
     it applies a reshape function before passing the data through the
     remaining layers.
-    It applies the following operations for every layer declared in ``dis_dims``:
+    It applies the following operations for every layer declared in
+    ``dis_dims``:
 
-    .. math:: \\text{output} = Dropout_{0.5}(LeakyReLU_{0.2}(FC_{\\text{prev_layer_dim} \\to \\text{layer_dim}}(\\text{input})))
+    .. math:: \\text{output} = Dropout_{0.5}(LeakyReLU_{0.2}(
+            FC_{\\text{prev_layer_dim} \\to \\text{layer_dim}}(\\text{input})))
 
     The last layer of the network is a FC layer with a single output.
 
@@ -67,8 +69,9 @@ class Critic(tf.keras.Model):
     def _reshape_func(self, inputs, **kwargs):
         """
         Method that reshapes the input tensor according the Pac size.
-        For more details consult the original CTGAN paper :cite:`xu2019modeling`
-        (section 4.4) and the PacGAN framework paper :cite:`lin2018pacgan`.
+        For more details consult the original CTGAN paper
+        :cite:`xu2019modeling` (section 4.4) and the PacGAN framework paper
+        :cite:`lin2018pacgan`.
 
         Parameters
         ----------
@@ -78,7 +81,8 @@ class Critic(tf.keras.Model):
         Returns
         -------
         tf.Tensor
-            Reshaped tensor in the form of ``[-1, inputs.shape[1] * self._pac]``.
+            Reshaped tensor in the form of
+            ``[-1, inputs.shape[1] * self._pac]``.
         """
         dims = inputs.get_shape().as_list()
         return tf.reshape(inputs, [-1, dims[1] * self._pac])

@@ -1,6 +1,7 @@
 """Module containing progress bar utilities.
 
-They were implemented by `Drew Szurko <https://github.com/drewszurko/tensorflow-WGAN-GP>`.
+They were implemented by
+`Drew Szurko <https://github.com/drewszurko/tensorflow-WGAN-GP>`.
 """
 import shutil
 from tqdm.autonotebook import tqdm
@@ -49,7 +50,8 @@ class ProgressBar(tqdm):
         str_format = '{n_fmt}/{total_fmt} |{bar}| {rate_fmt}  ' \
                      'ETA: {remaining}  Elapsed Time: {elapsed}  ' + \
                      reduce(lambda x, y: x + y,
-                            ["%s:{postfix[%s]}  " % (m, m) for m in metrics], "")
+                            ["%s:{postfix[%s]}  " % (m, m) for m in metrics],
+                            "")
         super(ProgressBar, self).__init__(
             total=(total_samples // batch_size) * batch_size,
             ncols=int(ProgressBar._get_terminal_width() * .9),

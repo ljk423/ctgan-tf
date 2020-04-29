@@ -1,6 +1,6 @@
 """
-The :mod:`ctgan.layers` module contains the definition of custom neural networks
-layers, and helper methods to initialize their weights and bias.
+The :mod:`ctgan.layers` module contains the definition of custom neural
+networks layers, and helper methods to initialize their weights and bias.
 
 For further details, please consult sections 4.4 of :cite:`xu2019modeling`.
 """

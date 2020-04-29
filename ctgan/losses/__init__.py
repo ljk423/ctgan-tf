@@ -1,5 +1,6 @@
 """
-The :mod:`ctgan.losses` module contains the definition of custom loss functions.
+The :mod:`ctgan.losses` module contains the definition of custom loss
+functions.
 
 For further details, please consult sections 4.3 of :cite:`xu2019modeling`, and
 WGAN-GP paper :cite:`gulrajani2017improved`.

@@ -13,7 +13,9 @@ class ResidualLayer(tf.keras.layers.Layer):
     Residual Layer used on the Generator.
     This layer applies the following operations to the input:
 
-    .. math:: \\text{output} = ReLU(BN_{\\epsilon=10^{-5}, \\text{momentum}=0.9}(FC_{\\text{input_dim} \\to \\text{output_dim}}(\\text{input}))) \oplus \\text{input}
+    .. math:: \\text{output}=ReLU(BN_{\\epsilon=10^{-5}, \\text{momentum}=0.9}
+            (FC_{\\text{input_dim} \\to \\text{output_dim}}(\\text{input})))
+            \\oplus \\text{input}
 
     Parameters
     ----------
@@ -26,10 +28,12 @@ class ResidualLayer(tf.keras.layers.Layer):
         super(ResidualLayer, self).__init__()
         self._output_dim = output_dim
         self._fc = tf.keras.layers.Dense(
-            self._output_dim, input_dim=(input_dim,),
+            self._output_dim,
+            input_dim=(input_dim,),
             kernel_initializer=partial(init_bounded, dim=input_dim),
             bias_initializer=partial(init_bounded, dim=input_dim))
-        self._bn = tf.keras.layers.BatchNormalization(epsilon=1e-5, momentum=0.9)
+        self._bn = tf.keras.layers.BatchNormalization(
+            epsilon=1e-5, momentum=0.9)
         self._relu = tf.keras.layers.ReLU()
 
     def call(self, inputs, **kwargs):

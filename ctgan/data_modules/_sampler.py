@@ -15,8 +15,9 @@ class Sampler(object):
         Training data.
 
     output_info: list[tuple]
-        List containing metadata about the data columns of the original dataset,
-        namely the number of columns where to apply a given activation function.
+        List containing metadata about the data columns of the original
+        dataset, namely the number of columns where to apply a given
+        activation function.
 
     See Also
     --------
@@ -65,15 +66,15 @@ class Sampler(object):
 
         col: int
             If `col` is None, then there won't be any restrictions to which
-            data can be sampled. Otherwise, assuming that discrete variables are
-            OneHot encoded, it samples data that has the value of the index
-            `opt` on column `col` set to 1.
+            data can be sampled. Otherwise, assuming that discrete variables
+            are OneHot encoded, it samples data that has the value of the
+            index `opt` on column `col` set to 1.
 
         opt: int
             If `col` is None, then there won't be any restrictions to which
-            data can be sampled. Otherwise, assuming that discrete variables are
-            OneHot encoded, it samples data that has the value of the index
-            `opt` on column `col` set to 1.
+            data can be sampled. Otherwise, assuming that discrete variables
+            are OneHot encoded, it samples data that has the value of the
+            index `opt` on column `col` set to 1.
 
         Returns
         -------
