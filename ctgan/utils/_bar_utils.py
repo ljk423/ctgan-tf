@@ -30,6 +30,7 @@ class ProgressBar(tqdm):
 
     metrics: list, or dict
         List or dictionary of which metrics to display.
+
     """
 
     @classmethod
@@ -40,6 +41,7 @@ class ProgressBar(tqdm):
         -------
         int
             The execution terminal width if possible, otherwise, 120.
+
         """
         width = shutil.get_terminal_size(fallback=(200, 24))[0]
         return width if width != 0 else 120
@@ -69,6 +71,7 @@ class ProgressBar(tqdm):
         ----------
         metrics: dict[str, tf.Metrics]
             Dictionary mapping the metrics to their current values.
+
         """
         for m in metrics:
             self.postfix[m] = f'{metrics[m].result():6.3f}'

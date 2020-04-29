@@ -6,20 +6,18 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from sklearn.exceptions import ConvergenceWarning
-from sklearn.mixture import BayesianGaussianMixture
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.utils._testing import ignore_warnings
+
+from ..models import BGM, OHE
 
 
 class DataTransformer(object):
     """Data Transformer.
 
-    It models continuous columns with a
-    :class:`sklearn.mixture.BayesianGaussianMixture` and normalizes to a
-    scalar [0, 1] and a vector.
+    It models continuous columns with a :class:`ctgan.models.BGM` and
+    normalizes to a scalar [0, 1] and a vector.
 
-    Discrete columns are encoded using a
-    :class:`sklearn.preprocessing.OneHotEncoder`.
+    Discrete columns are encoded using :class:`ctgan.model.OHE`.
 
     Parameters
     ----------
@@ -149,7 +147,7 @@ class DataTransformer(object):
               (1 + number of components).
 
         """
-        gm = BayesianGaussianMixture(
+        gm = BGM(
             self._n_clusters,
             weight_concentration_prior_type='dirichlet_process',
             weight_concentration_prior=0.001,
@@ -192,7 +190,7 @@ class DataTransformer(object):
             - `output_dimensions`: the total number of categories.
 
         """
-        ohe = OneHotEncoder(sparse=False)
+        ohe = OHE(sparse=False)
         ohe.fit(data)
         categories = len(ohe.categories_[0])
 

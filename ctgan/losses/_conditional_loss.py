@@ -4,7 +4,7 @@ Method to compute data_modules losses.
 import tensorflow as tf
 
 
-def conditional_loss(transformer_info, data, c, m):
+def conditional_loss(cond_info, data, c, m):
     """Computes the loss for conditional vectors.
 
     The goal is to force the Generator to produce samples that match the
@@ -15,7 +15,7 @@ def conditional_loss(transformer_info, data, c, m):
 
     Parameters
     ----------
-    transformer_info: tf.Tensor
+    cond_info: list[tf.Tensor]
         Transformer output information tensor, indicating
         which indexes of the ``data`` tensor correspond to discrete variables,
         and the corresponding indexes of the ``c`` tensor.
@@ -37,7 +37,7 @@ def conditional_loss(transformer_info, data, c, m):
     shape = tf.shape(m)
     c_loss = tf.zeros(shape)
 
-    for item in transformer_info:
+    for item in cond_info:
         data_logsoftmax = data[:, item[0]:item[1]]
         cond_vec = tf.math.argmax(c[:, item[2]:item[3]], axis=1)
         loss = tf.reshape(tf.nn.sparse_softmax_cross_entropy_with_logits(

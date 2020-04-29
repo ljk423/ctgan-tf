@@ -31,9 +31,9 @@ class Generator(tf.keras.Model):
         Output dimension of the Generator, i.e., the dimension of
         the data it is trying to replicate.
 
-    transformer_info: tf.Tensor
-        Tensor containing information regarding the activation functions
-        of each data column.
+    transformer_info: list[tf.Tensor]
+        List of tensors containing information regarding the activation
+        functions of each data column.
 
     tau: float
         Gumbel-Softmax non-negative scalar temperature

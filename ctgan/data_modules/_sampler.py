@@ -64,13 +64,13 @@ class Sampler(object):
         n: int
             Size of the batch.
 
-        col: int
+        col: np.ndarray
             If `col` is None, then there won't be any restrictions to which
             data can be sampled. Otherwise, assuming that discrete variables
             are OneHot encoded, it samples data that has the value of the
             index `opt` on column `col` set to 1.
 
-        opt: int
+        opt: np.ndarray
             If `col` is None, then there won't be any restrictions to which
             data can be sampled. Otherwise, assuming that discrete variables
             are OneHot encoded, it samples data that has the value of the

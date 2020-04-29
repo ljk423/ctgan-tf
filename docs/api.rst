@@ -21,15 +21,6 @@ This is the full API documentation of the `ctgan-tf` toolbox.
 
    synthesizer.CTGANSynthesizer
 
-Utilities
----------
-
-.. autosummary::
-   :toctree: generated/
-   :template: class.rst
-
-   synthesizer.ProgressBar
-
 .. _data_modules_ref:
 
 :mod:`ctgan.data_modules`: Data modules
@@ -51,7 +42,7 @@ Utilities
 
 .. _models_ref:
 
-:mod:`ctgan.models`: Neural Network Models
+:mod:`ctgan.models`: Neural Network and Transformer Models
 ==========================================================
 
 .. automodule:: ctgan.models
@@ -60,12 +51,23 @@ Utilities
 
 .. currentmodule:: ctgan
 
+Neural Networks
+---------------
 .. autosummary::
    :toctree: generated/
    :template: class.rst
 
    models.Critic
    models.Generator
+
+Transformer models
+------------------
+.. autosummary::
+   :toctree: generated/
+   :template: class.rst
+
+   models.BGM
+   models.OHE
 
 .. _layers_ref:
 
@@ -130,3 +132,23 @@ Utilities
     cli.load_demo
     cli.cli
 
+:mod:`ctgan.utils`: Utils
+========================================================================
+
+.. automodule:: ctgan.utils
+   :no-members:
+   :no-inherited-members:
+
+.. currentmodule:: ctgan
+
+.. autosummary::
+   :toctree: generated/
+   :template: class.rst
+
+    utils.ProgressBar
+
+.. autosummary::
+   :toctree: generated/
+   :template: function.rst
+
+    utils.generate_data

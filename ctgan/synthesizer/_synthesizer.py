@@ -18,7 +18,7 @@ from functools import partial
 from ..data_modules import ConditionalGenerator, Sampler, DataTransformer
 from ..models import Generator, Critic
 from ..losses import conditional_loss, gradient_penalty
-from ._bar_utils import ProgressBar
+from ..utils import ProgressBar
 
 
 class CTGANSynthesizer:
@@ -121,7 +121,7 @@ class CTGANSynthesizer:
     >>> model = CTGANSynthesizer()
     >>> model.train(data, discrete, epochs=1)
     Epoch 1/1
-    32500/32500 |██| 3354.54samples/s  ETA: 00:00  Elapsed Time: 00:09
+    32500/32500 |████| 3354.54samples/s  ETA: 00:00  Elapsed Time: 00:09
             g_loss: 2.065  cond_loss: 2.122  c_loss:-0.526  gp: 1.089
     >>> s = model.sample(5)
     >>> s.head(5)

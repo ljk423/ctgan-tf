@@ -10,7 +10,6 @@ The original PyTorch implementation can be found in the authors'
 """
 
 from ._synthesizer import CTGANSynthesizer
-from ._bar_utils import ProgressBar
 
 __author__ = 'Pedro Martins'
 __email__ = 'pbmartins@ua.pt'

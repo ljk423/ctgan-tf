@@ -128,7 +128,7 @@ class ConditionalGenerator(object):
         """Sample a conditional vector for the given batch of data.
 
         For a more detailed implementation of this method, consult section 4.3
-        of :cite:`ci2019modeling`.
+        of :cite:`xu2019modeling`.
 
         Parameters
         ----------
@@ -165,7 +165,7 @@ class ConditionalGenerator(object):
         """Sample a conditional vector for the given batch of data.
 
         For a more detailed implementation of this method, consult section 4.3
-        of :cite:`ci2019modeling`.
+        of :cite:`xu2019modeling`.
 
         Parameters
         ----------
