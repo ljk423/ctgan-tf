@@ -43,8 +43,9 @@ class TestSynthesizer(TestCase):
         idx = int(len(discrete) > 0)
         for o in outputs:
             for i in range(len(outputs[o])):
-                self.assertTrue(
-                    np.all(outputs[o][i] == self._expected_values[idx][o][i]))
+                np.testing.assert_almost_equal(
+                    outputs[o][i], self._expected_values[idx][o][i],
+                    decimal=self._vars['decimal'])
 
     def test_train(self):
         np.random.seed(0)
