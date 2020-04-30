@@ -6,3 +6,6 @@ pandas
 scipy
 scikit-learn
 tqdm
+pytest-cov
+flake8
+pylint
