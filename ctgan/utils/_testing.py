@@ -3,7 +3,29 @@ Module with methods for testing.
 """
 import numpy as np
 import pandas as pd
-import tensorflow as tf
+
+
+def get_test_variables():
+    """Method that returns variables used across all unit tests.
+
+    Returns
+    -------
+    dict
+        A dictionary containing the training variables.
+
+    """
+    return {
+        'decimal': 5,
+        'input_dim': 10,
+        'output_dim': 10,
+        'pac': 10,
+        'batch_size': 10,
+        'gp_lambda': 10.0,
+        'n_opt': 10,
+        'n_col': 5,
+        'layer_dims': [256, 256],
+        'tau': 0.2
+    }
 
 
 def generate_data(batch_size, seed=0):

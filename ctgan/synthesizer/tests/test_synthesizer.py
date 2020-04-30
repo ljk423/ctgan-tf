@@ -5,15 +5,13 @@ import joblib
 import os
 from unittest import TestCase
 
-from ctgan.utils import generate_data
+from ctgan.utils import generate_data, get_test_variables
 from ctgan.synthesizer import CTGANSynthesizer
 
 
 class TestSynthesizer(TestCase):
     def setUp(self):
-        self._input_dim = 10
-        self._pac = 10
-        self._batch_size = 10
+        self._vars = get_test_variables()
         self._n_samples = 1
         self._current_dir = os.path.dirname(os.path.abspath(__file__))
         self._expected_values = joblib.load(os.path.join(
@@ -24,15 +22,14 @@ class TestSynthesizer(TestCase):
         if os.path.exists(model_path):
             os.remove(model_path)
 
-        del self._input_dim
-        del self._pac
-        del self._batch_size
+        del self._vars
         del self._n_samples
         del self._current_dir
         del self._expected_values
 
     def _assert_train_equal(self, data, discrete):
-        model = CTGANSynthesizer(batch_size=self._batch_size, pac=self._pac)
+        model = CTGANSynthesizer(
+            batch_size=self._vars['batch_size'], pac=self._vars['pac'])
         self.assertIsNotNone(model)
         model.train(data, discrete, epochs=1)
         outputs = {
@@ -52,29 +49,32 @@ class TestSynthesizer(TestCase):
     def test_train(self):
         np.random.seed(0)
         tf.random.set_seed(0)
-        data, discrete = generate_data(self._batch_size)
+        data, discrete = generate_data(self._vars['batch_size'])
         self._assert_train_equal(data, [])
         self._assert_train_equal(data, discrete)
 
     def test_sample(self):
         np.random.seed(0)
         tf.random.set_seed(0)
-        data, discrete = generate_data(self._batch_size)
+        data, discrete = generate_data(self._vars['batch_size'])
 
-        model = CTGANSynthesizer(batch_size=self._batch_size, pac=self._pac)
+        model = CTGANSynthesizer(
+            batch_size=self._vars['batch_size'], pac=self._vars['pac'])
         self.assertIsNotNone(model)
 
         model.train(data, discrete, epochs=1)
         output = model.sample(self._n_samples).values
-        expected_output = np.array([[0.4136106, 1.0]])
-        np.testing.assert_almost_equal(output, expected_output)
+        expected_output = np.array([[0.4136129, 1.0]])
+        np.testing.assert_almost_equal(
+            output, expected_output, decimal=self._vars['decimal'])
 
     def test_model_to_disk(self):
         np.random.seed(0)
         tf.random.set_seed(0)
-        data, discrete = generate_data(self._batch_size)
+        data, discrete = generate_data(self._vars['batch_size'])
 
-        model = CTGANSynthesizer(batch_size=self._batch_size, pac=self._pac)
+        model = CTGANSynthesizer(
+            batch_size=self._vars['batch_size'], pac=self._vars['pac'])
         self.assertIsNotNone(model)
         model.train(data, discrete, epochs=1)
         model_path = os.path.join(self._current_dir, 'model_test.joblib')

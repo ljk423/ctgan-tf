@@ -1,24 +1,20 @@
 import numpy as np
 from unittest import TestCase
 
-from ctgan.utils import generate_data
+from ctgan.utils import generate_data, get_test_variables
 from ctgan.data_modules import ConditionalGenerator, DataTransformer
 
 
 class TestConditionalGenerator(TestCase):
     def setUp(self):
-        self._input_dim = 10
-        self._pac = 10
-        self._batch_size = 10
+        self._vars = get_test_variables()
 
     def tearDown(self):
-        del self._input_dim
-        del self._pac
-        del self._batch_size
+        del self._vars
 
     def test_sample(self):
         np.random.seed(0)
-        data, discrete = generate_data(self._batch_size)
+        data, discrete = generate_data(self._vars['batch_size'])
 
         transformer = DataTransformer()
         transformer.fit(data, discrete)
@@ -26,7 +22,7 @@ class TestConditionalGenerator(TestCase):
 
         cond_gen = ConditionalGenerator(
             train_data, transformer.output_info, True)
-        output = cond_gen.sample(self._batch_size)
+        output = cond_gen.sample(self._vars['batch_size'])
         self.assertIsNotNone(output)
         c, m, col, opt = output
         expected_c = np.array([
@@ -57,7 +53,7 @@ class TestConditionalGenerator(TestCase):
         np.testing.assert_equal(col, expected_col)
         np.testing.assert_equal(opt, expected_opt)
 
-        output = cond_gen.sample_zero(self._batch_size)
+        output = cond_gen.sample_zero(self._vars['batch_size'])
         self.assertIsNotNone(output)
         print(output)
         expected_output = [
@@ -75,7 +71,7 @@ class TestConditionalGenerator(TestCase):
 
     def test_sample_none(self):
         np.random.seed(0)
-        data, discrete = generate_data(self._batch_size)
+        data, discrete = generate_data(self._vars['batch_size'])
 
         transformer = DataTransformer()
         transformer.fit(data, [])
@@ -83,8 +79,8 @@ class TestConditionalGenerator(TestCase):
 
         cond_gen = ConditionalGenerator(
             train_data, transformer.output_info, True)
-        output = cond_gen.sample(self._batch_size)
+        output = cond_gen.sample(self._vars['batch_size'])
         self.assertIsNone(output)
 
-        output = cond_gen.sample_zero(self._batch_size)
+        output = cond_gen.sample_zero(self._vars['batch_size'])
         self.assertIsNone(output)

@@ -3,24 +3,20 @@ import tensorflow as tf
 import pandas as pd
 from unittest import TestCase
 
-from ctgan.utils import generate_data
+from ctgan.utils import generate_data, get_test_variables
 from ctgan.data_modules import DataTransformer
 
 
 class TestDataTransformer(TestCase):
     def setUp(self):
-        self._input_dim = 10
-        self._pac = 10
-        self._batch_size = 10
+        self._vars = get_test_variables()
 
     def tearDown(self):
-        del self._input_dim
-        del self._pac
-        del self._batch_size
+        del self._vars
 
     def test_fit(self):
         np.random.seed(0)
-        data, discrete = generate_data(self._batch_size)
+        data, discrete = generate_data(self._vars['batch_size'])
 
         transformer = DataTransformer()
         transformer.fit(data, discrete)
@@ -32,7 +28,7 @@ class TestDataTransformer(TestCase):
 
     def test_tensors(self):
         np.random.seed(0)
-        data, discrete = generate_data(self._batch_size)
+        data, discrete = generate_data(self._vars['batch_size'])
 
         transformer = DataTransformer()
         transformer.fit(data, discrete)
@@ -47,7 +43,7 @@ class TestDataTransformer(TestCase):
 
     def test_transform(self):
         np.random.seed(0)
-        data, discrete = generate_data(self._batch_size)
+        data, discrete = generate_data(self._vars['batch_size'])
 
         transformer = DataTransformer()
         transformer.fit(data, discrete)
@@ -62,11 +58,12 @@ class TestDataTransformer(TestCase):
                                   [0.3721639, 1., 1., 0., 0., 0.],
                                   [0.46909913, 1., 0., 0., 1., 0.],
                                   [-0.31326372, 1., 1., 0., 0., 0.]])
-        np.testing.assert_almost_equal(transformed_data, expected_data)
+        np.testing.assert_almost_equal(
+            transformed_data, expected_data, decimal=self._vars['decimal'])
 
     def test_inverse_transform(self):
         np.random.seed(0)
-        data, discrete = generate_data(self._batch_size)
+        data, discrete = generate_data(self._vars['batch_size'])
 
         transformer = DataTransformer()
         transformer.fit(data, discrete)
