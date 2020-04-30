@@ -15,7 +15,7 @@ def get_test_variables():
 
     """
     return {
-        'decimal': 5,
+        'decimal': 4,
         'input_dim': 10,
         'output_dim': 10,
         'pac': 10,
