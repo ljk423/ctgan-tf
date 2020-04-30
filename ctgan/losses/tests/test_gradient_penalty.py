@@ -16,7 +16,8 @@ class TestGradientPenalty(TestCase):
         tf.random.set_seed(0)
         real = tf.random.uniform(
             [self._vars['batch_size'], self._vars['input_dim']])
-        fake = tf.random.uniform([self._vars['batch_size'], self._vars['input_dim']])
+        fake = tf.random.uniform(
+            [self._vars['batch_size'], self._vars['input_dim']])
 
         gp = gradient_penalty(
             lambda x: x**2, real, fake,
