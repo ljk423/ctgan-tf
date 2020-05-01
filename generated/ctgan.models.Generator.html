@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ctgan.models.Generator &mdash; ctgan-tf 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ctgan.models.BGM" href="ctgan.models.BGM.html" />
+    <link rel="prev" title="ctgan.models.Critic" href="ctgan.models.Critic.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ctgan-tf
+          
+
+          
+            
+            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code>: Neural Network and Transformer Models</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#neural-networks">Neural Networks</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="ctgan.models.Critic.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code>.Critic</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code>.Generator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#transformer-models">Transformer models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.layers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code>: Neural Network Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.losses"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.losses</span></code>: Model losses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>: Command line interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ctgan-tf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">ctgan-tf API</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code>.Generator</li>
+    
+    
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ctgan-models-generator">
+<h1><a class="reference internal" href="../api.html#module-ctgan.models" title="ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code></a>.Generator<a class="headerlink" href="#ctgan-models-generator" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="ctgan.models.Generator">
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.models.</code><code class="sig-name descname">Generator</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">gen_dims</em>, <em class="sig-param">data_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/models/_generator.py#L10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conditional Generator model.</p>
+<p>This model uses intermediary <a class="reference internal" href="ctgan.layers.ResidualLayer.html#ctgan.layers.ResidualLayer" title="ctgan.layers.ResidualLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ctgan.layers.ResidualLayer</span></code></a>
+and mix of activation functions in the last layer of the network
+(<a class="reference internal" href="ctgan.layers.GenActivation.html#ctgan.layers.GenActivation" title="ctgan.layers.GenActivation"><code class="xref py py-class docutils literal notranslate"><span class="pre">ctgan.layers.GenActivation</span></code></a>), according to the data provided by
+<code class="docutils literal notranslate"><span class="pre">transformer_info</span></code> (generated by
+<a class="reference internal" href="ctgan.data_modules.DataTransformer.html#ctgan.data_modules.DataTransformer" title="ctgan.data_modules.DataTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ctgan.data_modules.DataTransformer</span></code></a>).</p>
+<p>For further details of the network architecture, please check section 4.4
+of <a class="bibtex reference internal" href="../references.html#xu2019modeling" id="id1">[XSCIV19]</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input_dim: int</strong></dt><dd><p>Dimension of the input data.</p>
+</dd>
+<dt><strong>gen_dims: list[int]</strong></dt><dd><p>List of the number of neurons per layer.</p>
+</dd>
+<dt><strong>data_dim: int</strong></dt><dd><p>Output dimension of the Generator, i.e., the dimension of
+the data it is trying to replicate.</p>
+</dd>
+<dt><strong>transformer_info: list[tf.Tensor]</strong></dt><dd><p>List of tensors containing information regarding the activation
+functions of each data column.</p>
+</dd>
+<dt><strong>tau: float</strong></dt><dd><p>Gumbel-Softmax non-negative scalar temperature
+<a class="bibtex reference internal" href="../references.html#maddison2016concrete" id="id2">[MMT16]</a>, <a class="bibtex reference internal" href="../references.html#jang2016categorical" id="id3">[JGP16]</a>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="ctgan.data_modules.DataTransformer.html#ctgan.data_modules.DataTransformer" title="ctgan.data_modules.DataTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctgan.data_modules.DataTransformer</span></code></a></dt><dd><p>Transforms the input dataset by applying mode-specific normalization and OneHot encoding.</p>
+</dd>
+<dt><a class="reference internal" href="ctgan.layers.ResidualLayer.html#ctgan.layers.ResidualLayer" title="ctgan.layers.ResidualLayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctgan.layers.ResidualLayer</span></code></a></dt><dd><p>Custom layer designed to use in the Generator neural network.</p>
+</dd>
+<dt><a class="reference internal" href="ctgan.layers.GenActivation.html#ctgan.layers.GenActivation" title="ctgan.layers.GenActivation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctgan.layers.GenActivation</span></code></a></dt><dd><p>Custom layer designed to apply a mix of activation functions to specific data columns.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">References</p>
+<p id="bibtex-bibliography-generated/ctgan.models.Generator-0"><dl class="citation">
+<dt class="bibtex label" id="gulrajani2017improved"><span class="brackets">GAA+17</span></dt>
+<dd><p>Ishaan Gulrajani, Faruk Ahmed, Martin Arjovsky, Vincent Dumoulin, and Aaron C Courville. Improved training of wasserstein gans. In <em>Advances in neural information processing systems</em>, 5767–5777. 2017. URL: <a class="reference external" href="https://arxiv.org/abs/1704.00028">https://arxiv.org/abs/1704.00028</a>.</p>
+</dd>
+<dt class="bibtex label" id="jang2016categorical"><span class="brackets"><a class="fn-backref" href="#id3">JGP16</a></span></dt>
+<dd><p>Eric Jang, Shixiang Gu, and Ben Poole. Categorical reparameterization with gumbel-softmax. <em>arXiv preprint arXiv:1611.01144</em>, 2016. URL: <a class="reference external" href="https://arxiv.org/abs/1611.01144">https://arxiv.org/abs/1611.01144</a>.</p>
+</dd>
+<dt class="bibtex label" id="lin2018pacgan"><span class="brackets">LKFO18</span></dt>
+<dd><p>Zinan Lin, Ashish Khetan, Giulia Fanti, and Sewoong Oh. Pacgan: the power of two samples in generative adversarial networks. In <em>Advances in neural information processing systems</em>, 1498–1507. 2018. URL: <a class="reference external" href="https://arxiv.org/abs/1712.04086">https://arxiv.org/abs/1712.04086</a>.</p>
+</dd>
+<dt class="bibtex label" id="maddison2016concrete"><span class="brackets"><a class="fn-backref" href="#id2">MMT16</a></span></dt>
+<dd><p>Chris J Maddison, Andriy Mnih, and Yee Whye Teh. The concrete distribution: a continuous relaxation of discrete random variables. <em>arXiv preprint arXiv:1611.00712</em>, 2016. URL: <a class="reference external" href="https://arxiv.org/abs/1611.00712">https://arxiv.org/abs/1611.00712</a>.</p>
+</dd>
+<dt class="bibtex label" id="xu2019modeling"><span class="brackets"><a class="fn-backref" href="#id1">XSCIV19</a></span></dt>
+<dd><p>Lei Xu, Maria Skoularidou, Alfredo Cuesta-Infante, and Kalyan Veeramachaneni. Modeling tabular data using conditional gan. In <em>Advances in Neural Information Processing Systems</em>. 2019. URL: <a class="reference external" href="https://arxiv.org/abs/1907.00503">https://arxiv.org/abs/1907.00503</a>.</p>
+</dd>
+</dl>
+</p>
+<dl class="method">
+<dt id="ctgan.models.Generator.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">gen_dims</em>, <em class="sig-param">data_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/models/_generator.py#L59"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Generator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ctgan.models.Generator.call">
+<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/models/_generator.py#L71"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Generator.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feedforward pass on the network layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>inputs: tf.Tensor</strong></dt><dd><p>Input data tensor.</p>
+</dd>
+<dt><strong>kwargs: dict</strong></dt><dd><p>Dictionary with functions options. Mainly used to set
+<code class="docutils literal notranslate"><span class="pre">training=True</span></code> when training the network layers.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tf.Tensor</dt><dd><p>The output tensor resultant from the feedforward pass.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ctgan.models.BGM.html" class="btn btn-neutral float-right" title="ctgan.models.BGM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ctgan.models.Critic.html" class="btn btn-neutral float-left" title="ctgan.models.Critic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, MIT Data To AI Lab &amp; Pedro Martins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

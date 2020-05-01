@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ctgan.cli.cli &mdash; ctgan-tf 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ctgan.utils.ProgressBar" href="ctgan.utils.ProgressBar.html" />
+    <link rel="prev" title="ctgan.cli.load_demo" href="ctgan.cli.load_demo.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ctgan-tf
+          
+
+          
+            
+            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code>: Neural Network and Transformer Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.layers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code>: Neural Network Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.losses"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.losses</span></code>: Model losses</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>: Command line interface</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ctgan.cli.load_demo.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>.load_demo</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>.cli</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ctgan-tf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">ctgan-tf API</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>.cli</li>
+    
+    
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ctgan-cli-cli">
+<h1><a class="reference internal" href="../api.html#module-ctgan.cli" title="ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code></a>.cli<a class="headerlink" href="#ctgan-cli-cli" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="ctgan.cli.cli">
+<code class="sig-prename descclassname">ctgan.cli.</code><code class="sig-name descname">cli</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/cli/_cli.py#L101"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.cli.cli" title="Permalink to this definition">¶</a></dt>
+<dd><p>CTGAN command-line interface.</p>
+<p>The following list of parameters describes the inputs of CLI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Other Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_path: str, default=None</strong></dt><dd><p>File path to where a CTGAN Synthesizer model is stored.
+If this value is None, a new instance will be created.</p>
+</dd>
+<dt><strong>log_dir: str, default=None</strong></dt><dd><p>Directory to where log files will be stored.</p>
+</dd>
+<dt><strong>z_dim’: int, default=128</strong></dt><dd><p>Embedding dimension of fake samples.</p>
+</dd>
+<dt><strong>pac: int, default=10</strong></dt><dd><p>Size of Pac framework.</p>
+</dd>
+<dt><strong>gen_dims: str, default=(256, 256)</strong></dt><dd><p>Comma separated list of Generator layer sizes.</p>
+</dd>
+<dt><strong>crt_dims: str, default=(256, 256)</strong></dt><dd><p>Comma separated list of Critic layer sizes.</p>
+</dd>
+<dt><strong>l2_scale: float, default=1e-6</strong></dt><dd><p>L2 regularization of the Generator optimizer.</p>
+</dd>
+<dt><strong>batch_size: int, default=500</strong></dt><dd><p>Training batch size.</p>
+</dd>
+<dt><strong>gp_lambda: float, default=10.0</strong></dt><dd><p>Gradient Penalty lambda.</p>
+</dd>
+<dt><strong>tau: float, default=10.0</strong></dt><dd><p>Gumbel-Softmax non-negative scalar temperature.</p>
+</dd>
+<dt><strong>epochs: int, default=300</strong></dt><dd><p>Number of training epochs.</p>
+</dd>
+<dt><strong>discrete_columns: str, default=None</strong></dt><dd><p>Comma separated list of discrete columns, no whitespaces.</p>
+</dd>
+<dt><strong>training_data: str, default=’demo’</strong></dt><dd><p>Path to training data. Defaults to loading the demo dataset.</p>
+</dd>
+<dt><strong>output_model: str, default=None</strong></dt><dd><p>Path of the model output file.</p>
+</dd>
+<dt><strong>num-samples: int</strong></dt><dd><p>Number of rows to sample.</p>
+</dd>
+<dt><strong>output_data: str</strong></dt><dd><p>Path of the synthetic output file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ctgan.cli</span> <span class="kn">import</span> <span class="n">cli</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cli</span><span class="p">()</span>
+<span class="go">usage: [-h] [-f FILE_PATH] [-l LOG_DIR] [-z Z_DIM] [-p PAC] [-g GEN_DIMS]</span>
+<span class="go">       [-c CRT_DIMS] [-s L2_SCALE] [-b BATCH_SIZE] [-w GP_LAMBDA] [-t TAU]</span>
+<span class="go">       [-e EPOCHS] [-d DISCRETE_COLUMNS] [-i TRAINING_DATA]</span>
+<span class="go">       [-o OUTPUT_MODEL] num_samples output_data</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ctgan.utils.ProgressBar.html" class="btn btn-neutral float-right" title="ctgan.utils.ProgressBar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ctgan.cli.load_demo.html" class="btn btn-neutral float-left" title="ctgan.cli.load_demo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, MIT Data To AI Lab &amp; Pedro Martins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

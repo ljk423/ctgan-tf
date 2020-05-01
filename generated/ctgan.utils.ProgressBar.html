@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ctgan.utils.ProgressBar &mdash; ctgan-tf 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ctgan.utils.generate_data" href="ctgan.utils.generate_data.html" />
+    <link rel="prev" title="ctgan.cli.cli" href="ctgan.cli.cli.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ctgan-tf
+          
+
+          
+            
+            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code>: Neural Network and Transformer Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.layers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code>: Neural Network Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.losses"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.losses</span></code>: Model losses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>: Command line interface</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.ProgressBar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ctgan.utils.generate_data.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.generate_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ctgan-tf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">ctgan-tf API</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.ProgressBar</li>
+    
+    
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ctgan-utils-progressbar">
+<h1><a class="reference internal" href="../api.html#module-ctgan.utils" title="ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code></a>.ProgressBar<a class="headerlink" href="#ctgan-utils-progressbar" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="ctgan.utils.ProgressBar">
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.utils.</code><code class="sig-name descname">ProgressBar</code><span class="sig-paren">(</span><em class="sig-param">total_samples</em>, <em class="sig-param">batch_size</em>, <em class="sig-param">epoch</em>, <em class="sig-param">num_epochs</em>, <em class="sig-param">metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/utils/_bar_utils.py#L11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom progress bar, designed for CTGAN training.</p>
+<p>ProgressBar inherits from <code class="docutils literal notranslate"><span class="pre">tqdm.tqdm</span></code> to create an informative progress
+bar in each training epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>total_samples: int</strong></dt><dd><p>Number of total samples, i.e., dataset size.</p>
+</dd>
+<dt><strong>batch_size: int</strong></dt><dd><p>Size of the current training batch.</p>
+</dd>
+<dt><strong>epoch: int</strong></dt><dd><p>Current training epoch.</p>
+</dd>
+<dt><strong>num_epochs: int</strong></dt><dd><p>Total number of training epochs.</p>
+</dd>
+<dt><strong>metrics: list, or dict</strong></dt><dd><p>List or dictionary of which metrics to display.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="ctgan.utils.ProgressBar.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">total_samples</em>, <em class="sig-param">batch_size</em>, <em class="sig-param">epoch</em>, <em class="sig-param">num_epochs</em>, <em class="sig-param">metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/utils/_bar_utils.py#L49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>iterable</strong><span class="classifier">iterable, optional</span></dt><dd><p>Iterable to decorate with a progressbar.
+Leave blank to manually manage the updates.</p>
+</dd>
+<dt><strong>desc</strong><span class="classifier">str, optional</span></dt><dd><p>Prefix for the progressbar.</p>
+</dd>
+<dt><strong>total</strong><span class="classifier">int or float, optional</span></dt><dd><p>The number of expected iterations. If unspecified,
+len(iterable) is used if possible. If float(“inf”) or as a last
+resort, only basic progress statistics are displayed
+(no ETA, no progressbar).
+If <code class="docutils literal notranslate"><span class="pre">gui</span></code> is True and this parameter needs subsequent updating,
+specify an initial arbitrary large positive number,
+e.g. 9e9.</p>
+</dd>
+<dt><strong>leave</strong><span class="classifier">bool, optional</span></dt><dd><p>If [default: True], keeps all traces of the progressbar
+upon termination of iteration.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code>, will leave only if <code class="docutils literal notranslate"><span class="pre">position</span></code> is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+<dt><strong>file</strong><span class="classifier"><code class="docutils literal notranslate"><span class="pre">io.TextIOWrapper</span></code> or <code class="docutils literal notranslate"><span class="pre">io.StringIO</span></code>, optional</span></dt><dd><p>Specifies where to output the progress messages
+(default: sys.stderr). Uses <code class="docutils literal notranslate"><span class="pre">file.write(str)</span></code> and <code class="docutils literal notranslate"><span class="pre">file.flush()</span></code>
+methods.  For encoding, see <code class="docutils literal notranslate"><span class="pre">write_bytes</span></code>.</p>
+</dd>
+<dt><strong>ncols</strong><span class="classifier">int, optional</span></dt><dd><p>The width of the entire output message. If specified,
+dynamically resizes the progressbar to stay within this bound.
+If unspecified, attempts to use environment width. The
+fallback is a meter width of 10 and no limit for the counter and
+statistics. If 0, will not print any meter (only stats).</p>
+</dd>
+<dt><strong>mininterval</strong><span class="classifier">float, optional</span></dt><dd><p>Minimum progress display update interval [default: 0.1] seconds.</p>
+</dd>
+<dt><strong>maxinterval</strong><span class="classifier">float, optional</span></dt><dd><p>Maximum progress display update interval [default: 10] seconds.
+Automatically adjusts <code class="docutils literal notranslate"><span class="pre">miniters</span></code> to correspond to <code class="docutils literal notranslate"><span class="pre">mininterval</span></code>
+after long display update lag. Only works if <code class="docutils literal notranslate"><span class="pre">dynamic_miniters</span></code>
+or monitor thread is enabled.</p>
+</dd>
+<dt><strong>miniters</strong><span class="classifier">int or float, optional</span></dt><dd><p>Minimum progress display update interval, in iterations.
+If 0 and <code class="docutils literal notranslate"><span class="pre">dynamic_miniters</span></code>, will automatically adjust to equal
+<code class="docutils literal notranslate"><span class="pre">mininterval</span></code> (more CPU efficient, good for tight loops).
+If &gt; 0, will skip display of specified number of iterations.
+Tweak this and <code class="docutils literal notranslate"><span class="pre">mininterval</span></code> to get very efficient loops.
+If your progress is erratic with both fast and slow iterations
+(network, skipping items, etc) you should set miniters=1.</p>
+</dd>
+<dt><strong>ascii</strong><span class="classifier">bool or str, optional</span></dt><dd><p>If unspecified or False, use unicode (smooth blocks) to fill
+the meter. The fallback is to use ASCII characters ” 123456789#”.</p>
+</dd>
+<dt><strong>disable</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to disable the entire progressbar wrapper
+[default: False]. If set to None, disable on non-TTY.</p>
+</dd>
+<dt><strong>unit</strong><span class="classifier">str, optional</span></dt><dd><p>String that will be used to define the unit of each iteration
+[default: it].</p>
+</dd>
+<dt><strong>unit_scale</strong><span class="classifier">bool or int or float, optional</span></dt><dd><p>If 1 or True, the number of iterations will be reduced/scaled
+automatically and a metric prefix following the
+International System of Units standard will be added
+(kilo, mega, etc.) [default: False]. If any other non-zero
+number, will scale <code class="docutils literal notranslate"><span class="pre">total</span></code> and <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+</dd>
+<dt><strong>dynamic_ncols</strong><span class="classifier">bool, optional</span></dt><dd><p>If set, constantly alters <code class="docutils literal notranslate"><span class="pre">ncols</span></code> to the environment (allowing
+for window resizes) [default: False].</p>
+</dd>
+<dt><strong>smoothing</strong><span class="classifier">float, optional</span></dt><dd><p>Exponential moving average smoothing factor for speed estimates
+(ignored in GUI mode). Ranges from 0 (average speed) to 1
+(current/instantaneous speed) [default: 0.3].</p>
+</dd>
+<dt><strong>bar_format</strong><span class="classifier">str, optional</span></dt><dd><p>Specify a custom bar string formatting. May impact performance.
+[default: ‘{l_bar}{bar}{r_bar}’], where
+l_bar=’{desc}: {percentage:3.0f}%|’ and
+r_bar=’| {n_fmt}/{total_fmt} [{elapsed}&lt;{remaining}, ‘</p>
+<blockquote>
+<div><p>‘{rate_fmt}{postfix}]’</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Possible vars: l_bar, bar, r_bar, n, n_fmt, total, total_fmt,</dt><dd><p>percentage, elapsed, elapsed_s, ncols, desc, unit,
+rate, rate_fmt, rate_noinv, rate_noinv_fmt,
+rate_inv, rate_inv_fmt, postfix, unit_divisor,
+remaining, remaining_s.</p>
+</dd>
+</dl>
+<p>Note that a trailing “: ” is automatically removed after {desc}
+if the latter is empty.</p>
+</dd>
+<dt><strong>initial</strong><span class="classifier">int or float, optional</span></dt><dd><p>The initial counter value. Useful when restarting a progress
+bar [default: 0]. If using float, consider specifying <code class="docutils literal notranslate"><span class="pre">{n:.3f}</span></code>
+or similar in <code class="docutils literal notranslate"><span class="pre">bar_format</span></code>, or specifying <code class="docutils literal notranslate"><span class="pre">unit_scale</span></code>.</p>
+</dd>
+<dt><strong>position</strong><span class="classifier">int, optional</span></dt><dd><p>Specify the line offset to print this bar (starting from 0)
+Automatic if unspecified.
+Useful to manage multiple bars at once (eg, from threads).</p>
+</dd>
+<dt><strong>postfix</strong><span class="classifier">dict or <a href="#id1"><span class="problematic" id="id2">*</span></a>, optional</span></dt><dd><p>Specify additional stats to display at the end of the bar.
+Calls <code class="docutils literal notranslate"><span class="pre">set_postfix(**postfix)</span></code> if possible (dict).</p>
+</dd>
+<dt><strong>unit_divisor</strong><span class="classifier">float, optional</span></dt><dd><p>[default: 1000], ignored unless <code class="docutils literal notranslate"><span class="pre">unit_scale</span></code> is True.</p>
+</dd>
+<dt><strong>write_bytes</strong><span class="classifier">bool, optional</span></dt><dd><p>If (default: None) and <code class="docutils literal notranslate"><span class="pre">file</span></code> is unspecified,
+bytes will be written in Python 2. If <code class="docutils literal notranslate"><span class="pre">True</span></code> will also write
+bytes. In all other cases will default to unicode.</p>
+</dd>
+<dt><strong>lock_args</strong><span class="classifier">tuple, optional</span></dt><dd><p>Passed to <code class="docutils literal notranslate"><span class="pre">refresh</span></code> for intermediate output
+(initialisation, iterating, and updating).</p>
+</dd>
+<dt><strong>gui</strong><span class="classifier">bool, optional</span></dt><dd><p>WARNING: internal parameter - do not use.
+Use tqdm.gui.tqdm(…) instead. If set, will attempt to use
+matplotlib animations for a graphical output [default: False].</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>out</strong><span class="classifier">decorated iterator.</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ctgan.utils.ProgressBar._get_terminal_width">
+<em class="property">classmethod </em><code class="sig-name descname">_get_terminal_width</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/utils/_bar_utils.py#L36"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar._get_terminal_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that returns the execution terminal width.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>int</dt><dd><p>The execution terminal width if possible, otherwise, 120.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ctgan.utils.ProgressBar.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/utils/_bar_utils.py#L67"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the progress bar metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metrics: dict[str, tf.Metrics]</strong></dt><dd><p>Dictionary mapping the metrics to their current values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ctgan.utils.generate_data.html" class="btn btn-neutral float-right" title="ctgan.utils.generate_data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ctgan.cli.cli.html" class="btn btn-neutral float-left" title="ctgan.cli.cli" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, MIT Data To AI Lab &amp; Pedro Martins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

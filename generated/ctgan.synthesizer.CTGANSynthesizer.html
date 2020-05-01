@@ -1,0 +1,569 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ctgan.synthesizer.CTGANSynthesizer &mdash; ctgan-tf 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ctgan.data_modules.ConditionalGenerator" href="ctgan.data_modules.ConditionalGenerator.html" />
+    <link rel="prev" title="ctgan-tf API" href="../api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ctgan-tf
+          
+
+          
+            
+            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>.CTGANSynthesizer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code>: Neural Network and Transformer Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.layers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code>: Neural Network Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.losses"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.losses</span></code>: Model losses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>: Command line interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ctgan-tf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">ctgan-tf API</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>.CTGANSynthesizer</li>
+    
+    
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ctgan-synthesizer-ctgansynthesizer">
+<h1><a class="reference internal" href="../api.html#module-ctgan.synthesizer" title="ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code></a>.CTGANSynthesizer<a class="headerlink" href="#ctgan-synthesizer-ctgansynthesizer" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="ctgan.synthesizer.CTGANSynthesizer">
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.synthesizer.</code><code class="sig-name descname">CTGANSynthesizer</code><span class="sig-paren">(</span><em class="sig-param">file_path=None</em>, <em class="sig-param">log_dir=None</em>, <em class="sig-param">z_dim=128</em>, <em class="sig-param">pac=10</em>, <em class="sig-param">gen_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">crt_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">l2_scale=1e-06</em>, <em class="sig-param">batch_size=500</em>, <em class="sig-param">gp_lambda=10.0</em>, <em class="sig-param">tau=0.2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conditional Table GAN Synthesizer.</p>
+<p>This is the core class of the CTGAN project, where the different
+components are orchestrated together.
+For more details about the process, please check the original PyTorch
+solution (designed by the authors) which is available on their
+<a class="reference external" href="https://github.com/sdv-dev/CTGAN">GitHub</a>, and their Modeling Tabular
+data using Conditional GAN <a class="bibtex reference internal" href="../references.html#xu2019modeling" id="id1">[XSCIV19]</a> paper.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>file_path: str, default=None</strong></dt><dd><p>File path to where a Synthesizer model is stored. If this
+value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, it will create a new instance of this class.</p>
+</dd>
+<dt><strong>log_dir: str, default=None</strong></dt><dd><p>Directory path to where the log files (metrics) will be
+stored. If this value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, no logs will be saved.</p>
+</dd>
+<dt><strong>z_dim: int, default=128</strong></dt><dd><p>Embedding/latent dimension of fake samples passed to the
+Generator.</p>
+</dd>
+<dt><strong>pac: int, default=10</strong></dt><dd><p>Size of the Pac framework. For more details, consult the original
+paper <a class="bibtex reference internal" href="../references.html#xu2019modeling" id="id2">[XSCIV19]</a>, and the PacGAN framework paper
+<a class="bibtex reference internal" href="../references.html#lin2018pacgan" id="id3">[LKFO18]</a>.</p>
+</dd>
+<dt><strong>gen_dim: tuple[int], or list[int], default=(256, 256)</strong></dt><dd><p>Size of the output samples for each one of the Residuals.
+A Residual Layer will be created for each one of the values provided.</p>
+</dd>
+<dt><strong>crt_dim: tuple[int], or list[int], default=(256, 256)</strong></dt><dd><p>Size of the output samples for each one of the Critic layers.
+A Fully Connected layer will be created for each one of the
+provided values.</p>
+</dd>
+<dt><strong>l2_scale: float, default=1e-6</strong></dt><dd><p>L2 regularization (<span class="math notranslate nohighlight">\(\lambda\)</span>) added to the Generator optimizer.
+This is computed by adding the weights scaled by <span class="math notranslate nohighlight">\(\lambda\)</span> to
+the computed gradients <a class="bibtex reference internal" href="../references.html#fastadam" id="id4">[201]</a>:
+:math:<a href="#id5"><span class="problematic" id="id6">`</span></a>Delta_{mathcal{w}}’ = Delta_{mathcal{W}} +</p>
+<blockquote>
+<div><p>lambda * mathcal{W}`</p>
+</div></blockquote>
+</dd>
+<dt><strong>batch_size: int, default=500</strong></dt><dd><p>Number of samples to process at each training step.
+This value must be even and divisible by <code class="docutils literal notranslate"><span class="pre">pac</span></code>.</p>
+</dd>
+<dt><strong>gp_lambda: float, default=10.0</strong></dt><dd><p>Gradient Penalty lambda. For more information, refer to the WGAN-GP
+paper <a class="bibtex reference internal" href="../references.html#gulrajani2017improved" id="id7">[GAA+17]</a>.</p>
+</dd>
+<dt><strong>tau: float, default=0.2</strong></dt><dd><p>Gumbel-Softmax non-negative scalar temperature
+<a class="bibtex reference internal" href="../references.html#maddison2016concrete" id="id8">[MMT16]</a>, <a class="bibtex reference internal" href="../references.html#jang2016categorical" id="id9">[JGP16]</a>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>IsDirectoryError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">log_dir</span></code> is not None and the path does not exist.</p>
+</dd>
+<dt>ValueError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> is not an even value or divisible by <code class="docutils literal notranslate"><span class="pre">pac</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="ctgan.data_modules.DataTransformer.html#ctgan.data_modules.DataTransformer" title="ctgan.data_modules.DataTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctgan.data_modules.DataTransformer</span></code></a></dt><dd><p>Transforms the input dataset by applying mode-specific normalization and OneHot encoding.</p>
+</dd>
+<dt><a class="reference internal" href="ctgan.data_modules.ConditionalGenerator.html#ctgan.data_modules.ConditionalGenerator" title="ctgan.data_modules.ConditionalGenerator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctgan.data_modules.ConditionalGenerator</span></code></a></dt><dd><p>Samples conditional and mask vectors according to the set of available discrete variables.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctgan.data_modules.Sampler</span></code></dt><dd><p>Samples real data from the original dataset.</p>
+</dd>
+<dt><a class="reference internal" href="ctgan.models.Generator.html#ctgan.models.Generator" title="ctgan.models.Generator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctgan.models.Generator</span></code></a></dt><dd><p>TensorFlow model that attempts to replicate the original data, given some random noise and conditional vectors.</p>
+</dd>
+<dt><a class="reference internal" href="ctgan.models.Critic.html#ctgan.models.Critic" title="ctgan.models.Critic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ctgan.models.Critic</span></code></a></dt><dd><p>TensorFlow model that attempts to tell apart real from fake samples, outputted by the Generator.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">References</p>
+<p id="bibtex-bibliography-generated/ctgan.synthesizer.CTGANSynthesizer-0"><dl class="citation">
+<dt class="bibtex label" id="fastadam"><span class="brackets"><a class="fn-backref" href="#id4">201</a></span></dt>
+<dd><p>Adamw and super-convergence is now the fastest way to train neural nets. Accessed: 2020-04-25. URL: <a class="reference external" href="https://www.fast.ai/2018/07/02/adam-weight-decay/#understanding-adamw-weight-decay-or-l2-regularization">https://www.fast.ai/2018/07/02/adam-weight-decay/#understanding-adamw-weight-decay-or-l2-regularization</a>.</p>
+</dd>
+<dt class="bibtex label" id="gulrajani2017improved"><span class="brackets"><a class="fn-backref" href="#id7">GAA+17</a></span></dt>
+<dd><p>Ishaan Gulrajani, Faruk Ahmed, Martin Arjovsky, Vincent Dumoulin, and Aaron C Courville. Improved training of wasserstein gans. In <em>Advances in neural information processing systems</em>, 5767–5777. 2017. URL: <a class="reference external" href="https://arxiv.org/abs/1704.00028">https://arxiv.org/abs/1704.00028</a>.</p>
+</dd>
+<dt class="bibtex label" id="jang2016categorical"><span class="brackets"><a class="fn-backref" href="#id9">JGP16</a></span></dt>
+<dd><p>Eric Jang, Shixiang Gu, and Ben Poole. Categorical reparameterization with gumbel-softmax. <em>arXiv preprint arXiv:1611.01144</em>, 2016. URL: <a class="reference external" href="https://arxiv.org/abs/1611.01144">https://arxiv.org/abs/1611.01144</a>.</p>
+</dd>
+<dt class="bibtex label" id="lin2018pacgan"><span class="brackets"><a class="fn-backref" href="#id3">LKFO18</a></span></dt>
+<dd><p>Zinan Lin, Ashish Khetan, Giulia Fanti, and Sewoong Oh. Pacgan: the power of two samples in generative adversarial networks. In <em>Advances in neural information processing systems</em>, 1498–1507. 2018. URL: <a class="reference external" href="https://arxiv.org/abs/1712.04086">https://arxiv.org/abs/1712.04086</a>.</p>
+</dd>
+<dt class="bibtex label" id="maddison2016concrete"><span class="brackets"><a class="fn-backref" href="#id8">MMT16</a></span></dt>
+<dd><p>Chris J Maddison, Andriy Mnih, and Yee Whye Teh. The concrete distribution: a continuous relaxation of discrete random variables. <em>arXiv preprint arXiv:1611.00712</em>, 2016. URL: <a class="reference external" href="https://arxiv.org/abs/1611.00712">https://arxiv.org/abs/1611.00712</a>.</p>
+</dd>
+<dt class="bibtex label" id="xu2019modeling"><span class="brackets">XSCIV19</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dd><p>Lei Xu, Maria Skoularidou, Alfredo Cuesta-Infante, and Kalyan Veeramachaneni. Modeling tabular data using conditional gan. In <em>Advances in Neural Information Processing Systems</em>. 2019. URL: <a class="reference external" href="https://arxiv.org/abs/1907.00503">https://arxiv.org/abs/1907.00503</a>.</p>
+</dd>
+</dl>
+</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ctgan.cli</span> <span class="kn">import</span> <span class="n">load_demo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">,</span> <span class="n">discrete</span> <span class="o">=</span> <span class="n">load_demo</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">   age          workclass  fnlwgt   education  ...  income</span>
+<span class="go">0   39          State-gov   77516   Bachelors  ...   &lt;=50K</span>
+<span class="go">1   50   Self-emp-not-inc   83311   Bachelors  ...   &lt;=50K</span>
+<span class="go">2   38            Private  215646     HS-grad  ...   &lt;=50K</span>
+<span class="go">3   53            Private  234721        11th  ...   &lt;=50K</span>
+<span class="go">4   28            Private  338409   Bachelors  ...   &lt;=50K</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ctgan.synthesizer</span> <span class="kn">import</span> <span class="n">CTGANSynthesizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">CTGANSynthesizer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">discrete</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">Epoch 1/1</span>
+<span class="go">32500/32500 |████| 3354.54samples/s  ETA: 00:00  Elapsed Time: 00:09</span>
+<span class="go">        g_loss: 2.065  cond_loss: 2.122  c_loss:-0.526  gp: 1.089</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">   age workclass  fnlwgt      education  ...  income</span>
+<span class="go">0   74   Private  168809   Some-college  ...    &gt;50K</span>
+<span class="go">1   51   Private  157349        HS-grad  ...    &gt;50K</span>
+<span class="go">2   20   Private  101469           11th  ...    &gt;50K</span>
+<span class="go">3   42   Private  225237           11th  ...    &gt;50K</span>
+<span class="go">4   67   Private  117769           11th  ...   &lt;=50K</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="ctgan.synthesizer.CTGANSynthesizer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">log_dir=None</em>, <em class="sig-param">z_dim=128</em>, <em class="sig-param">pac=10</em>, <em class="sig-param">gen_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">crt_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">l2_scale=1e-06</em>, <em class="sig-param">batch_size=500</em>, <em class="sig-param">gp_lambda=10.0</em>, <em class="sig-param">tau=0.2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L138"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ctgan.synthesizer.CTGANSynthesizer._load">
+<code class="sig-name descname">_load</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_path</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L540"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer._load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load an existent dumped model to the current instance of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_path: str</strong></dt><dd><p>Path where the model is stored.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>NameError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">file_path</span></code> is an invalid string.</p>
+</dd>
+<dt>FileNotFoundError</dt><dd><p>If the provided path does not exist.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ctgan.synthesizer.CTGANSynthesizer._train_c">
+<code class="sig-name descname">_train_c</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L308"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer._train_c" title="Permalink to this definition">¶</a></dt>
+<dd><p>Critic training method.</p>
+<p>It samples uniformly random data, generates a conditional vector, and
+samples real data from the dataset. It then passes the fake data to
+the generator and invokes <code class="docutils literal notranslate"><span class="pre">_train_c_step</span></code> to compute and
+update the gradients of the Critic network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>tuple(tf.Tensor, tf.Tensor)</dt><dd><p>Tuple containing (critic_loss, gradient_penalty).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ctgan.synthesizer.CTGANSynthesizer._train_g">
+<code class="sig-name descname">_train_g</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L428"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer._train_g" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator training method.</p>
+<p>It uniformly samples random data, generates a conditional vector, and
+it invokes <code class="docutils literal notranslate"><span class="pre">_train_g_step</span></code>, if no conditional vectors exist,
+or <code class="docutils literal notranslate"><span class="pre">_train_g_cond_step</span></code>, if they do, to compute and update
+the gradients of the Generator network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>(tf.Tensor, tf.Tensor)</dt><dd><p>Tuple containing (generator_loss, conditional_loss).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ctgan.synthesizer.CTGANSynthesizer.dump">
+<code class="sig-name descname">dump</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_path</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L492"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export model to disk.</p>
+<p>This operation also involves transforming and converting the
+<code class="docutils literal notranslate"><span class="pre">ConditionalGenerator</span></code> and the <code class="docutils literal notranslate"><span class="pre">DataTransformer</span></code> and dumping all
+to the the same file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_path: str</strong></dt><dd><p>Path to where the model will be stored.</p>
+</dd>
+<dt><strong>overwrite: bool, default=False</strong></dt><dd><p>Overwrite existing files.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>NameError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">file_path</span></code> is an invalid string.</p>
+</dd>
+<dt>NotADirectoryError</dt><dd><p>If the <code class="docutils literal notranslate"><span class="pre">file_path</span></code> directory does not exist.</p>
+</dd>
+<dt>FileExistsError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">overwrite=False</span></code> and the provided <code class="docutils literal notranslate"><span class="pre">file_path</span></code>
+already exists.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ctgan.synthesizer.CTGANSynthesizer.sample">
+<code class="sig-name descname">sample</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L455"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample data similar to the training data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_samples: int</strong></dt><dd><p>Number of rows of the output sample.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>np.ndarray, or pandas.DataFrame</dt><dd><p>The synthesized sample data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">n</span></code> is equal or less than 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ctgan.synthesizer.CTGANSynthesizer.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">train_data</em>, <em class="sig-param">discrete_columns=()</em>, <em class="sig-param">epochs=300</em>, <em class="sig-param">log_frequency=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L179"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the CTGAN according to the provided train_data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_data: pandas.DataFrame, or np.ndarray</strong></dt><dd><p>Training data. It must be a 2-dimensional <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>,
+or a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+<dt><strong>discrete_columns: list</strong></dt><dd><p>List of discrete columns to be used to generate the Conditional
+Vector. If <code class="docutils literal notranslate"><span class="pre">train_data</span></code> is a <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>, this list should
+contain the integer indices of the columns. Otherwise, if it is a
+<code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>, this list should contain the column names.</p>
+</dd>
+<dt><strong>epochs: int, default=300</strong></dt><dd><p>Number of training epochs.</p>
+</dd>
+<dt><strong>log_frequency: bool, default=True</strong></dt><dd><p>Whether to use log frequency of categorical levels in conditional
+sampling.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ctgan.synthesizer.CTGANSynthesizer.train_c_step">
+<code class="sig-name descname">train_c_step</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fake_cat</em>, <em class="sig-param">real_cat</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L272"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train_c_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Critic training step.</p>
+<p>Computes the loss, gradient penalty, gradients and it uses the
+optimizer to update the Critic weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fake_cat: tf.Tensor</strong></dt><dd><p>Fake sample outputted by the Generator.</p>
+</dd>
+<dt><strong>real_cat: tf.Tensor</strong></dt><dd><p>Real sample extracted from the training set.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(tf.Tensor, tf.Tensor)</dt><dd><p>Tuple containing (critic_loss, gradient_penalty).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ctgan.synthesizer.CTGANSynthesizer.train_g_cond_step">
+<code class="sig-name descname">train_g_cond_step</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fake_z</em>, <em class="sig-param">cond</em>, <em class="sig-param">mask</em>, <em class="sig-param">cond_info</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L385"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train_g_cond_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator training step for datasets that contain discrete
+variables, therefore, we need to compute the conditional loss.</p>
+<p>Additionally, it computes the loss, gradients and it uses the
+optimizer to update the Generator weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fake_z: tf.Tensor</strong></dt><dd><p>Randomly sample noise, concatenated with a cond vector.</p>
+</dd>
+<dt><strong>cond: tf.Tensor</strong></dt><dd><p>Conditional vector.</p>
+</dd>
+<dt><strong>mask: tf.Tensor</strong></dt><dd><p>Mask vector.</p>
+</dd>
+<dt><strong>cond_info: tf.Tensor</strong></dt><dd><p>Transformer data_modules information tensor.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(tf.Tensor, tf.Tensor)</dt><dd><p>Tuple containing (generator_loss, conditional_loss).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ctgan.synthesizer.CTGANSynthesizer.train_g_step">
+<code class="sig-name descname">train_g_step</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fake_z</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/synthesizer/_synthesizer.py#L353"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train_g_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator training step for datasets that do not have discrete
+variables, thus, those that do not sample conditional vectors.</p>
+<p>It computes the loss, gradients and it uses the optimizer to update
+the Generator weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fake_z: tf.Tensor</strong></dt><dd><p>Randomly sample noise.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(tf.Tensor, tf.Tensor)</dt><dd><p>Tuple containing (generator_loss, conditional_loss = 0).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ctgan.data_modules.ConditionalGenerator.html" class="btn btn-neutral float-right" title="ctgan.data_modules.ConditionalGenerator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../api.html" class="btn btn-neutral float-left" title="ctgan-tf API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, MIT Data To AI Lab &amp; Pedro Martins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

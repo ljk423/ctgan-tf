@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ctgan.layers.GenActivation &mdash; ctgan-tf 0.1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ctgan.layers.init_bounded" href="ctgan.layers.init_bounded.html" />
+    <link rel="prev" title="ctgan.layers.ResidualLayer" href="ctgan.layers.ResidualLayer.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ctgan-tf
+          
+
+          
+            
+            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code>: Neural Network and Transformer Models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-ctgan.layers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code>: Neural Network Layers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ctgan.layers.ResidualLayer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code>.ResidualLayer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code>.GenActivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.losses"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.losses</span></code>: Model losses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>: Command line interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ctgan-tf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">ctgan-tf API</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code>.GenActivation</li>
+    
+    
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ctgan-layers-genactivation">
+<h1><a class="reference internal" href="../api.html#module-ctgan.layers" title="ctgan.layers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code></a>.GenActivation<a class="headerlink" href="#ctgan-layers-genactivation" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="ctgan.layers.GenActivation">
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.layers.</code><code class="sig-name descname">GenActivation</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/layers/_gen_activation.py#L11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conditional Generator activation layer.</p>
+<p>Besides computing the usual Fully Connected operation <span class="math notranslate nohighlight">\(y = xA^T + b\)</span>,
+this layer also applies a mix of activation functions. The scalar values
+<span class="math notranslate nohighlight">\({\alpha}_i\)</span> are generated by tanh, while the mode indicator
+<span class="math notranslate nohighlight">\({\beta}_i\)</span> and the discrete values <span class="math notranslate nohighlight">\(d_i\)</span> are generated by
+Gumbel-Softmax.</p>
+<p>For more detailed information, please refer to sections 4.2-4.4 of the
+authors paper <a class="bibtex reference internal" href="../references.html#xu2019modeling" id="id1">[XSCIV19]</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input_dim: int</strong></dt><dd><p>Fully Connected layer input dimension.</p>
+</dd>
+<dt><strong>output_dim: int</strong></dt><dd><p>Fully Connected layer output dimension.</p>
+</dd>
+<dt><strong>transformer_info: list[tf.Tensor]</strong></dt><dd><p>List of tensors containing information regarding the
+activation functions of each data columns.</p>
+</dd>
+<dt><strong>tau: float</strong></dt><dd><p>Gumbel-Softmax non-negative scalar temperature.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="ctgan.layers.GenActivation.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/layers/_gen_activation.py#L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ctgan.layers.GenActivation._gumbel_softmax">
+<code class="sig-name descname">_gumbel_softmax</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">logits</em>, <em class="sig-param">tau=1.0</em>, <em class="sig-param">hard=False</em>, <em class="sig-param">dim=-1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/layers/_gen_activation.py#L80"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation._gumbel_softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples from the Gumbel-Softmax distribution
+<a class="bibtex reference internal" href="../references.html#maddison2016concrete" id="id2">[MMT16]</a>, <a class="bibtex reference internal" href="../references.html#jang2016categorical" id="id3">[JGP16]</a> and
+optionally discretizes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>logits: tf.Tensor</strong></dt><dd><p>Un-normalized log probabilities.</p>
+</dd>
+<dt><strong>tau: float, default=1.0</strong></dt><dd><p>Non-negative scalar temperature.</p>
+</dd>
+<dt><strong>hard: bool, default=False</strong></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the returned samples will be discretized as
+one-hot vectors, but will be differentiated as soft samples.</p>
+</dd>
+<dt><strong>dim: int, default=1</strong></dt><dd><p>The dimension along which softmax will be computed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tf.Tensor</dt><dd><p>Sampled tensor of same shape as <code class="docutils literal notranslate"><span class="pre">logits</span></code> from the
+Gumbel-Softmax distribution. If <code class="docutils literal notranslate"><span class="pre">hard=True</span></code>, the returned samples
+will be one-hot, otherwise they will be probability distributions
+that sum to 1 across <code class="docutils literal notranslate"><span class="pre">dim</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ctgan.layers.GenActivation.call">
+<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/8fe8564/ctgan/layers/_gen_activation.py#L50"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a feedforward pass of the activation functions on the
+provided input batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>inputs: tf.Tensor</strong></dt><dd><p>Batch of data.</p>
+</dd>
+<dt><strong>kwargs: dict</strong></dt><dd><p>Dictionary with functions options. Mainly used to set
+<code class="docutils literal notranslate"><span class="pre">training=True</span></code> when training the layer weights.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple(tf.Tensor, tf.Tensor)</dt><dd><p>A tuple containing the output of the FC layer, and the output
+of the FC layer and the activation layers.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ctgan.layers.init_bounded.html" class="btn btn-neutral float-right" title="ctgan.layers.init_bounded" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ctgan.layers.ResidualLayer.html" class="btn btn-neutral float-left" title="ctgan.layers.ResidualLayer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, MIT Data To AI Lab &amp; Pedro Martins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
