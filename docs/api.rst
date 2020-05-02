@@ -38,7 +38,7 @@ This is the full API documentation of the `ctgan-tf` toolbox.
 
    data_modules.ConditionalGenerator
    data_modules.DataTransformer
-   data_modules.Sampler
+   data_modules.DataSampler
 
 .. _models_ref:
 

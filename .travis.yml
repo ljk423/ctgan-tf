@@ -2,6 +2,7 @@ language: python
 python:
   - "3.7"
 # command to install dependencies, requirements.txt should NOT include numpy
+cache: pip
 install:
   - pip install -r requirements.txt
 # command to run tests
@@ -9,10 +10,41 @@ jobs:
   include:
     - stage: code_linting
       script:
-        - pylint-fail-under --max-line-length=80 --fail_under 8.0 ctgan
-        - flake8
+        - make lint
     - stage: code_regression
       script:
-        - pytest ctgan # or py.test for Python versions 3.5 and below
-        - pytest --cov-report term --cov=ctgan --cov-fail-under=85 ctgan
-    - stage: code
+        - make test
+        - make coverage
+      skip_cleanup: true
+      after_success:
+        - codecov --token=$CODECOV_TOKEN
+    - stage: docs
+      script:
+        - make install-develop
+        - make docs
+      deploy:
+        - provider: pages
+          skip_cleanup: true
+          github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+          keep_history: true
+          local-dir: docs/_build/html
+          target_branch: gh-pages
+          on:
+            all_branches: true
+    - stage: deploy_package
+      script: skip
+      deploy:
+        - provider: releases
+          api_key: $GITHUB_TOKEN
+          skip_cleanup: true
+          on:
+            tags: true
+            branch: stable
+        - provider: pypi
+          user: "__token__"
+          password:
+            secure: LUtG+fF/OtOhlKJwOJ0CDqg4YEeBOPaSEFh03/NDvppkiESfSaMnoBbol6z0kJPKQ5nbTrywuJk6XUUE6MaxMo/Z5HSoSjSphwgWxjNx+B5JyptqI0mQONRvrtR2OO5bxq0ChNDNeQ5jrWY2hBm775vqRotLU4MZRw50wUVjKnyDtw7nieHye8f215pQSE9UOkMneV1UZ8QyOUcKAe+ZA/fgAcSh3I/kQCS0xFwyRTIl9nGWagNEnfTOZ7E1UYGxxkt+Tu1U925np2zRS03+2dDoSNcEdwNAVxDkbXAvAR6FxKcxr0YujQrK27MgJDuRbc7LWMAyHrCNEhZVVFtChipHov9bKM19732ZP5CVkt0kRvWqW7J5MJwYM0EcLLw8tm/3d/ubAyddyePR86F+Zuyx0YyrsLREoEMlbYewYQjK9Cn4WuDOwCJPDEIu1pJ5xLmgFQfK6aFNRRdned9E/NmSX95Wbq8h7NlBXTAbQSftoGzbBV28HThEW4BYR1dOeOG24UTOtDYHiWibtW2QsIZD3Ir+a4/yWxO4mZeLm2HCr7lfK7ALZsvNUfS/MiktDwsA7yw4w+1+qIOOZ4MtJPThAC716XWiuY9LiXyo3hczreYy+4pHmAlnJXPvxTqr6ZFprTkTcOwLNByskR5MjG7bEDBVADKbQb5j0riAX8Y=
+          on:
+            tags: true
+            #all_branches: true
+            branch: stable

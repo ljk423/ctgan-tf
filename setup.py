@@ -1,97 +1,95 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#! /usr/bin/env python
+"""Toolbox for Tensorflow 2.1 CTGAN implementation."""
 
-"""The setup script."""
+import os
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
+# get __version__ from _version.py
+ver_file = os.path.join('ctgan', '_version.py')
+with open(ver_file) as f:
+    exec(f.read())
+
+DISTNAME = 'ctgan-tf'
+DESCRIPTION = 'Tensorflow 2.1 implementation of Conditional Tabular GAN.'
 with open('README.md') as readme_file:
-    readme = readme_file.read()
-
-#with open('HISTORY.md') as history_file:
-#    history = history_file.read()
-
-install_requires = [
-    'tensorflow>=2.1.0',
+    LONG_DESCRIPTION = readme_file.read()
+MAINTAINER = 'Pedro Martins'
+MAINTAINER_EMAIL = 'pbmartins@ua.pt'
+URL = 'https://github.com/pbmartins/ctgan-tf'
+LICENSE = 'MIT'
+DOWNLOAD_URL = 'https://github.com/pbmartins/ctgan-tf'
+VERSION = __version__
+CLASSIFIERS = ['Intended Audience :: Science/Research',
+               'Intended Audience :: Developers',
+               'License :: OSI Approved',
+               'Programming Language :: Python',
+               'Topic :: Software Development',
+               'Topic :: Scientific/Engineering',
+               'Operating System :: Microsoft :: Windows',
+               'Operating System :: POSIX',
+               'Operating System :: Unix',
+               'Operating System :: MacOS',
+               'Programming Language :: Python :: 3.7']
+INSTALL_REQUIRES = [
+    'tensorflow<2.2,>=2.1.0',
+    'tensorflow-probability<1.0,>=0.9.0',
     'scikit-learn<0.23,>=0.21',
     'numpy<2,>=1.17.4',
-    'pandas<0.26,>=0.24',
+    'pandas<1.0.2,>=1.0',
+    'tqdm<4.44,>=4.43'
 ]
+EXTRAS_REQUIRE = {
+    'tests': [
+        'pytest>=5.4.0',
+        'pytest-cov>=2.8.0'],
+    'dev': [
+        # general
+        'bump2version>=1.0.0',
+        'pip>=20.0.0',
 
-setup_requires = [
-    'pytest-runner>=2.11.1',
-]
+        # style check
+        'flake8>=3.7.9',
+        'pylint-fail-under>=0.3.0',
 
-tests_require = [
-    'pytest>=3.4.2',
-    'pytest-cov>=2.6.0',
-]
+        # tests
+        'pytest>=5.4.0',
+        'pytest-cov>=2.8.0',
 
-development_requires = [
-    # general
-    'bumpversion>=0.5.3',
-    'pip>=9.0.1',
-    'watchdog>=0.8.3',
+        # distribute on PyPI
+        'twine>=3.1.1',
+        'wheel>=0.30.0',
 
-    # docs
-    'm2r>=0.2.0',
-    'Sphinx>=1.7.1',
-    'sphinx_rtd_theme>=0.2.4',
-    'autodocsumm>=0.1.10',
+        # Advanced testing
+        'coverage>=5.1',
+    ],
+    'docs': [
+        'm2r>=0.2.0',
+        'Sphinx<3.0.0,>=2.4.4',
+        'sphinx_rtd_theme>=0.4.3',
+        'autodocsumm>=0.1.10',
+        'numpydoc<1.0.0,>=0.9.2',
+        'sphinxcontrib-bibtex==1.0.0'
+    ]
+}
 
-    # style check
-    'flake8>=3.7.7',
-    'isort>=4.3.4',
-
-    # fix style issues
-    'autoflake>=1.2',
-    'autopep8>=1.4.3',
-
-    # distribute on PyPI
-    'twine>=1.10.0',
-    'wheel>=0.30.0',
-
-    # Advanced testing
-    'coverage>=4.5.1',
-    'tox>=2.9.1',
-]
 
 setup(
-    author='Pedro Martins',
-    author_email='pbmartins@ua.pt',
-    classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-    ],
-    description='Tensorflow CTGAN',
-    entry_points={
-        'console_scripts': [
-            'synthesizer=synthesizer.__main__:main'
-        ],
-    },
-    extras_require={
-        'test': tests_require,
-        'dev': development_requires + tests_require,
-    },
-    install_package_data=True,
-    install_requires=install_requires,
-    license='MIT license',
-    long_description=readme,
+    name=DISTNAME,
+    author=MAINTAINER,
+    author_email=MAINTAINER_EMAIL,
+    description=DESCRIPTION,
+    license=LICENSE,
+    url=URL,
+    version=VERSION,
+    download_url=DOWNLOAD_URL,
+    long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
-    include_package_data=True,
-    keywords='synthesizer CTGAN',
-    name='synthesizer',
-    packages=find_packages(include=['synthesizer', 'synthesizer.*']),
-    python_requires='>=3.6',
-    setup_requires=setup_requires,
-    test_suite='tests',
-    tests_require=tests_require,
-    url='https://github.com/pbmartins/ctgan-tf',
-    version='1.0.0',
-    zip_safe=False,
+    zip_safe=False,  # the package can run out of an .egg file
+    classifiers=CLASSIFIERS,
+    packages=find_packages(),
+    install_requires=INSTALL_REQUIRES,
+    tests_requires=EXTRAS_REQUIRE['tests'],
+    extras_require=EXTRAS_REQUIRE,
+    python_requires='>=3.7',
 )

@@ -8,9 +8,8 @@ from . import models
 from . import synthesizer
 from . import cli
 from . import utils
+from ._version import __version__, __release__
 
-__version__ = '1.0.0'
-__release__ = '1.0.0'
 __all__ = [
     'data_modules',
     'layers',
@@ -18,5 +17,7 @@ __all__ = [
     'models',
     'synthesizer',
     'cli',
-    'utils'
+    'utils',
+    '__version__',
+    '__release__'
 ]

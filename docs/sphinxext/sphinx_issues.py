@@ -29,7 +29,8 @@ __author__ = "Steven Loria"
 __license__ = "MIT"
 
 
-def user_role(name, rawtext, text, lineno, inliner, options=None, content=None):
+def user_role(name, rawtext, text, lineno, inliner,
+              options=None, content=None):
     """Sphinx role for linking to a user profile. Defaults to linking to
     Github profiles, but the profile URIS can be configured via the
     ``issues_user_uri`` config value.
@@ -58,7 +59,8 @@ def user_role(name, rawtext, text, lineno, inliner, options=None, content=None):
     return [link], []
 
 
-def cve_role(name, rawtext, text, lineno, inliner, options=None, content=None):
+def cve_role(name, rawtext, text, lineno, inliner,
+             options=None, content=None):
     """Sphinx role for linking to a CVE on https://cve.mitre.org.
     Examples: ::
         :cve:`CVE-2018-17175`
@@ -79,9 +81,8 @@ class IssueRole(object):
 
     EXTERNAL_REPO_REGEX = re.compile(r"^(\w+)/(.+)([#@])([\w]+)$")
 
-    def __init__(
-        self, uri_config_option, format_kwarg, github_uri_template, format_text=None
-    ):
+    def __init__(self, uri_config_option, format_kwarg,
+                 github_uri_template, format_text=None):
         self.uri_config_option = uri_config_option
         self.format_kwarg = format_kwarg
         self.github_uri_template = github_uri_template
@@ -103,10 +104,12 @@ class IssueRole(object):
                 )
             path = name_map.get(name)
             ref = "https://github.com/{issues_github_path}/{path}/{n}".format(
-                issues_github_path="{}/{}".format(username, repo), path=path, n=issue
+                issues_github_path="{}/{}".format(username, repo),
+                path=path, n=issue
             )
             formatted_issue = self.format_text(issue).lstrip("#")
-            text = "{username}/{repo}{symbol}{formatted_issue}".format(**locals())
+            text = "{username}/{repo}{symbol}{formatted_issue}".format(
+                **locals())
             link = nodes.reference(text=text, refuri=ref, **options)
             return link
 
