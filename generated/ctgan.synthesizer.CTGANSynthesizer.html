@@ -170,7 +170,7 @@
 <h1><a class="reference internal" href="../api.html#module-ctgan.synthesizer" title="ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code></a>.CTGANSynthesizer<a class="headerlink" href="#ctgan-synthesizer-ctgansynthesizer" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ctgan.synthesizer.CTGANSynthesizer">
-<em class="property">class </em><code class="sig-prename descclassname">ctgan.synthesizer.</code><code class="sig-name descname">CTGANSynthesizer</code><span class="sig-paren">(</span><em class="sig-param">file_path=None</em>, <em class="sig-param">log_dir=None</em>, <em class="sig-param">z_dim=128</em>, <em class="sig-param">pac=10</em>, <em class="sig-param">gen_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">crt_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">l2_scale=1e-06</em>, <em class="sig-param">batch_size=500</em>, <em class="sig-param">gp_lambda=10.0</em>, <em class="sig-param">tau=0.2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.synthesizer.</code><code class="sig-name descname">CTGANSynthesizer</code><span class="sig-paren">(</span><em class="sig-param">file_path=None</em>, <em class="sig-param">log_dir=None</em>, <em class="sig-param">z_dim=128</em>, <em class="sig-param">pac=10</em>, <em class="sig-param">gen_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">crt_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">l2_scale=1e-06</em>, <em class="sig-param">batch_size=500</em>, <em class="sig-param">gp_lambda=10.0</em>, <em class="sig-param">tau=0.2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conditional Table GAN Synthesizer.</p>
 <p>This is the core class of the CTGAN project, where the different
 components are orchestrated together.
@@ -294,13 +294,13 @@ paper <a class="bibtex reference internal" href="../references.html#gulrajani201
 </div>
 <dl class="method">
 <dt id="ctgan.synthesizer.CTGANSynthesizer.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">log_dir=None</em>, <em class="sig-param">z_dim=128</em>, <em class="sig-param">pac=10</em>, <em class="sig-param">gen_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">crt_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">l2_scale=1e-06</em>, <em class="sig-param">batch_size=500</em>, <em class="sig-param">gp_lambda=10.0</em>, <em class="sig-param">tau=0.2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L138"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_path=None</em>, <em class="sig-param">log_dir=None</em>, <em class="sig-param">z_dim=128</em>, <em class="sig-param">pac=10</em>, <em class="sig-param">gen_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">crt_dim=(256</em>, <em class="sig-param">256)</em>, <em class="sig-param">l2_scale=1e-06</em>, <em class="sig-param">batch_size=500</em>, <em class="sig-param">gp_lambda=10.0</em>, <em class="sig-param">tau=0.2</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L138"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ctgan.synthesizer.CTGANSynthesizer._load">
-<code class="sig-name descname">_load</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_path</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L540"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer._load" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_load</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_path</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L540"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer._load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load an existent dumped model to the current instance of the class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -322,7 +322,7 @@ paper <a class="bibtex reference internal" href="../references.html#gulrajani201
 
 <dl class="method">
 <dt id="ctgan.synthesizer.CTGANSynthesizer._train_c">
-<code class="sig-name descname">_train_c</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L308"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer._train_c" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_train_c</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L308"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer._train_c" title="Permalink to this definition">¶</a></dt>
 <dd><p>Critic training method.</p>
 <p>It samples uniformly random data, generates a conditional vector, and
 samples real data from the dataset. It then passes the fake data to
@@ -340,7 +340,7 @@ update the gradients of the Critic network.</p>
 
 <dl class="method">
 <dt id="ctgan.synthesizer.CTGANSynthesizer._train_g">
-<code class="sig-name descname">_train_g</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L428"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer._train_g" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_train_g</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L428"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer._train_g" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generator training method.</p>
 <p>It uniformly samples random data, generates a conditional vector, and
 it invokes <code class="docutils literal notranslate"><span class="pre">_train_g_step</span></code>, if no conditional vectors exist,
@@ -358,7 +358,7 @@ the gradients of the Generator network.</p>
 
 <dl class="method">
 <dt id="ctgan.synthesizer.CTGANSynthesizer.dump">
-<code class="sig-name descname">dump</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_path</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L492"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.dump" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">dump</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file_path</em>, <em class="sig-param">overwrite=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L492"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.dump" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export model to disk.</p>
 <p>This operation also involves transforming and converting the
 <code class="docutils literal notranslate"><span class="pre">ConditionalGenerator</span></code> and the <code class="docutils literal notranslate"><span class="pre">DataTransformer</span></code> and dumping all
@@ -388,7 +388,7 @@ already exists.</p>
 
 <dl class="method">
 <dt id="ctgan.synthesizer.CTGANSynthesizer.sample">
-<code class="sig-name descname">sample</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L455"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.sample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sample</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_samples</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L455"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample data similar to the training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -414,7 +414,7 @@ already exists.</p>
 
 <dl class="method">
 <dt id="ctgan.synthesizer.CTGANSynthesizer.train">
-<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">train_data</em>, <em class="sig-param">discrete_columns=()</em>, <em class="sig-param">epochs=300</em>, <em class="sig-param">log_frequency=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L179"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">train_data</em>, <em class="sig-param">discrete_columns=()</em>, <em class="sig-param">epochs=300</em>, <em class="sig-param">log_frequency=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L179"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the CTGAN according to the provided train_data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -439,7 +439,7 @@ sampling.</p>
 
 <dl class="attribute">
 <dt id="ctgan.synthesizer.CTGANSynthesizer.train_c_step">
-<code class="sig-name descname">train_c_step</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fake_cat</em>, <em class="sig-param">real_cat</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L272"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train_c_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">train_c_step</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fake_cat</em>, <em class="sig-param">real_cat</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L272"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train_c_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Critic training step.</p>
 <p>Computes the loss, gradient penalty, gradients and it uses the
 optimizer to update the Critic weights.</p>
@@ -463,7 +463,7 @@ optimizer to update the Critic weights.</p>
 
 <dl class="attribute">
 <dt id="ctgan.synthesizer.CTGANSynthesizer.train_g_cond_step">
-<code class="sig-name descname">train_g_cond_step</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fake_z</em>, <em class="sig-param">cond</em>, <em class="sig-param">mask</em>, <em class="sig-param">cond_info</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L385"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train_g_cond_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">train_g_cond_step</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fake_z</em>, <em class="sig-param">cond</em>, <em class="sig-param">mask</em>, <em class="sig-param">cond_info</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L385"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train_g_cond_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generator training step for datasets that contain discrete
 variables, therefore, we need to compute the conditional loss.</p>
 <p>Additionally, it computes the loss, gradients and it uses the
@@ -492,7 +492,7 @@ optimizer to update the Generator weights.</p>
 
 <dl class="attribute">
 <dt id="ctgan.synthesizer.CTGANSynthesizer.train_g_step">
-<code class="sig-name descname">train_g_step</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fake_z</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f41e30c/ctgan/synthesizer/_synthesizer.py#L353"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train_g_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">train_g_step</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fake_z</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/synthesizer/_synthesizer.py#L353"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.synthesizer.CTGANSynthesizer.train_g_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generator training step for datasets that do not have discrete
 variables, thus, those that do not sample conditional vectors.</p>
 <p>It computes the loss, gradients and it uses the optimizer to update
