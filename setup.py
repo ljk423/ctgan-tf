@@ -72,7 +72,9 @@ EXTRAS_REQUIRE = {
         'sphinxcontrib-bibtex==1.0.0'
     ]
 }
-
+ENTRY_POINTS = {
+    'console_scripts': ['ctgan-tf=ctgan.__main__:cli.cli']
+}
 
 setup(
     name=DISTNAME,
@@ -87,6 +89,7 @@ setup(
     long_description_content_type='text/markdown',
     zip_safe=False,  # the package can run out of an .egg file
     classifiers=CLASSIFIERS,
+    entry_points=ENTRY_POINTS,
     packages=find_packages(),
     install_requires=INSTALL_REQUIRES,
     tests_requires=EXTRAS_REQUIRE['tests'],

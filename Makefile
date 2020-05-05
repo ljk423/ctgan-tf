@@ -27,6 +27,12 @@ install-test: clean-build clean-pyc ## install the package and test dependencies
 install-develop: clean-build clean-pyc ## install the package in editable mode and dependencies for development
 	pip install -e .[dev]
 
+.PHONY: env
+env: clean-build clean-pyc ## creates a pyenv virtualenv, and installs the package in editable mode and dependencies for development
+	pipenv
+	pipenv shell
+	pip install -e .[dev]
+
 .PHONY: lint
 lint: clean-lint ## check style with pylint and flake8 - it will generate two reports
 	pylint-fail-under --max-line-length=80 --fail_under 8.0 ctgan > pylint.report

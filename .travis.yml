@@ -30,7 +30,7 @@ jobs:
           local-dir: docs/_build/html
           target_branch: gh-pages
           on:
-            all_branches: true
+            branch: stable
     - stage: deploy_package
       script: skip
       deploy:

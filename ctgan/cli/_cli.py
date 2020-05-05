@@ -5,7 +5,7 @@ import argparse
 import pandas as pd
 
 from ..synthesizer import CTGANSynthesizer
-from ._load_demo import load_demo
+from ..utils import load_demo
 
 
 def _parse_args():

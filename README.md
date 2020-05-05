@@ -1,105 +1,98 @@
+<p align="center">
+    <img src="https://i.imgur.com/mbY9pvC.png" width="30%">
+</p>
+<h1 align="center">TensorFlow CTGAN</h1>
+<p align="center">TensorFlow 2.1 implementation of Conditional Tabular GAN.</p>
 
-<p align="left">
-<img width=15% src="https://dai.lids.mit.edu/wp-content/uploads/2018/06/Logo_DAI_highres.png" alt=“sdv-dev” />
-<i>An open source project from Data to AI Lab at MIT.</i>
+
+<p align="center">
+    <a href="./LICENSE.md">
+        <img src="https://img.shields.io/badge/license-MIT-blue.svg">
+    </a>
+    <a href="https://pypi.python.org/pypi/ctgan-tf">
+        <img alt="PyPI Shield" src="https://img.shields.io/pypi/v/ctgan-tf.svg">
+    </a>
+    <a href="https://travis-ci.com/pbmartins/ctgan-tf">
+        <img alt="Build Status" src="https://travis-ci.com/pbmartins/ctgan-tf.svg?branch=master">
+    </a>
+    <a href="https://codecov.io/gh/pbmartins/ctgan-tf">
+        <img alt="Coverage Status" src="https://codecov.io/gh/pbmartins/ctgan-tf/branch/master/graph/badge.svg">
+    </a>
 </p>
 
-[![Development Status](https://img.shields.io/badge/Development%20Status-2%20--%20Pre--Alpha-yellow)](https://pypi.org/search/?c=Development+Status+%3A%3A+2+-+Pre-Alpha)
-[![PyPI Shield](https://img.shields.io/pypi/v/ctgan.svg)](https://pypi.python.org/pypi/ctgan)
-[![Travis CI Shield](https://travis-ci.org/sdv-dev/CTGAN.svg?branch=master)](https://travis-ci.org/sdv-dev/CTGAN)
-[![Downloads](https://pepy.tech/badge/ctgan)](https://pepy.tech/project/ctgan)
-[![Coverage Status](https://codecov.io/gh/sdv-dev/CTGAN/branch/master/graph/badge.svg)](https://codecov.io/gh/sdv-dev/CTGAN)
+Tensorflow 2.1 implementation of a Conditional Tabular Generative Adversarial 
+Network. CTGAN is a GAN-based data synthesizer that can "generate synthetic 
+tabular data with high fidelity".
 
-# Tensorflow CTGAN
+This model was originally designed by the *Data to AI Lab at MIT* team, 
+and it was published in their NeurIPS paper 
+[Modeling Tabular data using Conditional GAN](https://arxiv.org/abs/1907.00503).
 
-Tensorflow 2.0 implementation of a Conditional Tabular Generative Adversarial Network. 
-CTGAN is a GAN-based data synthesizer that can generate synthetic tabular data with high fidelity.
-
-This model was originally designed by the *Data to AI Lab at MIT* team, and published in their NeurIPS paper
- [Modeling Tabular data using Conditional GAN](https://arxiv.org/abs/1907.00503).
-
-For more information regarding this work, and to access the original PyTorch implementation provided by the authors, 
+For more information regarding this work, and to access the original PyTorch 
+implementation provided by the authors, 
 please refer to their GitHub repository and their documentation:
 
-* Documentation: https://sdv-dev.github.io/CTGAN
-* Homepage: https://github.com/sdv-dev/CTGAN
+* **Documentation**: https://pbmartins.github.io/ctgan-tf
+* **Original PyTorch Documentation**: https://sdv-dev.github.io/CTGAN
+* **Original PyTorch repository**: https://github.com/sdv-dev/CTGAN
 
 # Install
 
 ## Requirements
 
-As of this moment, **CTGAN** has been solely tested tested on [Python 3.7](https://www.python.org/downloads/), 
+As of this moment, **CTGAN** has been solely tested tested on 
+[Python 3.7](https://www.python.org/downloads/), 
 and [TensorFlow 2.1](https://www.tensorflow.org/install).
+
+
+* `tensorflow` (<2.2,>=2.1.0)
+* `tensorflow-probability` (<1.0,>=0.9.0)
+* `scikit-learn` (<0.23,>=0.21)
+* `numpy` (<2,>=1.17.4)
+* `pandas` (<1.0.2,>=1.0)
+* `tqdm` (<4.44,>=4.43)
 
 ## Install
 
-At the moment, we still do not provided a PyPI package. Therefore, to use this model, simply clone this repository and 
-copy the `ctgan` folder to your project folder.
+You can either install `ctgan-tf` through the PyPI package:
+
+```shell script
+pip3 install ctgan-tf
+```
+
+Or by cloning this repository and copying the `ctgan` folder to your 
+project folder, or simply run:
+
+```shell script
+make install
+```
 
 # Data Format
 
-**CTGAN** expects the input data to be a table given as either a `numpy.ndarray` or a
-`pandas.DataFrame` object with two types of columns:
+**CTGAN** expects the input data to be a table given as either a `numpy.ndarray` 
+or a `pandas.DataFrame` object with two types of columns:
 
-* **Continuous Columns**: Columns that contain numerical values and which can take any value.
-* **Discrete columns**: Columns that only contain a finite number of possible values, wether
-these are string values or not.
+* **Continuous Columns**: Columns that contain numerical values and which can 
+  take any value.
+* **Discrete columns**: Columns that only contain a finite number of possible 
+  values, whether these are string values or not.
 
-This is an example of a table with 4 columns:
+# Quickstart
 
-* A continuous column with float values
-* A continuous column with integer values
-* A discrete column with string values
-* A discrete column with integer values
+Before being able to use CTGAN you will need to prepare your data as 
+specified above.
 
-|   | A    | B   | C   | D |
-|---|------|-----|-----|---|
-| 0 | 0.1  | 100 | 'a' | 1 |
-| 1 | -1.3 | 28  | 'b' | 2 |
-| 2 | 0.3  | 14  | 'a' | 2 |
-| 3 | 1.4  | 87  | 'a' | 3 |
-| 4 | -0.1 | 69  | 'b' | 2 |
-
-
-**NOTE**: CTGAN does not distinguish between float and integer columns, which means that it will
-sample float values in all cases. If integer values are required, the outputted float values
-must be rounded to integers in a later step, outside of CTGAN.
-
-# Python Quickstart
-
-In this short tutorial we will guide you through a series of steps that will help you
-getting started with **CTGAN**.
-
-## 1. Model the data
-
-### Step 1: Prepare your data
-
-Before being able to use CTGAN you will need to prepare your data as specified above.
-
-For this example, we will be loading some data using the `ctgan.load_demo` function.
+For this example, we will be loading some data using the `ctgan.load_demo` 
+function.
 
 ```python
-from ctgan import load_demo
+from ctgan.utils import load_demo
 
-data = load_demo()
+data, discrete_columns = load_demo()
 ```
 
-This will download a copy of the [Adult Census Dataset](https://archive.ics.uci.edu/ml/datasets/adult) as a dataframe:
-
-|   age | workclass        |   fnlwgt | ... |   hours-per-week | native-country   | income   |
-|-------|------------------|----------|-----|------------------|------------------|----------|
-|    39 | State-gov        |    77516 | ... |               40 | United-States    | <=50K    |
-|    50 | Self-emp-not-inc |    83311 | ... |               13 | United-States    | <=50K    |
-|    38 | Private          |   215646 | ... |               40 | United-States    | <=50K    |
-|    53 | Private          |   234721 | ... |               40 | United-States    | <=50K    |
-|    28 | Private          |   338409 | ... |               40 | Cuba             | <=50K    |
-|   ... | ...              |      ... | ... |              ... | ...              | ...      |
-
-
-Aside from the table itself, you will need to create a list with the names of the discrete
-variables.
-
-For this example:
+Even though the provided example already contains a list of discrete values, aside from the data itself, you will need to create a list with the names of 
+the discrete variables:
 
 ```python
 discrete_columns = [
@@ -115,30 +108,20 @@ discrete_columns = [
 ]
 ```
 
-### Step 2: Fit CTGAN to your data
-
-Once you have the data ready, you need to import and create an instance of the `CTGANSynthesizer`
-class and fit it passing your data and the list of discrete columns.
+Once you have the data ready, you need to import and create an instance of the 
+`CTGANSynthesizer` class and fit it passing your data and the list of 
+discrete columns.
 
 ```python
-from ctgan import CTGANSynthesizer
+from ctgan.synthesizer import CTGANSynthesizer
 
 ctgan = CTGANSynthesizer()
 ctgan.train(data, discrete_columns)
 ```
 
-This process is likely to take a long time to run.
-If you want to make the process shorter, or longer, you can control the number of training epochs
-that the model will be performing by adding it to the `fit` call:
-
-```python
-ctgan.train(data, discrete_columns, epochs=5)
-```
-
-## 2. Generate synthetic data
-
-Once the process has finished, all you need to do is call the `sample` method of your
-`CTGANSynthesizer` instance indicating the number of rows that you want to generate.
+Once the process has finished, all you need to do is call the `sample` method
+of your `CTGANSynthesizer` instance indicating the number of rows that you 
+want to generate.
 
 ```python
 samples = ctgan.sample(1000)
@@ -147,13 +130,5 @@ samples = ctgan.sample(1000)
 The output will be a table with the exact same format as the input and filled with the synthetic
 data generated by the model.
 
-|     age | workclass    |    fnlwgt | ... |   hours-per-week | native-country   | income   |
-|---------|--------------|-----------|-----|------------------|------------------|----------|
-| 26.3191 | Private      | 124079    | ... |          40.1557 | United-States    | <=50K    |
-| 39.8558 | Private      | 133996    | ... |          40.2507 | United-States    | <=50K    |
-| 38.2477 | Self-emp-inc | 135955    | ... |          40.1124 | Ecuador          | <=50K    |
-| 29.6468 | Private      |   3331.86 | ... |          27.012  | United-States    | <=50K    |
-| 20.9853 | Private      | 120637    | ... |          40.0238 | United-States    | <=50K    |
-|     ... | ...          |       ... | ... |              ... | ...              | ...      |
-
-
+For a more in-depth guide and API specification, check our documentation 
+[here](https://pbmartins.github.io/ctgan-tf).
