@@ -50,5 +50,4 @@ jobs:
             branch: stable
 branches:
   only:
-  - master
   - stable
