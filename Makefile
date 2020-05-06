@@ -87,7 +87,7 @@ bumpversion-major: ## Bump the version the next major skipping the release
 	bump2version --no-tag major
 
 CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null)
-CHANGELOG_LINES := $(shell git diff HEAD..origin/stable HISTORY.md 2>&1 | wc -l)
+CHANGELOG_LINES := $(shell git diff HEAD..origin/stable CHANGELOG.md 2>&1 | wc -l)
 
 .PHONY: check-master
 check-master: ## Check if we are in master branch
@@ -98,7 +98,7 @@ endif
 .PHONY: check-history
 check-history: ## Check if HISTORY.md has been modified
 ifeq ($(CHANGELOG_LINES),0)
-	$(error Please insert the release notes in HISTORY.md before releasing)
+	$(error Please insert the release notes in CHANGELOG.md before releasing)
 endif
 
 .PHONY: check-release
