@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                0.1.2
+                0.1.3
               </div>
             
           
@@ -124,7 +124,7 @@
 <p class="caption"><span class="caption-text">Additional Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
@@ -190,7 +190,7 @@
 <h1><a class="reference internal" href="../api.html#module-ctgan.models" title="ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code></a>.Critic<a class="headerlink" href="#ctgan-models-critic" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ctgan.models.Critic">
-<em class="property">class </em><code class="sig-prename descclassname">ctgan.models.</code><code class="sig-name descname">Critic</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">dis_dims</em>, <em class="sig-param">pac</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f72c902/ctgan/models/_critic.py#L10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Critic" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.models.</code><code class="sig-name descname">Critic</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">dis_dims</em>, <em class="sig-param">pac</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/a4a376b/ctgan/models/_critic.py#L10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Critic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Critic model.</p>
 <p>It uses a PacGAN framework <a class="bibtex reference internal" href="../references.html#lin2018pacgan" id="id1">[LKFO18]</a> with <code class="docutils literal notranslate"><span class="pre">pac</span></code> pacs, thus
 it applies a reshape function before passing the data through the
@@ -238,12 +238,12 @@ paper <a class="bibtex reference internal" href="../references.html#xu2019modeli
 </p>
 <dl class="method">
 <dt id="ctgan.models.Critic.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">dis_dims</em>, <em class="sig-param">pac</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f72c902/ctgan/models/_critic.py#L47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Critic.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">dis_dims</em>, <em class="sig-param">pac</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/a4a376b/ctgan/models/_critic.py#L47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Critic.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="ctgan.models.Critic._reshape_func">
-<code class="sig-name descname">_reshape_func</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f72c902/ctgan/models/_critic.py#L70"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Critic._reshape_func" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_reshape_func</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/a4a376b/ctgan/models/_critic.py#L70"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Critic._reshape_func" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that reshapes the input tensor according the Pac size.
 For more details consult the original CTGAN paper
 <a class="bibtex reference internal" href="../references.html#xu2019modeling" id="id5">[XSCIV19]</a> (section 4.4) and the PacGAN framework paper
@@ -267,7 +267,7 @@ For more details consult the original CTGAN paper
 
 <dl class="method">
 <dt id="ctgan.models.Critic.call">
-<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/f72c902/ctgan/models/_critic.py#L92"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Critic.call" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/a4a376b/ctgan/models/_critic.py#L92"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Critic.call" title="Permalink to this definition">¶</a></dt>
 <dd><p>Feedforward pass on the network layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
