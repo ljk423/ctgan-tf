@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-"""Toolbox for Tensorflow 2.1 CTGAN implementation."""
+"""Toolbox for TensorFlow 2.1 CTGAN implementation."""
 
 import os
 
@@ -11,7 +11,7 @@ with open(ver_file) as f:
     exec(f.read())
 
 DISTNAME = 'ctgan-tf'
-DESCRIPTION = 'Tensorflow 2.1 implementation of Conditional Tabular GAN.'
+DESCRIPTION = 'TensorFlow 2.1 implementation of Conditional Tabular GAN.'
 with open('README.md') as readme_file:
     LONG_DESCRIPTION = readme_file.read()
 MAINTAINER = 'Pedro Martins'
