@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Contributing &mdash; ctgan-tf 0.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/tf-ctgan-icon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/imbalanced-learn.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="History" href="history.html" />
+    <link rel="prev" title="ctgan.utils.get_test_variables" href="generated/ctgan.utils.get_test_variables.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> ctgan-tf
+          
+
+          
+            
+            <img src="_static/tf-ctgan-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">TensorFlow CTGAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#getting-started">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance_comparison.html">Performance Comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">ctgan-tf API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Additional Information</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#types-of-contributions">Types of Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#report-bugs">Report bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fix-bugs">Fix bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implement-or-propose-features">Implement or propose features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-documentation">Write documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-contribute">How to contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unit-testing-guidelines">Unit Testing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-workflow">Release Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ctgan-tf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Contributing</li>
+    
+    
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<p>Any form of contribution is welcomed, therefore, feel free to help improve this
+project.</p>
+<p>This guide is adapted from <a class="reference external" href="https://sdv-dev.github.io/CTGAN/contributing.html">ctgan</a>
+and from <a class="reference external" href="https://github.com/scikit-learn-contrib/imbalanced-learn/blob/master/CONTRIBUTING.md">imbalanced-learn</a>.</p>
+<div class="section" id="types-of-contributions">
+<h2>Types of Contributions<a class="headerlink" href="#types-of-contributions" title="Permalink to this headline">¶</a></h2>
+<p>You can contribute in many ways</p>
+<div class="section" id="report-bugs">
+<h3>Report bugs<a class="headerlink" href="#report-bugs" title="Permalink to this headline">¶</a></h3>
+<p>Report bugs at the <a class="reference external" href="https://github.com/pbmartins/ctgan-tf/issues">GitHub Issues page</a>.</p>
+<p>If you are reporting a bug, please include:</p>
+<ul class="simple">
+<li><p>Your operating system name and version.</p></li>
+<li><p>Any details about your local setup that might be helpful in troubleshooting.</p></li>
+<li><p>Detailed steps to reproduce the bug.</p></li>
+</ul>
+</div>
+<div class="section" id="fix-bugs">
+<h3>Fix bugs<a class="headerlink" href="#fix-bugs" title="Permalink to this headline">¶</a></h3>
+<p>Look through the GitHub issues for bugs. Anything tagged with <code class="docutils literal notranslate"><span class="pre">bug</span></code> and <code class="docutils literal notranslate"><span class="pre">help</span>
+<span class="pre">wanted</span></code> is open to whoever wants to implement it.</p>
+</div>
+<div class="section" id="implement-or-propose-features">
+<h3>Implement or propose features<a class="headerlink" href="#implement-or-propose-features" title="Permalink to this headline">¶</a></h3>
+<p>Look through the GitHub issues for features. Anything tagged with <code class="docutils literal notranslate"><span class="pre">enhancement</span></code>
+and <code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">wanted</span></code> is open to whoever wants to implement it.</p>
+<p>Nonetheless, if you have any new feature that you think will improve the quality
+of this project, please open a new issue labelled as an <code class="docutils literal notranslate"><span class="pre">enhancement</span></code>, and try
+to explain in detail how it would work. If you think it requires significant
+changes, maybe break it down into narrower components.</p>
+</div>
+<div class="section" id="write-documentation">
+<h3>Write documentation<a class="headerlink" href="#write-documentation" title="Permalink to this headline">¶</a></h3>
+<p>Our documentation could and should always look into ways of improving.
+Contributions to make our docstrings and docs more clear are greatly appreciated.</p>
+</div>
+</div>
+<div class="section" id="how-to-contribute">
+<h2>How to contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h2>
+<p>The preferred way to contribute is to set up for local development by forking
+the <a class="reference external" href="https://github.com/pbmartins/ctgan-tf">main repository</a> from GitHub.</p>
+<ol class="arabic">
+<li><p>Fork the <code class="docutils literal notranslate"><span class="pre">ctgan-tf</span></code> repo on GitHub: click on the ‘Fork’ button near the top
+of the page. This creates a copy of the code under your account on the
+GitHub server.</p></li>
+<li><p>Clone your fork locally:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:your_username/ctgan-tf.git
+$ cd ctgan-tf
+</pre></div>
+</div>
+</li>
+<li><p>Create a branch for local development:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ git checkout -b CTGAN-TF-N_feature_description
+</pre></div>
+</div>
+<p>Please follow this branch naming convention, where <code class="docutils literal notranslate"><span class="pre">N</span></code> corresponds to the
+GitHub issue number, and <code class="docutils literal notranslate"><span class="pre">feature_description</span></code> to a brief feature or bug fix
+description, separated by underscores. Remember never to work directly on
+the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch! Example: <code class="docutils literal notranslate"><span class="pre">CTGAN-TF-15_Write_docstrings</span></code>.</p>
+</li>
+<li><p>We strongly advise you to use a virtualenv wrapper of any king.
+For demonstration purposes, we will be using <code class="docutils literal notranslate"><span class="pre">pipenv</span></code>, by running the
+provided Makefile script:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ make env
+</pre></div>
+</div>
+<p>If you want to use a different wrapper, simply do:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ mkvirtualenv ctgan
+$ source ctgan/bin/activate
+$ make install-develop
+</pre></div>
+</div>
+</li>
+<li><p>While hacking your changes, make sure to cover all your developments with
+the required unit tests, and that none of the old tests fail as a
+consequence of your changes. For this, make sure to run the tests suite and
+check the code coverage:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ make lint       # Checks code styling
+$ make test       # Runs the unit tests
+$ make coverage   # Generates the coverage report
+</pre></div>
+</div>
+</li>
+<li><p>Make also sure to include the necessary documentation in the code as
+docstrings following the <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">numpy docstrings style</a>.
+If you want to view how your documentation will look like when it is
+published, you can generate the docs by running:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ make docs
+</pre></div>
+</div>
+<p>The resulting HTML files will be placed in <code class="docutils literal notranslate"><span class="pre">docs/_build/html/</span></code>
+and are viewable in a web browser.</p>
+</li>
+<li><p>Commit your changes and push your branch to GitHub:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ git add -A
+$ git commit -m &quot;Your detailed description of your changes.&quot;
+$ git push origin CTGAN-TF-N_name_of_your_bugfix_or_feature
+</pre></div>
+</div>
+</li>
+<li><p>Submit a pull request through the GitHub website.</p></li>
+</ol>
+</div>
+<div class="section" id="pull-request-guidelines">
+<h2>Pull Request Guidelines<a class="headerlink" href="#pull-request-guidelines" title="Permalink to this headline">¶</a></h2>
+<p>Before you submit a pull request, check that it meets these guidelines:</p>
+<ol class="arabic simple">
+<li><p>It resolves an open GitHub Issue and contains its reference in the title or
+the comment. If there is no associated issue, feel free to create one.</p></li>
+<li><p>Whenever possible, it resolves only <strong>one</strong> issue. If your PR resolves more
+than one issue, try to split it in more than one pull request.</p></li>
+<li><p>The pull request should include unit tests that cover all the changed code.</p></li>
+<li><p>If the pull request adds functionality, the docs should be updated. Put
+your new functionality into a function with a docstring, and add the
+feature to the documentation in an appropriate place.</p></li>
+<li><p>The pull request should work for all the supported Python versions.
+Check the <a class="reference external" href="https://travis-ci.com/github/pbmartins/ctgan-tf/pull_requests">Travis Build Status page</a>
+and make sure that all the checks pass.</p></li>
+</ol>
+</div>
+<div class="section" id="unit-testing-guidelines">
+<h2>Unit Testing Guidelines<a class="headerlink" href="#unit-testing-guidelines" title="Permalink to this headline">¶</a></h2>
+<p>All the Unit Tests should comply with the following requirements:</p>
+<ol class="arabic simple">
+<li><p>Unit Tests should be based only in <code class="docutils literal notranslate"><span class="pre">unittest</span></code> and <code class="docutils literal notranslate"><span class="pre">pytest</span></code> modules.</p></li>
+<li><p>The tests that cover a module called <code class="docutils literal notranslate"><span class="pre">ctgan/path/to/a/module/_code.py</span></code>
+should be implemented in a sub-module called
+<code class="docutils literal notranslate"><span class="pre">/ctgan/path/to/a/module/tests/test_code.py</span></code>.
+Note that the module name has the <code class="docutils literal notranslate"><span class="pre">test_</span></code> prefix and is located in a path
+similar to the one of the tested module, just inside the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder.</p></li>
+<li><p>Each method of the tested module should have at least one associated test
+method, and each test method should cover only <strong>one</strong> use case or scenario.</p></li>
+<li><p>Test case methods should start with the <code class="docutils literal notranslate"><span class="pre">test_</span></code> prefix and have
+descriptive names that indicate which scenario they cover.</p></li>
+<li><p>Each test should validate only what the code of the method being tested does,
+and not cover the behavior of any third party package or tool being used,
+which is assumed to work properly as far as it is being passed the right
+values.</p></li>
+</ol>
+</div>
+<div class="section" id="release-workflow">
+<h2>Release Workflow<a class="headerlink" href="#release-workflow" title="Permalink to this headline">¶</a></h2>
+<p>The process of releasing a new version involves several steps combining both
+<code class="docutils literal notranslate"><span class="pre">git</span></code> and <code class="docutils literal notranslate"><span class="pre">bump2version</span></code> which, briefly:</p>
+<ol class="arabic simple">
+<li><p>Merge what is in <code class="docutils literal notranslate"><span class="pre">master</span></code> branch into <code class="docutils literal notranslate"><span class="pre">stable</span></code> branch.</p></li>
+<li><p>Update the version in <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>, <code class="docutils literal notranslate"><span class="pre">ctgan/__init__.py</span></code> and
+<code class="docutils literal notranslate"><span class="pre">HISTORY.md</span></code> files.</p></li>
+<li><p>Create a new git tag pointing at the corresponding commit in <code class="docutils literal notranslate"><span class="pre">stable</span></code> branch.</p></li>
+<li><p>Merge the new commit from <code class="docutils literal notranslate"><span class="pre">stable</span></code> into <code class="docutils literal notranslate"><span class="pre">master</span></code>.</p></li>
+<li><p>Update the version in <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> and <code class="docutils literal notranslate"><span class="pre">ctgan/__init__.py</span></code>
+to open the next development iteration.</p></li>
+</ol>
+<p>Before starting the process, make sure that <code class="docutils literal notranslate"><span class="pre">HISTORY.md</span></code> has been updated
+with a new entry that explains the changes that will be included in the
+new version. Normally this is just a list of the Pull Requests that have
+been merged to <code class="docutils literal notranslate"><span class="pre">master</span></code> since the last release.</p>
+<p>Once this is done, run of the following commands:</p>
+<ol class="arabic">
+<li><p>If you are releasing a patch version:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ make release
+</pre></div>
+</div>
+</li>
+<li><p>If you are releasing a minor version:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ make release-minor
+</pre></div>
+</div>
+</li>
+<li><p>If you are releasing a major version:</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span>$ make release-major
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="history.html" class="btn btn-neutral float-right" title="History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="generated/ctgan.utils.get_test_variables.html" class="btn btn-neutral float-left" title="ctgan.utils.get_test_variables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, MIT Data To AI Lab &amp; Pedro Martins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

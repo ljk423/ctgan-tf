@@ -8,12 +8,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ctgan.cli.load_demo &mdash; ctgan-tf 0.1.0 documentation</title>
+  <title>ctgan.utils.load_demo &mdash; ctgan-tf 0.0.0 documentation</title>
   
 
   
   
-    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+    <link rel="shortcut icon" href="../_static/tf-ctgan-icon.ico"/>
   
   
   
@@ -38,10 +38,11 @@
   <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ctgan.cli.cli" href="ctgan.cli.cli.html" />
-    <link rel="prev" title="ctgan.losses.gradient_penalty" href="ctgan.losses.gradient_penalty.html" /> 
+    <link rel="next" title="ctgan.utils.generate_data" href="ctgan.utils.generate_data.html" />
+    <link rel="prev" title="ctgan.utils.ProgressBar" href="ctgan.utils.ProgressBar.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -60,7 +61,7 @@
 
           
             
-            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+            <img src="../_static/tf-ctgan-200.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -92,22 +93,38 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">TensorFlow CTGAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html#getting-started">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance_comparison.html">Performance Comparison</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code>: Neural Network and Transformer Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.layers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code>: Neural Network Layers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.losses"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.losses</span></code>: Model losses</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>: Command line interface</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>.load_demo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ctgan.cli.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>: Command line interface</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ctgan.utils.ProgressBar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.ProgressBar</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.load_demo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ctgan.utils.generate_data.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.generate_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ctgan.utils.get_test_variables.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.get_test_variables</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
             
@@ -155,7 +172,7 @@
         
           <li><a href="../api.html">ctgan-tf API</a> &raquo;</li>
         
-      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>.load_demo</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.load_demo</li>
     
     
 
@@ -167,11 +184,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ctgan-cli-load-demo">
-<h1><a class="reference internal" href="../api.html#module-ctgan.cli" title="ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code></a>.load_demo<a class="headerlink" href="#ctgan-cli-load-demo" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="ctgan-utils-load-demo">
+<h1><a class="reference internal" href="../api.html#module-ctgan.utils" title="ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code></a>.load_demo<a class="headerlink" href="#ctgan-utils-load-demo" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="ctgan.cli.load_demo">
-<code class="sig-prename descclassname">ctgan.cli.</code><code class="sig-name descname">load_demo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/cli/_load_demo.py#L7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.cli.load_demo" title="Permalink to this definition">¶</a></dt>
+<dt id="ctgan.utils.load_demo">
+<code class="sig-prename descclassname">ctgan.utils.</code><code class="sig-name descname">load_demo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/utils/_load_demo.py#L7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.load_demo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads an external dataset, for testing purposes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -183,7 +200,7 @@ discrete variables.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ctgan.cli</span> <span class="kn">import</span> <span class="n">load_demo</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ctgan.utils</span> <span class="kn">import</span> <span class="n">load_demo</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">,</span> <span class="n">discrete</span> <span class="o">=</span> <span class="n">load_demo</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="go">   age          workclass  fnlwgt   education  ...  income</span>
@@ -209,10 +226,10 @@ discrete variables.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ctgan.cli.cli.html" class="btn btn-neutral float-right" title="ctgan.cli.cli" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ctgan.utils.generate_data.html" class="btn btn-neutral float-right" title="ctgan.utils.generate_data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ctgan.losses.gradient_penalty.html" class="btn btn-neutral float-left" title="ctgan.losses.gradient_penalty" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ctgan.utils.ProgressBar.html" class="btn btn-neutral float-left" title="ctgan.utils.ProgressBar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

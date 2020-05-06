@@ -8,12 +8,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ctgan.utils.ProgressBar &mdash; ctgan-tf 0.1.0 documentation</title>
+  <title>ctgan.utils.ProgressBar &mdash; ctgan-tf 0.0.0 documentation</title>
   
 
   
   
-    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+    <link rel="shortcut icon" href="../_static/tf-ctgan-icon.ico"/>
   
   
   
@@ -38,9 +38,10 @@
   <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ctgan.utils.generate_data" href="ctgan.utils.generate_data.html" />
+    <link rel="next" title="ctgan.utils.load_demo" href="ctgan.utils.load_demo.html" />
     <link rel="prev" title="ctgan.cli.cli" href="ctgan.cli.cli.html" /> 
 </head>
 
@@ -60,7 +61,7 @@
 
           
             
-            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+            <img src="../_static/tf-ctgan-200.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -92,8 +93,15 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">TensorFlow CTGAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html#getting-started">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance_comparison.html">Performance Comparison</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a></li>
@@ -103,11 +111,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.cli</span></code>: Command line interface</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.ProgressBar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ctgan.utils.load_demo.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.load_demo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ctgan.utils.generate_data.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.generate_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ctgan.utils.get_test_variables.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>.get_test_variables</a></li>
 </ul>
 </li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
             
@@ -171,7 +188,7 @@
 <h1><a class="reference internal" href="../api.html#module-ctgan.utils" title="ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code></a>.ProgressBar<a class="headerlink" href="#ctgan-utils-progressbar" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ctgan.utils.ProgressBar">
-<em class="property">class </em><code class="sig-prename descclassname">ctgan.utils.</code><code class="sig-name descname">ProgressBar</code><span class="sig-paren">(</span><em class="sig-param">total_samples</em>, <em class="sig-param">batch_size</em>, <em class="sig-param">epoch</em>, <em class="sig-param">num_epochs</em>, <em class="sig-param">metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/utils/_bar_utils.py#L11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.utils.</code><code class="sig-name descname">ProgressBar</code><span class="sig-paren">(</span><em class="sig-param">total_samples</em>, <em class="sig-param">batch_size</em>, <em class="sig-param">epoch</em>, <em class="sig-param">num_epochs</em>, <em class="sig-param">metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/utils/_bar_utils.py#L11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Custom progress bar, designed for CTGAN training.</p>
 <p>ProgressBar inherits from <code class="docutils literal notranslate"><span class="pre">tqdm.tqdm</span></code> to create an informative progress
 bar in each training epoch.</p>
@@ -193,7 +210,7 @@ bar in each training epoch.</p>
 </dl>
 <dl class="method">
 <dt id="ctgan.utils.ProgressBar.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">total_samples</em>, <em class="sig-param">batch_size</em>, <em class="sig-param">epoch</em>, <em class="sig-param">num_epochs</em>, <em class="sig-param">metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/utils/_bar_utils.py#L49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">total_samples</em>, <em class="sig-param">batch_size</em>, <em class="sig-param">epoch</em>, <em class="sig-param">num_epochs</em>, <em class="sig-param">metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/utils/_bar_utils.py#L49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
@@ -314,7 +331,7 @@ matplotlib animations for a graphical output [default: False].</p>
 
 <dl class="method">
 <dt id="ctgan.utils.ProgressBar._get_terminal_width">
-<em class="property">classmethod </em><code class="sig-name descname">_get_terminal_width</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/utils/_bar_utils.py#L36"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar._get_terminal_width" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">_get_terminal_width</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/utils/_bar_utils.py#L36"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar._get_terminal_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that returns the execution terminal width.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -328,7 +345,7 @@ matplotlib animations for a graphical output [default: False].</p>
 
 <dl class="method">
 <dt id="ctgan.utils.ProgressBar.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/utils/_bar_utils.py#L67"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/utils/_bar_utils.py#L67"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.utils.ProgressBar.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the progress bar metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -352,7 +369,7 @@ matplotlib animations for a graphical output [default: False].</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ctgan.utils.generate_data.html" class="btn btn-neutral float-right" title="ctgan.utils.generate_data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ctgan.utils.load_demo.html" class="btn btn-neutral float-right" title="ctgan.utils.load_demo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="ctgan.cli.cli.html" class="btn btn-neutral float-left" title="ctgan.cli.cli" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

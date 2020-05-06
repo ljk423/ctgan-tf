@@ -8,12 +8,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ctgan.models.BGM &mdash; ctgan-tf 0.1.0 documentation</title>
+  <title>ctgan.models.BGM &mdash; ctgan-tf 0.0.0 documentation</title>
   
 
   
   
-    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+    <link rel="shortcut icon" href="../_static/tf-ctgan-icon.ico"/>
   
   
   
@@ -38,6 +38,7 @@
   <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="ctgan.models.OHE" href="ctgan.models.OHE.html" />
@@ -60,7 +61,7 @@
 
           
             
-            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+            <img src="../_static/tf-ctgan-200.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -92,8 +93,15 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">TensorFlow CTGAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html#getting-started">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance_comparison.html">Performance Comparison</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a></li>
@@ -112,6 +120,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
             
@@ -175,12 +190,12 @@
 <h1><a class="reference internal" href="../api.html#module-ctgan.models" title="ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code></a>.BGM<a class="headerlink" href="#ctgan-models-bgm" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ctgan.models.BGM">
-<em class="property">class </em><code class="sig-prename descclassname">ctgan.models.</code><code class="sig-name descname">BGM</code><span class="sig-paren">(</span><em class="sig-param">n_components=1</em>, <em class="sig-param">covariance_type='full'</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">reg_covar=1e-06</em>, <em class="sig-param">max_iter=100</em>, <em class="sig-param">n_init=1</em>, <em class="sig-param">init_params='kmeans'</em>, <em class="sig-param">weight_concentration_prior_type='dirichlet_process'</em>, <em class="sig-param">weight_concentration_prior=None</em>, <em class="sig-param">mean_precision_prior=None</em>, <em class="sig-param">mean_prior=None</em>, <em class="sig-param">degrees_of_freedom_prior=None</em>, <em class="sig-param">covariance_prior=None</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">warm_start=False</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">verbose_interval=10</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/models/_bgm.py#L8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.BGM" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.models.</code><code class="sig-name descname">BGM</code><span class="sig-paren">(</span><em class="sig-param">n_components=1</em>, <em class="sig-param">covariance_type='full'</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">reg_covar=1e-06</em>, <em class="sig-param">max_iter=100</em>, <em class="sig-param">n_init=1</em>, <em class="sig-param">init_params='kmeans'</em>, <em class="sig-param">weight_concentration_prior_type='dirichlet_process'</em>, <em class="sig-param">weight_concentration_prior=None</em>, <em class="sig-param">mean_precision_prior=None</em>, <em class="sig-param">mean_prior=None</em>, <em class="sig-param">degrees_of_freedom_prior=None</em>, <em class="sig-param">covariance_prior=None</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">warm_start=False</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">verbose_interval=10</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/models/_bgm.py#L8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.BGM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bayesian Gaussian Mixture model.</p>
 <p>Extends <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.mixture.BayesianGaussianMixture.html#sklearn.mixture.BayesianGaussianMixture" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.mixture.BayesianGaussianMixture</span></code></a>.</p>
 <dl class="method">
 <dt id="ctgan.models.BGM.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_components=1</em>, <em class="sig-param">covariance_type='full'</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">reg_covar=1e-06</em>, <em class="sig-param">max_iter=100</em>, <em class="sig-param">n_init=1</em>, <em class="sig-param">init_params='kmeans'</em>, <em class="sig-param">weight_concentration_prior_type='dirichlet_process'</em>, <em class="sig-param">weight_concentration_prior=None</em>, <em class="sig-param">mean_precision_prior=None</em>, <em class="sig-param">mean_prior=None</em>, <em class="sig-param">degrees_of_freedom_prior=None</em>, <em class="sig-param">covariance_prior=None</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">warm_start=False</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">verbose_interval=10</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/../../../../virtualenv/python3.7.1/lib/python3.7/site-packages/sklearn/mixture/_bayesian_mixture.py#L310"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.BGM.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_components=1</em>, <em class="sig-param">covariance_type='full'</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">reg_covar=1e-06</em>, <em class="sig-param">max_iter=100</em>, <em class="sig-param">n_init=1</em>, <em class="sig-param">init_params='kmeans'</em>, <em class="sig-param">weight_concentration_prior_type='dirichlet_process'</em>, <em class="sig-param">weight_concentration_prior=None</em>, <em class="sig-param">mean_precision_prior=None</em>, <em class="sig-param">mean_prior=None</em>, <em class="sig-param">degrees_of_freedom_prior=None</em>, <em class="sig-param">covariance_prior=None</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">warm_start=False</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">verbose_interval=10</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/../../../../virtualenv/python3.7.1/lib/python3.7/site-packages/sklearn/mixture/_bayesian_mixture.py#L310"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.BGM.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 

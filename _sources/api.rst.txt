@@ -129,7 +129,6 @@ Utilities
    :toctree: generated/
    :template: function.rst
 
-    cli.load_demo
     cli.cli
 
 :mod:`ctgan.utils`: Utils
@@ -151,4 +150,6 @@ Utilities
    :toctree: generated/
    :template: function.rst
 
+    utils.load_demo
     utils.generate_data
+    utils.get_test_variables

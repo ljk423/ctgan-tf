@@ -1,0 +1,580 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>User Guide &mdash; ctgan-tf 0.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/tf-ctgan-icon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script src="_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/imbalanced-learn.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Performance Comparison" href="performance_comparison.html" />
+    <link rel="prev" title="TensorFlow CTGAN" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> ctgan-tf
+          
+
+          
+            
+            <img src="_static/tf-ctgan-200.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">TensorFlow CTGAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#getting-started">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-format">Data Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quickstart-guide">Quickstart guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command-line interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance_comparison.html">Performance Comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">ctgan-tf API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ctgan-tf</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>User Guide</li>
+    
+    
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="user-guide">
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
+<p>TensorFlow 2.1 implementation of a Conditional Tabular Generative Adversarial
+Network.</p>
+<p><strong>CTGAN</strong> is a GAN-based data synthesizer that can generate synthetic tabular
+data with high fidelity.</p>
+<div class="section" id="data-format">
+<h2>Data Format<a class="headerlink" href="#data-format" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="generated/ctgan.synthesizer.CTGANSynthesizer.html#ctgan.synthesizer.CTGANSynthesizer" title="ctgan.synthesizer.CTGANSynthesizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ctgan.synthesizer.CTGANSynthesizer</span></code></a> expects the input data to be
+a table given as either a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> or a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
+object with two types of columns:</p>
+<ul class="simple">
+<li><p><strong>Continuous Columns</strong>: Columns that contain numerical values and which
+can take any value.</p></li>
+<li><p><strong>Discrete columns</strong>: Columns that only contain a finite number of possible
+values, whether these are string values or not.</p></li>
+</ul>
+<p>This is an example of a table with 4 columns:</p>
+<ul class="simple">
+<li><p>A continuous column with float values</p></li>
+<li><p>A continuous column with integer values</p></li>
+<li><p>A discrete column with string values</p></li>
+<li><p>A discrete column with integer values</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 27%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>C</p></th>
+<th class="head"><p>D</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0.1</p></td>
+<td><p>100</p></td>
+<td><p>‘a’</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>-1.3</p></td>
+<td><p>28</p></td>
+<td><p>‘b’</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>0.3</p></td>
+<td><p>14</p></td>
+<td><p>‘a’</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>1.4</p></td>
+<td><p>87</p></td>
+<td><p>‘a’</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>-0.1</p></td>
+<td><p>69</p></td>
+<td><p>‘b’</p></td>
+<td><p>2</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>CTGAN does not distinguish between float and integer columns, which
+means that it will sample float values in all cases.</p>
+<p>If integer values
+are required, the outputted float values must be rounded to integers
+in a later step, outside of CTGAN.</p>
+</div>
+</div>
+<div class="section" id="quickstart-guide">
+<h2>Quickstart guide<a class="headerlink" href="#quickstart-guide" title="Permalink to this headline">¶</a></h2>
+<p>In this short tutorial we will guide you through a series of steps that will
+help you getting started with <strong>CTGAN</strong>.</p>
+<p>Before being able to use the synthesizer you will need to prepare your data as
+specified above. If you just want to run a test example, load the dataset
+provided when invoking the <a class="reference internal" href="generated/ctgan.utils.load_demo.html#ctgan.utils.load_demo" title="ctgan.utils.load_demo"><code class="xref py py-class docutils literal notranslate"><span class="pre">ctgan.utils.load_demo</span></code></a> function.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ctgan.utils</span> <span class="kn">import</span> <span class="n">load_demo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">,</span> <span class="n">discrete_columns</span> <span class="o">=</span> <span class="n">load_demo</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This will download a copy of the <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/adult">Adult Census Dataset</a> as a dataframe:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 24%" />
+<col style="width: 11%" />
+<col style="width: 7%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>age</p></th>
+<th class="head"><p>workclass</p></th>
+<th class="head"><p>fnlwgt</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>hours-per-week</p></th>
+<th class="head"><p>native-country</p></th>
+<th class="head"><p>income</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>39</p></td>
+<td><p>State-gov</p></td>
+<td><p>77516</p></td>
+<td><p>…</p></td>
+<td><p>40</p></td>
+<td><p>United-States</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-odd"><td><p>50</p></td>
+<td><p>Self-emp-not-inc</p></td>
+<td><p>83311</p></td>
+<td><p>…</p></td>
+<td><p>13</p></td>
+<td><p>United-States</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-even"><td><p>38</p></td>
+<td><p>Private</p></td>
+<td><p>215646</p></td>
+<td><p>…</p></td>
+<td><p>40</p></td>
+<td><p>United-States</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-odd"><td><p>53</p></td>
+<td><p>Private</p></td>
+<td><p>234721</p></td>
+<td><p>…</p></td>
+<td><p>40</p></td>
+<td><p>United-States</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-even"><td><p>28</p></td>
+<td><p>Private</p></td>
+<td><p>338409</p></td>
+<td><p>…</p></td>
+<td><p>40</p></td>
+<td><p>Cuba</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>Even though the provided example data already contains a list of discrete
+values to consider, you will need to create a list with the names of
+the discrete variables.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">discrete_columns</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>   <span class="s1">&#39;workclass&#39;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s1">&#39;education&#39;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s1">&#39;marital-status&#39;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s1">&#39;occupation&#39;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s1">&#39;relationship&#39;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s1">&#39;race&#39;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s1">&#39;sex&#39;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s1">&#39;native-country&#39;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="s1">&#39;income&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Once you have the data ready, you need to import and create an instance of
+<a class="reference internal" href="generated/ctgan.synthesizer.CTGANSynthesizer.html#ctgan.synthesizer.CTGANSynthesizer" title="ctgan.synthesizer.CTGANSynthesizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ctgan.synthesizer.CTGANSynthesizer</span></code></a> class and fit it passing your data
+and the list of discrete columns.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ctgan.synthesizer</span> <span class="kn">import</span> <span class="n">CTGANSynthesizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctgan</span> <span class="o">=</span> <span class="n">CTGANSynthesizer</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z_dim</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">pac</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gen_dim</span><span class="o">=</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span> <span class="n">crt_dim</span><span class="o">=</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
+<span class="gp">... </span>                         <span class="n">l2_scale</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">gp_lambda</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">tau</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctgan</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">discrete_columns</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This process is likely to take a long time to run.
+If you want to make the process shorter, or longer, you can control the number
+of training epochs that the model will be performing by adding it to the
+<a class="reference internal" href="generated/ctgan.synthesizer.CTGANSynthesizer.html#ctgan.synthesizer.CTGANSynthesizer.train" title="ctgan.synthesizer.CTGANSynthesizer.train"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ctgan.synthesizer.CTGANSynthesizer.train</span></code></a> call.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctgan</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">discrete_columns</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once the process has finished, all you need to do is call the
+<a class="reference internal" href="generated/ctgan.synthesizer.CTGANSynthesizer.html#ctgan.synthesizer.CTGANSynthesizer.sample" title="ctgan.synthesizer.CTGANSynthesizer.sample"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ctgan.synthesizer.CTGANSynthesizer.sample</span></code></a> method of your model instance,
+indicating the number of rows that you want to generate.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span> <span class="o">=</span> <span class="n">ctgan</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output will be a table with the exact same format as the input and filled
+with the synthetic data generated by the model.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 18%" />
+<col style="width: 12%" />
+<col style="width: 6%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>age</p></th>
+<th class="head"><p>workclass</p></th>
+<th class="head"><p>fnlwgt</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>hours-per-week</p></th>
+<th class="head"><p>native-country</p></th>
+<th class="head"><p>income</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>26.3191</p></td>
+<td><p>Private</p></td>
+<td><p>124079</p></td>
+<td><p>…</p></td>
+<td><p>40.1557</p></td>
+<td><p>United-States</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-odd"><td><p>39.8558</p></td>
+<td><p>Private</p></td>
+<td><p>133996</p></td>
+<td><p>…</p></td>
+<td><p>40.2507</p></td>
+<td><p>United-States</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-even"><td><p>38.2477</p></td>
+<td><p>Self-emp-inc</p></td>
+<td><p>135955</p></td>
+<td><p>…</p></td>
+<td><p>40.1124</p></td>
+<td><p>Ecuador</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-odd"><td><p>29.6468</p></td>
+<td><p>Private</p></td>
+<td><p>3331.86</p></td>
+<td><p>…</p></td>
+<td><p>27.012</p></td>
+<td><p>United-States</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-even"><td><p>20.9853</p></td>
+<td><p>Private</p></td>
+<td><p>120637</p></td>
+<td><p>…</p></td>
+<td><p>40.0238</p></td>
+<td><p>United-States</p></td>
+<td><p>&lt;=50K</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>After fitting your synthesizer, you may want to save it to deploy into a
+production system or further testing.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model_path</span> <span class="o">=</span> <span class="s1">&#39;/path/to/your/model/file.joblib&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctgan</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To load a previously dumped model, just call the
+<a class="reference internal" href="generated/ctgan.synthesizer.CTGANSynthesizer.html#ctgan.synthesizer.CTGANSynthesizer" title="ctgan.synthesizer.CTGANSynthesizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ctgan.synthesizer.CTGANSynthesizer</span></code></a> constructor with the path pointing
+to the model file. Remember that you cannot train the models after loading them
+from the disk, as the Critic network is not saved.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ctgan.synthesizer</span> <span class="kn">import</span> <span class="n">CTGANSynthesizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_path</span> <span class="o">=</span> <span class="s1">&#39;/path/to/your/model/file.joblib&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctgan</span> <span class="o">=</span> <span class="n">CTGANSynthesizer</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">model_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span> <span class="o">=</span> <span class="n">ctgan</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="command-line-interface">
+<h2>Command-line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h2>
+<p><strong>CTGAN</strong> comes with a command line interface that allows modeling and sampling
+data without the need to write any Python code. This is available under the
+<code class="docutils literal notranslate"><span class="pre">ctgan-tf</span></code> command that will have been set up in your system upon installing
+the <code class="docutils literal notranslate"><span class="pre">ctgan-tf</span></code> Python package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ctgan-tf -h
+usage: ctgan-tf [-h] [-f FILE_PATH] [-l LOG_DIR] [-z Z_DIM] [-p PAC]
+                [-g GEN_DIMS] [-c CRT_DIMS] [-s L2_SCALE] [-b BATCH_SIZE]
+                [-w GP_LAMBDA] [-t TAU] [-e EPOCHS] [-d DISCRETE_COLUMNS]
+                [-i TRAINING_DATA] [-o OUTPUT_MODEL]
+                num_samples output_data
+
+CTGAN Command Line Interface
+
+positional arguments:
+  num_samples           Number of rows to sample.
+  output_data           Path of the synthetic output file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FILE_PATH, --file_path FILE_PATH
+                        File path to where a CTGAN Synthesizer model is
+                        stored. If this value is None, a new instance will be
+                        created.
+  -l LOG_DIR, --log_dir LOG_DIR
+                        Directory to where log files will be stored.
+  -z Z_DIM, --z_dim Z_DIM
+                        Embedding dimension of fake samples.
+  -p PAC, --pac PAC     Size of Pac framework.
+  -g GEN_DIMS, --gen_dims GEN_DIMS
+                        Comma separated list of Generator layer sizes.
+  -c CRT_DIMS, --crt_dims CRT_DIMS
+                        Comma separated list of Critic layer sizes.
+  -s L2_SCALE, --l2_scale L2_SCALE
+                        L2 regularization of the Generator optimizer.
+  -b BATCH_SIZE, --batch_size BATCH_SIZE
+                        Training batch size.
+  -w GP_LAMBDA, --gp_lambda GP_LAMBDA
+                        Gradient Penalty lambda.
+  -t TAU, --tau TAU     Gumbel-Softmax non-negative scalar temperature.
+  -e EPOCHS, --epochs EPOCHS
+                        Number of training epochs
+  -d DISCRETE_COLUMNS, --discrete_columns DISCRETE_COLUMNS
+                        Comma separated list of discrete columns, no
+                        whitespaces
+  -i TRAINING_DATA, --training_data TRAINING_DATA
+                        Path to training data
+  -o OUTPUT_MODEL, --output_model OUTPUT_MODEL
+                        Path of the model output file
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Recall that the input data should always be in CSV format, and the
+discrete columns are an argument of the CLI.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="performance_comparison.html" class="btn btn-neutral float-right" title="Performance Comparison" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="TensorFlow CTGAN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, MIT Data To AI Lab &amp; Pedro Martins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

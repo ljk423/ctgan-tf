@@ -8,12 +8,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ctgan.layers.ResidualLayer &mdash; ctgan-tf 0.1.0 documentation</title>
+  <title>ctgan.layers.ResidualLayer &mdash; ctgan-tf 0.0.0 documentation</title>
   
 
   
   
-    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+    <link rel="shortcut icon" href="../_static/tf-ctgan-icon.ico"/>
   
   
   
@@ -38,6 +38,7 @@
   <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="ctgan.layers.GenActivation" href="ctgan.layers.GenActivation.html" />
@@ -60,7 +61,7 @@
 
           
             
-            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+            <img src="../_static/tf-ctgan-200.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -92,8 +93,15 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">TensorFlow CTGAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html#getting-started">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance_comparison.html">Performance Comparison</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a></li>
@@ -109,6 +117,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
             
@@ -172,7 +187,7 @@
 <h1><a class="reference internal" href="../api.html#module-ctgan.layers" title="ctgan.layers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code></a>.ResidualLayer<a class="headerlink" href="#ctgan-layers-residuallayer" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ctgan.layers.ResidualLayer">
-<em class="property">class </em><code class="sig-prename descclassname">ctgan.layers.</code><code class="sig-name descname">ResidualLayer</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/layers/_residual.py#L10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.ResidualLayer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.layers.</code><code class="sig-name descname">ResidualLayer</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/layers/_residual.py#L10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.ResidualLayer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Residual Layer used on the Generator.
 This layer applies the following operations to the input:</p>
 <div class="math notranslate nohighlight">
@@ -191,12 +206,12 @@ This layer applies the following operations to the input:</p>
 </dl>
 <dl class="method">
 <dt id="ctgan.layers.ResidualLayer.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/layers/_residual.py#L29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.ResidualLayer.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/layers/_residual.py#L29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.ResidualLayer.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="ctgan.layers.ResidualLayer.call">
-<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/layers/_residual.py#L41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.ResidualLayer.call" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/layers/_residual.py#L41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.ResidualLayer.call" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a feedforward pass of the Residual Layer on the provided
 input batch.</p>
 <dl class="field-list simple">

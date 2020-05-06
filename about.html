@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python Module Index &mdash; ctgan-tf 0.0.0 documentation</title>
+  <title>About &mdash; ctgan-tf 0.0.0 documentation</title>
   
 
   
@@ -38,12 +38,11 @@
   <link rel="stylesheet" href="_static/css/imbalanced-learn.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="author" title="About these documents" href="#" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
- 
-
-
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="History" href="history.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -106,10 +105,10 @@
 <li class="toctree-l1"><a class="reference internal" href="api.html">ctgan-tf API</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Additional Information</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
 
@@ -156,7 +155,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Python Module Index</li>
+      <li>About</li>
     
     
 
@@ -168,65 +167,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-
-   <h1>Python Module Index</h1>
-
-   <div class="modindex-jumpbox">
-   <a href="#cap-c"><strong>c</strong></a>
-   </div>
-
-   <table class="indextable modindextable">
-     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-c"><td></td><td>
-       <strong>c</strong></td><td></td></tr>
-     <tr>
-       <td><img src="_static/minus.png" class="toggler"
-              id="toggle-1" style="display: none" alt="-" /></td>
-       <td>
-       <code class="xref">ctgan</code></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-ctgan.cli"><code class="xref">ctgan.cli</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-ctgan.data_modules"><code class="xref">ctgan.data_modules</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-ctgan.layers"><code class="xref">ctgan.layers</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-ctgan.losses"><code class="xref">ctgan.losses</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-ctgan.models"><code class="xref">ctgan.models</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-ctgan.synthesizer"><code class="xref">ctgan.synthesizer</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="api.html#module-ctgan.utils"><code class="xref">ctgan.utils</code></a></td><td>
-       <em></em></td></tr>
-   </table>
+  <div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+<p align="center">
+    <img width=15% src="https://dai.lids.mit.edu/wp-content/uploads/2018/06/Logo_DAI_highres.png" alt=“sdv-dev” />
+    <i>An open source project from Data to AI Lab at MIT.</i>
+</p><p>This project is based on the PyTorch implementation of the <strong>Conditional
+Tabular Generative Adversarial Network</strong>, publicly available on this GitHub
+<a class="reference external" href="https://github.com/sdv-dev/CTGAN">repository</a>.</p>
+<p>The CTGAN was originally presented in a NeurIPS paper <em>Modeling Tabular data
+using Conditional GAN</em> <a class="bibtex reference internal" href="references.html#xu2019modeling" id="id1">[XSCIV19]</a>, to try to “generate synthetic
+tabular data with high fidelity”, and it was a research conducted by the
+<em>Data to AI Lab</em> at MIT.</p>
+<p>Since there was already a R port of the original PyTorch code, it was missing
+a TensorFlow implementation of the latter. That’s the rationale behind this
+project.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Most of the code, specially from <a class="reference internal" href="api.html#module-ctgan.data_modules" title="ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code></a>,
+was reused from the original repository. The goal was to only migrate
+what was necessary to make it run on TensorFlow 2.1. Additionally,
+some of the infrastructure code was also heavily inspired the
+<a class="reference external" href="https://imbalanced-learn.org/">imbalanced-learn</a> project.</p>
+</div>
+</div>
 
 
            </div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="references.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="history.html" class="btn btn-neutral float-left" title="History" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

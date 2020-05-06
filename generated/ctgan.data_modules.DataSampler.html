@@ -8,12 +8,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ctgan.data_modules.DataSampler &mdash; ctgan-tf 0.1.0 documentation</title>
+  <title>ctgan.data_modules.DataSampler &mdash; ctgan-tf 0.0.0 documentation</title>
   
 
   
   
-    <link rel="shortcut icon" href="../_static/dai-logo-white.ico"/>
+    <link rel="shortcut icon" href="../_static/tf-ctgan-icon.ico"/>
   
   
   
@@ -38,6 +38,7 @@
   <link rel="stylesheet" href="../_static/css/imbalanced-learn.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="ctgan.models.Critic" href="ctgan.models.Critic.html" />
@@ -60,7 +61,7 @@
 
           
             
-            <img src="../_static/dai-logo-white-200.png" class="logo" alt="Logo"/>
+            <img src="../_static/tf-ctgan-200.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -92,8 +93,15 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">TensorFlow CTGAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html#getting-started">Getting started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance_comparison.html">Performance Comparison</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">ctgan-tf API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.synthesizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.synthesizer</span></code>: CTGAN Synthesizer</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code>: Data modules</a><ul class="current">
@@ -109,6 +117,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-ctgan.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.utils</span></code>: Utils</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Additional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../history.html">History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
             
@@ -172,7 +187,7 @@
 <h1><a class="reference internal" href="../api.html#module-ctgan.data_modules" title="ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code></a>.DataSampler<a class="headerlink" href="#ctgan-data-modules-datasampler" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ctgan.data_modules.DataSampler">
-<em class="property">class </em><code class="sig-prename descclassname">ctgan.data_modules.</code><code class="sig-name descname">DataSampler</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">output_info</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/data_modules/_sampler.py#L7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.DataSampler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.data_modules.</code><code class="sig-name descname">DataSampler</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">output_info</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/data_modules/_sampler.py#L7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.DataSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data Sampler.</p>
 <p>It samples real data from the original dataset.</p>
 <dl class="field-list simple">
@@ -196,13 +211,13 @@ activation function.</p>
 </div>
 <dl class="method">
 <dt id="ctgan.data_modules.DataSampler.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">data</em>, <em class="sig-param">output_info</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/data_modules/_sampler.py#L30"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.DataSampler.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">data</em>, <em class="sig-param">output_info</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/data_modules/_sampler.py#L30"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.DataSampler.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ctgan.data_modules.DataSampler.sample">
-<code class="sig-name descname">sample</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_samples</em>, <em class="sig-param">col_idx</em>, <em class="sig-param">opt_idx</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/326e0d4/ctgan/data_modules/_sampler.py#L60"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.DataSampler.sample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sample</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_samples</em>, <em class="sig-param">col_idx</em>, <em class="sig-param">opt_idx</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/data_modules/_sampler.py#L60"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.DataSampler.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a batch of training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
