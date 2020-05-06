@@ -39,6 +39,12 @@ jobs:
           target_branch: gh-pages
           on:
             branch: stable
+        - provider: releases
+          api_key: $GITHUB_TOKEN
+          skip_cleanup: true
+          draft: true
+          on:
+            branch: stable
         - provider: pypi
           user: "__token__"
           skip_cleanup: true
