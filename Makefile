@@ -104,14 +104,17 @@ endif
 .PHONY: check-release
 check-release: check-master check-history ## Check if the release can be made
 
+.PHONY: release-publish
+release-publish: check-release bumpversion-release publish bumpversion-patch ## Release a new version to stable branch
+
 .PHONY: release
-release: check-release bumpversion-release publish bumpversion-patch ## Release a new version to stable branch and publish it
+release: check-release bumpversion-release bumpversion-patch ## Release a new version to stable branch and publish it
 
 .PHONY: release-minor
 release-minor: check-release bumpversion-minor release ## Release a new minor release
 
 .PHONY: release-major
-release-major: check-release bumpversion-major release ## Release a new majot release
+release-major: check-release bumpversion-major release ## Release a new major release
 
 .PHONY: clean
 clean: clean-build clean-pyc clean-test clean-lint clean-coverage clean-docs ## remove all build, test, coverage, docs and Python artifacts
