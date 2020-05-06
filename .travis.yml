@@ -16,8 +16,11 @@ jobs:
         - make test
         - make coverage
       skip_cleanup: true
-      after_success:
-        - codecov --token=$CODECOV_TOKEN
+      deploy:
+        - provider: script
+          script: codecov --token=$CODECOV_TOKEN
+          on:
+            branch: stable
     - stage: docs
       script:
         - make install-develop
@@ -48,3 +51,7 @@ jobs:
             tags: true
             #all_branches: true
             branch: stable
+branches:
+  only:
+  - master
+  - stable
