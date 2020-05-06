@@ -21,5 +21,5 @@
 # 'X.Y.dev0' is the canonical version of 'X.Y.dev'
 #
 
-__version__ = '0.1.0.dev0'
+__version__ = '0.1.0'
 __release__ = '0.0.0'
