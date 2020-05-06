@@ -18,10 +18,10 @@ TensorFlow CTGAN
             <img alt="PyPI Shield" src="https://img.shields.io/pypi/v/ctgan-tf.svg">
         </a>
         <a class="reference external image-reference" href="https://travis-ci.com/pbmartins/ctgan-tf">
-            <img alt="Build Status" src="https://travis-ci.com/pbmartins/ctgan-tf.svg?branch=master">
+            <img alt="Build Status" src="https://travis-ci.com/pbmartins/ctgan-tf.svg?token=ES61mh8SK9WT5Hr1iCs7&branch=master">
         </a>
         <a class="reference external image-reference" href="https://codecov.io/gh/pbmartins/ctgan-tf">
-            <img alt="Coverage Status" src="https://codecov.io/gh/pbmartins/ctgan-tf/branch/master/graph/badge.svg">
+            <img alt="Coverage Status" src="https://codecov.io/gh/pbmartins/ctgan-tf/branch/stable/graph/badge.svg?token=BXT0G35Y9Q">
         </a>
     </p>
 
