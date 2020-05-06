@@ -43,6 +43,8 @@ jobs:
           api_key: $GITHUB_TOKEN
           skip_cleanup: true
           draft: true
+          name: "Version $TRAVIS_TAG"
+          body: "See [CHANGELOG]($CHANGELOG_PATH) for details."
           on:
             branch: stable
         - provider: pypi
@@ -57,3 +59,4 @@ jobs:
 branches:
   only:
   - stable
+  - master
