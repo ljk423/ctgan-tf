@@ -8,23 +8,28 @@ install:
 # command to run tests
 jobs:
   include:
-    - stage: code_linting
+    - stage: test
+      name: code_linting
       script:
-        - make lint
-    - stage: code_regression
-      script:
-        - make test
-        - make coverage
-      skip_cleanup: true
+      - make lint
+    - script:
+      - make test
+      - make coverage
+      name: code_regression
       deploy:
         - provider: script
+          skip_cleanup: true
           script: codecov --token=$CODECOV_TOKEN
           on:
             branch: stable
-    - stage: docs
+    - stage: build
       script:
+        - make dist
+      name: build_package
+    - script:
         - make install-develop
         - make docs
+      name: build_docs
       deploy:
         - provider: pages
           skip_cleanup: true
@@ -34,21 +39,13 @@ jobs:
           target_branch: gh-pages
           on:
             branch: stable
-    - stage: deploy_package
-      script: skip
-      deploy:
-        - provider: releases
-          api_key: $GITHUB_TOKEN
-          skip_cleanup: true
-          on:
-            tags: true
-            branch: stable
         - provider: pypi
           user: "__token__"
+          skip_cleanup: true
           password:
             secure: LUtG+fF/OtOhlKJwOJ0CDqg4YEeBOPaSEFh03/NDvppkiESfSaMnoBbol6z0kJPKQ5nbTrywuJk6XUUE6MaxMo/Z5HSoSjSphwgWxjNx+B5JyptqI0mQONRvrtR2OO5bxq0ChNDNeQ5jrWY2hBm775vqRotLU4MZRw50wUVjKnyDtw7nieHye8f215pQSE9UOkMneV1UZ8QyOUcKAe+ZA/fgAcSh3I/kQCS0xFwyRTIl9nGWagNEnfTOZ7E1UYGxxkt+Tu1U925np2zRS03+2dDoSNcEdwNAVxDkbXAvAR6FxKcxr0YujQrK27MgJDuRbc7LWMAyHrCNEhZVVFtChipHov9bKM19732ZP5CVkt0kRvWqW7J5MJwYM0EcLLw8tm/3d/ubAyddyePR86F+Zuyx0YyrsLREoEMlbYewYQjK9Cn4WuDOwCJPDEIu1pJ5xLmgFQfK6aFNRRdned9E/NmSX95Wbq8h7NlBXTAbQSftoGzbBV28HThEW4BYR1dOeOG24UTOtDYHiWibtW2QsIZD3Ir+a4/yWxO4mZeLm2HCr7lfK7ALZsvNUfS/MiktDwsA7yw4w+1+qIOOZ4MtJPThAC716XWiuY9LiXyo3hczreYy+4pHmAlnJXPvxTqr6ZFprTkTcOwLNByskR5MjG7bEDBVADKbQb5j0riAX8Y=
           on:
-            tags: true
+            #tags: true
             #all_branches: true
             branch: stable
 branches:
