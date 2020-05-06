@@ -190,7 +190,7 @@
 <h1><a class="reference internal" href="../api.html#module-ctgan.models" title="ctgan.models"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.models</span></code></a>.Generator<a class="headerlink" href="#ctgan-models-generator" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ctgan.models.Generator">
-<em class="property">class </em><code class="sig-prename descclassname">ctgan.models.</code><code class="sig-name descname">Generator</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">gen_dims</em>, <em class="sig-param">data_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/models/_generator.py#L10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Generator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.models.</code><code class="sig-name descname">Generator</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">gen_dims</em>, <em class="sig-param">data_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/ed28539/ctgan/models/_generator.py#L10"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Generator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conditional Generator model.</p>
 <p>This model uses intermediary <a class="reference internal" href="ctgan.layers.ResidualLayer.html#ctgan.layers.ResidualLayer" title="ctgan.layers.ResidualLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ctgan.layers.ResidualLayer</span></code></a>
 and mix of activation functions in the last layer of the network
@@ -250,12 +250,12 @@ functions of each data column.</p>
 </p>
 <dl class="method">
 <dt id="ctgan.models.Generator.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">gen_dims</em>, <em class="sig-param">data_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/models/_generator.py#L59"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Generator.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">gen_dims</em>, <em class="sig-param">data_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/ed28539/ctgan/models/_generator.py#L59"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Generator.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="ctgan.models.Generator.call">
-<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/models/_generator.py#L71"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Generator.call" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/ed28539/ctgan/models/_generator.py#L71"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.models.Generator.call" title="Permalink to this definition">¶</a></dt>
 <dd><p>Feedforward pass on the network layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
