@@ -187,7 +187,7 @@
 <h1><a class="reference internal" href="../api.html#module-ctgan.data_modules" title="ctgan.data_modules"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.data_modules</span></code></a>.ConditionalGenerator<a class="headerlink" href="#ctgan-data-modules-conditionalgenerator" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ctgan.data_modules.ConditionalGenerator">
-<em class="property">class </em><code class="sig-prename descclassname">ctgan.data_modules.</code><code class="sig-name descname">ConditionalGenerator</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">output_info=None</em>, <em class="sig-param">log_frequency=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/data_modules/_conditional.py#L7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.data_modules.</code><code class="sig-name descname">ConditionalGenerator</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">output_info=None</em>, <em class="sig-param">log_frequency=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/data_modules/_conditional.py#L7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conditional Generator.</p>
 <p>This generator is used along with the model defined in
 <a class="reference internal" href="ctgan.models.Generator.html#ctgan.models.Generator" title="ctgan.models.Generator"><code class="xref py py-class docutils literal notranslate"><span class="pre">ctgan.models.Generator</span></code></a>, to sample conditional vectors.</p>
@@ -221,13 +221,13 @@ sampling.</p>
 </div>
 <dl class="method">
 <dt id="ctgan.data_modules.ConditionalGenerator.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">data=None</em>, <em class="sig-param">output_info=None</em>, <em class="sig-param">log_frequency=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/data_modules/_conditional.py#L58"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">data=None</em>, <em class="sig-param">output_info=None</em>, <em class="sig-param">log_frequency=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/data_modules/_conditional.py#L58"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ctgan.data_modules.ConditionalGenerator.from_dict">
-<em class="property">classmethod </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">in_dict</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/data_modules/_conditional.py#L38"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator.from_dict" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">in_dict</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/data_modules/_conditional.py#L38"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator.from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new instance of this class by loading data from an
 external class dictionary.</p>
 <dl class="field-list simple">
@@ -249,7 +249,7 @@ provided by <code class="docutils literal notranslate"><span class="pre">in_dict
 
 <dl class="method">
 <dt id="ctgan.data_modules.ConditionalGenerator.sample">
-<code class="sig-name descname">sample</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">batch_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/data_modules/_conditional.py#L128"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator.sample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sample</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">batch_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/data_modules/_conditional.py#L128"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a conditional vector for the given batch of data.</p>
 <p>For a more detailed implementation of this method, consult section 4.3
 of <a class="bibtex reference internal" href="../references.html#xu2019modeling" id="id1">[XSCIV19]</a>.</p>
@@ -278,7 +278,7 @@ A tuple containing:</p>
 
 <dl class="method">
 <dt id="ctgan.data_modules.ConditionalGenerator.sample_zero">
-<code class="sig-name descname">sample_zero</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">batch_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/data_modules/_conditional.py#L165"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator.sample_zero" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sample_zero</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">batch_size</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/data_modules/_conditional.py#L165"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.data_modules.ConditionalGenerator.sample_zero" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a conditional vector for the given batch of data.</p>
 <p>For a more detailed implementation of this method, consult section 4.3
 of <a class="bibtex reference internal" href="../references.html#xu2019modeling" id="id2">[XSCIV19]</a>.</p>

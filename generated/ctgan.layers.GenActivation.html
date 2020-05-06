@@ -187,7 +187,7 @@
 <h1><a class="reference internal" href="../api.html#module-ctgan.layers" title="ctgan.layers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ctgan.layers</span></code></a>.GenActivation<a class="headerlink" href="#ctgan-layers-genactivation" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="ctgan.layers.GenActivation">
-<em class="property">class </em><code class="sig-prename descclassname">ctgan.layers.</code><code class="sig-name descname">GenActivation</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/layers/_gen_activation.py#L11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ctgan.layers.</code><code class="sig-name descname">GenActivation</code><span class="sig-paren">(</span><em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/layers/_gen_activation.py#L11"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conditional Generator activation layer.</p>
 <p>Besides computing the usual Fully Connected operation <span class="math notranslate nohighlight">\(y = xA^T + b\)</span>,
 this layer also applies a mix of activation functions. The scalar values
@@ -213,12 +213,12 @@ activation functions of each data columns.</p>
 </dl>
 <dl class="method">
 <dt id="ctgan.layers.GenActivation.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/layers/_gen_activation.py#L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">input_dim</em>, <em class="sig-param">output_dim</em>, <em class="sig-param">transformer_info</em>, <em class="sig-param">tau</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/layers/_gen_activation.py#L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="ctgan.layers.GenActivation._gumbel_softmax">
-<code class="sig-name descname">_gumbel_softmax</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">logits</em>, <em class="sig-param">tau=1.0</em>, <em class="sig-param">hard=False</em>, <em class="sig-param">dim=-1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/layers/_gen_activation.py#L80"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation._gumbel_softmax" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_gumbel_softmax</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">logits</em>, <em class="sig-param">tau=1.0</em>, <em class="sig-param">hard=False</em>, <em class="sig-param">dim=-1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/layers/_gen_activation.py#L80"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation._gumbel_softmax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Samples from the Gumbel-Softmax distribution
 <a class="bibtex reference internal" href="../references.html#maddison2016concrete" id="id2">[MMT16]</a>, <a class="bibtex reference internal" href="../references.html#jang2016categorical" id="id3">[JGP16]</a> and
 optionally discretizes.</p>
@@ -250,7 +250,7 @@ that sum to 1 across <code class="docutils literal notranslate"><span class="pre
 
 <dl class="method">
 <dt id="ctgan.layers.GenActivation.call">
-<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/b0cce92/ctgan/layers/_gen_activation.py#L50"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation.call" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">inputs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pbmartins/ctgan-tf/blob/1305ba8/ctgan/layers/_gen_activation.py#L50"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ctgan.layers.GenActivation.call" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a feedforward pass of the activation functions on the
 provided input batch.</p>
 <dl class="field-list simple">
