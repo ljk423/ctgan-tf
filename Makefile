@@ -36,7 +36,7 @@ env: clean-build clean-pyc ## creates a pyenv virtualenv, and installs the packa
 .PHONY: lint
 lint: clean-lint ## check style with pylint and flake8 - it will generate two reports
 	pylint-fail-under --max-line-length=80 --fail_under 8.0 ctgan > pylint.report
-	flake8 ctgan > flake8.report
+	flake8 --max-line-length=80 ctgan > flake8.report
 
 .PHONY: test
 test: ## run tests quickly with the default Python

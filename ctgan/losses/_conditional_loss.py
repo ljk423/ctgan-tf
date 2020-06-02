@@ -39,10 +39,10 @@ def conditional_loss(cond_info, data, cond, mask):
 
     for item in cond_info:
         data_logsoftmax = data[:, item[0]:item[1]]
-        cond_vec = tf.math.argmax(cond[:, item[2]:item[3]], axis=1)
+        cond_vec = tf.math.argmax(cond[:, item[2]:item[3]], 1)
         loss = tf.reshape(tf.nn.sparse_softmax_cross_entropy_with_logits(
             cond_vec, data_logsoftmax), [-1, 1])
         c_loss = tf.concat(
-            [c_loss[:, :item[-1]], loss, c_loss[:, item[-1]+1:]], axis=1)
+            [c_loss[:, :item[-1]], loss, c_loss[:, item[-1]+1:]], 1)
 
     return tf.reduce_sum(c_loss * mask) / tf.cast(shape[0], dtype=tf.float32)
