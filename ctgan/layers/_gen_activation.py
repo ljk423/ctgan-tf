@@ -73,8 +73,7 @@ class GenActivation(tf.keras.layers.Layer):
                 idx[2] == 0,
                 tf.math.tanh(outputs[:, idx[0]:idx[1]]),
                 self._gumbel_softmax(outputs[:, idx[0]:idx[1]], tau=self._tau))
-            data_t = tf.concat(
-                [data_t[:, :idx[0]], act, data_t[:, idx[1]:]], axis=1)
+            data_t = tf.concat([data_t[:, :idx[0]], act, data_t[:, idx[1]:]], 1)
         return outputs, data_t
 
     @tf.function(experimental_relax_shapes=True)

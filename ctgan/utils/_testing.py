@@ -47,7 +47,7 @@ def generate_data(batch_size, seed=0):
     """
     np.random.seed(seed)
     data = np.concatenate((
-        np.random.random((batch_size, 1)),
+        np.random.rand(batch_size, 1),
         np.random.randint(0, 5, size=(batch_size, 1))), axis=1)
 
     dataframe = pd.DataFrame(data, columns=['col1', 'col2'])

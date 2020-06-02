@@ -2,7 +2,7 @@
 User Guide
 ----------
 
-TensorFlow 2.1 implementation of a Conditional Tabular Generative Adversarial
+TensorFlow 2.X implementation of a Conditional Tabular Generative Adversarial
 Network.
 
 **CTGAN** is a GAN-based data synthesizer that can generate synthetic tabular
