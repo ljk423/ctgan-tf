@@ -65,7 +65,7 @@ class TestSynthesizer(TestCase):
 
         model.train(data, discrete, epochs=1)
         output = model.sample(self._n_samples).values
-        expected_output = np.array([[0.4136129, 1.0]])
+        expected_output = np.array([[0.4139329, 3.0]])
         np.testing.assert_almost_equal(
             output, expected_output, decimal=self._vars['decimal'])
 

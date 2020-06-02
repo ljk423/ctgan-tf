@@ -60,4 +60,4 @@ class ResidualLayer(tf.keras.layers.Layer):
         outputs = self._fc(inputs, **kwargs)
         outputs = self._bn(outputs, **kwargs)
         outputs = self._relu(outputs, **kwargs)
-        return tf.concat([outputs, inputs], axis=1)
+        return tf.concat([outputs, inputs], 1)

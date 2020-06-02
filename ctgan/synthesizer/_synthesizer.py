@@ -330,7 +330,7 @@ class CTGANSynthesizer:
         else:
             cond, _, col_idx, opt_idx = cond_vec
             cond = tf.convert_to_tensor(cond)
-            fake_z = tf.concat([fake_z, cond], axis=1)
+            fake_z = tf.concat([fake_z, cond], 1)
 
             perm = np.arange(self._batch_size)
             np.random.shuffle(perm)
@@ -342,8 +342,8 @@ class CTGANSynthesizer:
         real = tf.convert_to_tensor(real.astype('float32'))
 
         if cond_vec is not None:
-            fake_cat = tf.concat([fake_act, cond], axis=1)
-            real_cat = tf.concat([real, cond_perm], axis=1)
+            fake_cat = tf.concat([fake_act, cond], 1)
+            real_cat = tf.concat([real, cond_perm], 1)
         else:
             fake_cat = fake
             real_cat = real
@@ -413,7 +413,7 @@ class CTGANSynthesizer:
         with tf.GradientTape() as tape:
             fake, fake_act = self._generator(fake_z, training=True)
             y_fake = self._critic(
-                tf.concat([fake_act, cond], axis=1), training=True)
+                tf.concat([fake_act, cond], 1), training=True)
             cond_loss = conditional_loss(cond_info, fake, cond, mask)
             g_loss = -tf.reduce_mean(y_fake) + cond_loss
 
@@ -448,7 +448,7 @@ class CTGANSynthesizer:
         cond, mask, _, _ = cond_vec
         cond = tf.convert_to_tensor(cond, name="c1")
         mask = tf.convert_to_tensor(mask, name="m1")
-        fake_z = tf.concat([fake_z, cond], axis=1, name="fake_z")
+        fake_z = tf.concat([fake_z, cond], 1, name="fake_z")
         return self.train_g_cond_step(
             fake_z, cond, mask, self._transformer.cond_tensor)
 
@@ -480,12 +480,12 @@ class CTGANSynthesizer:
             cond_vec = self._cond_generator.sample_zero(self._batch_size)
             if cond_vec is not None:
                 cond = tf.constant(cond_vec)
-                fake_z = tf.concat([fake_z, cond], axis=1)
+                fake_z = tf.concat([fake_z, cond], 1)
 
             fake = self._generator(fake_z)[1]
             data.append(fake.numpy())
 
-        data = np.concatenate(data, axis=0)
+        data = np.concatenate(data, 0)
         data = data[:n_samples]
         return self._transformer.inverse_transform(data, None)
 

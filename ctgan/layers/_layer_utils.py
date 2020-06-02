@@ -35,5 +35,4 @@ def init_bounded(shape, **kwargs):
     dim = kwargs['dim']
     d_type = kwargs['dtype']
     bound = 1 / math.sqrt(dim)
-    return tf.random.uniform(
-        shape=shape, minval=-bound, maxval=bound, dtype=d_type)
+    return tf.random.uniform(shape, minval=-bound, maxval=bound, dtype=d_type)
