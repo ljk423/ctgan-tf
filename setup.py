@@ -32,7 +32,7 @@ CLASSIFIERS = ['Intended Audience :: Science/Research',
                'Operating System :: MacOS',
                'Programming Language :: Python :: 3.7']
 INSTALL_REQUIRES = [
-    'tensorflow<2.2,>=2.1.0',
+    'tensorflow<3.0,>=2.1.0',
     'tensorflow-probability<1.0,>=0.9.0',
     'scikit-learn<0.23,>=0.21',
     'numpy<2,>=1.17.4',

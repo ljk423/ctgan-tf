@@ -32,7 +32,7 @@ Welcome to the `ctgan-tf` documentation.
 Getting started
 ---------------
 
-Tensorflow 2.1 implementation of a Conditional Tabular Generative Adversarial
+Tensorflow 2.X implementation of a Conditional Tabular Generative Adversarial
 Network. CTGAN is a GAN-based data synthesizer that can "generate synthetic
 tabular data with high fidelity".
 
@@ -53,8 +53,8 @@ Install
 Requirements
 ^^^^^^^^^^^^
 
-* `tensorflow` (<2.2,>=2.1.0)
-* `tensorflow-probability` (<1.0,>=0.9.0)
+* `tensorflow` (<2.3.0,>=2.1.0)
+* `tensorflow-probability` (<0.11.0,>=0.9.0)
 * `scikit-learn` (<0.23,>=0.21)
 * `numpy` (<2,>=1.17.4)
 * `pandas` (<1.0.2,>=1.0)

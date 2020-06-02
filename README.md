@@ -42,11 +42,11 @@ please refer to their GitHub repository and their documentation:
 
 As of this moment, **CTGAN** has been solely tested tested on 
 [Python 3.7](https://www.python.org/downloads/), 
-and [TensorFlow 2.1](https://www.tensorflow.org/install).
+and [TensorFlow 2.2](https://www.tensorflow.org/install).
 
 
-* `tensorflow` (<2.2,>=2.1.0)
-* `tensorflow-probability` (<1.0,>=0.9.0)
+* `tensorflow` (<2.3,>=2.1.0)
+* `tensorflow-probability` (<0.11.0,>=0.9.0)
 * `scikit-learn` (<0.23,>=0.21)
 * `numpy` (<2,>=1.17.4)
 * `pandas` (<1.0.2,>=1.0)
